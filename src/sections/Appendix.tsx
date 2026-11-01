@@ -44,7 +44,7 @@ export function Appendix() {
             <a href={asset('assets/poster/dayone-poster-a0.jpg')} target="_blank" rel="noreferrer" className="block border border-line">
               <img src={asset('assets/poster/dayone-poster-a0.jpg')} alt="Day One A0 landscape poster: problem, solution, research and design process, student journey and expected design value" loading="lazy" className="w-full" />
             </a>
-            <p className="mt-2 font-mono text-[11px] text-faint">Open full size in a new tab.</p>
+            <p className="mt-2 font-mono text-[12px] text-faint">Open full size in a new tab.</p>
           </Expandable>
           <Expandable label="A3 · Research data, consent forms and transcripts">
             <p className="text-[15px] text-muted">

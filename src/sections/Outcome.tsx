@@ -2,17 +2,19 @@ import { useState } from 'react'
 import { ArrowRight } from 'lucide-react'
 import { evaluation, outcomeMap, outcomeSummary, prototypeScreens } from '../content/outcome'
 import { Expandable, PhoneFrame, Reveal, SectionHeader, SourceTag } from '../components/ui'
+import { sectionById } from '../content/sections'
 
 export function Outcome() {
   const [hover, setHover] = useState<number | null>(null)
   return (
-    <section id="outcome" className="py-24 md:py-32">
+    <section id="outcome" className="border-t border-line py-24 md:py-32">
       <div className="container-x">
-        <SectionHeader num="07" label="Outcome" title="From findings to features." intro={outcomeSummary} />
+        <SectionHeader num={sectionById.outcome.num} label="Outcome" title="From findings to features." intro={outcomeSummary} />
 
         {/* Finding → Opportunity → Feature */}
         <Reveal>
-          <div className="hidden grid-cols-[1fr_32px_1fr_32px_1.2fr] gap-0 border-b-2 border-ink pb-3 font-mono text-[11px] uppercase tracking-[0.12em] text-faint md:grid">
+          <p className="eyebrow mb-4 text-blue">6.1 · Findings to features</p>
+          <div className="hidden grid-cols-[1fr_32px_1fr_32px_1.2fr] gap-0 border-b-2 border-ink pb-3 font-mono text-[12px] uppercase tracking-[0.12em] text-faint md:grid">
             <span>Research finding</span>
             <span />
             <span>Design opportunity</span>
@@ -29,7 +31,7 @@ export function Outcome() {
                 className={`grid gap-3 border-b border-line py-6 transition-opacity duration-300 md:grid-cols-[1fr_32px_1fr_32px_1.2fr] md:items-start md:gap-0 ${hover !== null && hover !== i ? 'md:opacity-40' : ''}`}
               >
                 <div className="md:pr-4">
-                  <p className="font-mono text-[11px] text-blue md:hidden">Finding</p>
+                  <p className="font-mono text-[12px] text-blue md:hidden">Finding</p>
                   <p className="flex gap-3 font-display text-lg font-semibold leading-snug">
                     <span className="font-mono text-[12px] font-normal text-blue">T{i + 1}</span>
                     {row.finding}
@@ -37,12 +39,12 @@ export function Outcome() {
                 </div>
                 <ArrowRight aria-hidden size={18} className={`mt-1 hidden transition-colors md:block ${hover === i ? 'text-blue' : 'text-line'}`} />
                 <div className="md:pr-4">
-                  <p className="font-mono text-[11px] text-blue md:hidden">Opportunity</p>
+                  <p className="font-mono text-[12px] text-blue md:hidden">Opportunity</p>
                   <p className="text-ink-2">{row.opportunity}</p>
                 </div>
                 <ArrowRight aria-hidden size={18} className={`mt-1 hidden transition-colors md:block ${hover === i ? 'text-blue' : 'text-line'}`} />
                 <ul className="flex flex-col gap-2">
-                  <li className="font-mono text-[11px] text-blue md:hidden">Feature</li>
+                  <li className="font-mono text-[12px] text-blue md:hidden">Feature</li>
                   {row.features.map((f) => (
                     <li key={f.name} className={`border p-3 transition-colors ${hover === i ? 'border-blue bg-blue-soft' : 'border-line bg-paper'}`}>
                       <p className="font-semibold">{f.name}</p>
@@ -61,7 +63,7 @@ export function Outcome() {
         {/* Prototype screens */}
         <div className="mt-24">
           <Reveal>
-            <p className="eyebrow text-blue">The prototype</p>
+            <p className="eyebrow text-blue">6.2 · The prototype</p>
             <h3 className="mt-2 text-[clamp(1.8rem,3.4vw,2.6rem)] font-bold">Day One, as built.</h3>
           </Reveal>
           <div className="-mx-4 mt-10 flex snap-x snap-mandatory gap-6 overflow-x-auto px-4 pb-6 sm:-mx-8 sm:px-8 lg:-mx-12 lg:px-12" tabIndex={0} aria-label="Prototype screens, scroll horizontally">
@@ -84,7 +86,7 @@ export function Outcome() {
         <div className="mt-24 border-t-2 border-ink pt-10">
           <div className="grid gap-10 md:grid-cols-12">
             <Reveal className="md:col-span-4">
-              <p className="eyebrow text-blue">{evaluation.label}</p>
+              <p className="eyebrow text-blue">6.3 · {evaluation.label}</p>
               <h3 className="mt-2 text-3xl font-bold">What testing told us.</h3>
               <p className="mt-4 text-[15px] text-muted">{evaluation.method}</p>
               <ul className="mt-6 space-y-3 text-[14px]">
@@ -108,7 +110,7 @@ export function Outcome() {
                   </Reveal>
                 ))}
               </ul>
-              <p className="mt-3 font-mono text-[11px] text-faint">{evaluation.fractionNote}</p>
+              <p className="mt-3 font-mono text-[12px] text-faint">{evaluation.fractionNote}</p>
 
               <div className="mt-8">
                 <Expandable label="Usability problems (U1–U4) and recommendations (R1–R3)">

@@ -37,6 +37,7 @@ All academic content lives in `src/content/` — no component code needs to chan
 
 | File | What it controls |
 | --- | --- |
+| `sections.ts` | Report structure: section order, numbering, parts and one-line takeaways |
 | `meta.ts` | Title block: degree, faculty, supervisor, authors, date, video link, prototype link |
 | `process.ts` | 01 Research Process timeline stages |
 | `literature.ts` | 02 Literature Review insights and citations |
@@ -44,9 +45,9 @@ All academic content lives in `src/content/` — no component code needs to chan
 | `affinity.ts` | 03 Affinity map — the coding table, verbatim (cluster, participant, codes) |
 | `challenges.ts` | 04 Challenges — four themes, sub-findings, quotes, scenarios, implications |
 | `hmw.ts` | 05 HMW — how each theme (T1–T4) leads to a keyword in the question |
-| `abstract.ts` | 06 Abstract (~100 words) and its draft/approved status |
-| `outcome.ts` | 07 Finding → opportunity → feature map, prototype screens, usability evaluation |
-| `conclusions.ts` | 08 Conclusions, limitations, implications, future work |
+| `abstract.ts` | Abstract (front matter, ~100 words) and its draft/approved status |
+| `outcome.ts` | 06 Finding → opportunity → feature map, prototype screens, usability evaluation |
+| `conclusions.ts` | 07 Conclusions, limitations, implications, future work |
 | `references.ts` | APA reference list (in-text citations link here) |
 | `appendix.ts` | Interview questions, journey map, acknowledgements |
 

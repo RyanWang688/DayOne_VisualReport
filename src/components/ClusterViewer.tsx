@@ -64,7 +64,7 @@ export function ClusterViewer({ index, onClose, onNavigate }: { index: number | 
           >
             <header className="flex flex-wrap items-start justify-between gap-4 border-b border-line bg-paper p-4 sm:p-6">
               <div className="min-w-0">
-                <p className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.12em]" style={{ color: c.color.ink }}>
+                <p className="flex items-center gap-2 font-mono text-[12px] uppercase tracking-[0.12em]" style={{ color: c.color.ink }}>
                   <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: c.color.ink }} aria-hidden />
                   Theme {String(c.index + 1).padStart(2, '0')} of {clusters.length}
                 </p>
@@ -118,7 +118,7 @@ export function ClusterViewer({ index, onClose, onNavigate }: { index: number | 
                     >
                       <span aria-hidden className="absolute -top-2 left-1/2 h-4 w-14 -translate-x-1/2 rotate-[-2deg] bg-white/60 shadow-sm" />
                       <p className="font-display text-[16px] font-medium leading-snug text-ink">{n.text}</p>
-                      <p className="mt-4 flex items-center justify-between font-mono text-[11px] text-ink/50">
+                      <p className="mt-4 flex items-center justify-between font-mono text-[12px] text-ink/50">
                         <span>Code</span>
                         <span className="rounded-[2px] px-1.5 py-px" style={on ? { backgroundColor: c.color.ink, color: '#fff' } : { backgroundColor: 'rgba(14,20,34,0.08)' }}>
                           {n.participant}
@@ -129,7 +129,7 @@ export function ClusterViewer({ index, onClose, onNavigate }: { index: number | 
                 })}
               </ul>
             </div>
-            <p className="hidden border-t border-line bg-paper px-6 py-2 font-mono text-[11px] text-faint sm:block">
+            <p className="hidden border-t border-line bg-paper px-6 py-2 font-mono text-[12px] text-faint sm:block">
               ← → to move between clusters · Esc to close · hover a note to see the same participant’s other notes
             </p>
           </motion.div>

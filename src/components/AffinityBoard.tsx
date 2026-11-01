@@ -114,7 +114,7 @@ export function AffinityBoard() {
         {/* Board */}
         <div className="relative border-b border-line bg-canvas bg-[radial-gradient(var(--color-line)_1px,transparent_1px)] [background-size:18px_18px] lg:border-b-0 lg:border-r">
           <div className="flex items-center justify-between gap-3 px-4 pt-4 sm:px-6">
-            <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-faint" aria-live="polite">
+            <p className="font-mono text-[12px] uppercase tracking-[0.12em] text-faint" aria-live="polite">
               {statusText}
             </p>
             <button
@@ -216,7 +216,7 @@ export function AffinityBoard() {
         {/* Panel: theme selection + participant evidence */}
         <aside aria-label="Affinity map explorer" className="flex flex-col lg:sticky lg:top-14 lg:max-h-[calc(100svh-56px)] lg:self-start">
           <div className="shrink-0 border-b border-line p-4 sm:p-5">
-            <p id="ab-person" className="mb-2 font-mono text-[11px] uppercase tracking-[0.12em] text-faint">
+            <p id="ab-person" className="mb-2 font-mono text-[12px] uppercase tracking-[0.12em] text-faint">
               Participant
             </p>
             <div role="group" aria-labelledby="ab-person" className="flex flex-wrap gap-1">
@@ -235,7 +235,7 @@ export function AffinityBoard() {
             <AnimatePresence mode="wait" initial={false}>
               {selected === null ? (
                 <motion.div key="list" initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -8 }} transition={{ duration: 0.2 }}>
-                  <p className="px-4 pb-2 pt-4 font-mono text-[11px] uppercase tracking-[0.12em] text-faint sm:px-5">Themes · select to explore</p>
+                  <p className="px-4 pb-2 pt-4 font-mono text-[12px] uppercase tracking-[0.12em] text-faint sm:px-5">Themes · select to explore</p>
                   <ul className="pb-2">
                     {clusters.map((c) => {
                       const n = person ? c.notes.filter((x) => x.participant === person).length : c.notes.length
@@ -263,7 +263,7 @@ export function AffinityBoard() {
         </aside>
       </div>
 
-      <p className="border-t border-line px-4 py-3 font-mono text-[11px] text-faint sm:px-6">
+      <p className="border-t border-line px-4 py-3 font-mono text-[12px] text-faint sm:px-6">
         Source · team coding table (P1–P4 coded by Yue, P5–P8 by Yao). Codes are reproduced verbatim.
       </p>
 
@@ -281,7 +281,7 @@ function ThemeDetail({ index, person, onBack, onOpen }: { index: number; person:
         <ArrowLeft size={14} aria-hidden /> All themes
       </button>
       <div className="mt-4 border-l-[3px] pl-3" style={{ borderColor: c.color.ink }}>
-        <p className="font-mono text-[11px] uppercase tracking-[0.12em]" style={{ color: c.color.ink }}>
+        <p className="font-mono text-[12px] uppercase tracking-[0.12em]" style={{ color: c.color.ink }}>
           Theme {String(c.index + 1).padStart(2, '0')}
         </p>
         <h4 className="mt-1 font-display text-xl font-bold leading-tight tracking-tight">{c.title}</h4>
@@ -298,7 +298,7 @@ function ThemeDetail({ index, person, onBack, onOpen }: { index: number; person:
       </button>
 
       <div className="mt-5">
-        <p className="mb-1 font-mono text-[11px] uppercase tracking-[0.12em] text-faint">Participant evidence</p>
+        <p className="mb-1 font-mono text-[12px] uppercase tracking-[0.12em] text-faint">Participant evidence</p>
         {byPerson.map(({ p, notes }) => (
           <Expandable
             key={`${p}-${person}`}
@@ -353,7 +353,7 @@ function NotePreview({ note, pos, W, noteW, noteH }: { note: AffinityNote; pos: 
       style={{ width: w, left, top: above ? undefined : pos.y + noteH + 8, bottom: above ? `calc(100% - ${pos.y - 8}px)` : undefined }}
     >
       <p>{note.text}</p>
-      <p className="mt-2 flex items-center gap-1.5 font-mono text-[11px] text-white/60">
+      <p className="mt-2 flex items-center gap-1.5 font-mono text-[12px] text-white/60">
         <span className="h-2 w-2 rounded-full" style={{ backgroundColor: c.color.note }} />
         {note.participant} · {c.title}
       </p>

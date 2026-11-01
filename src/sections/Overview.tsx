@@ -2,6 +2,8 @@ import { motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTran
 import { ArrowDown, ArrowUpRight, PlayCircle } from 'lucide-react'
 import { meta } from '../content/meta'
 import { isPlaceholder } from '../content/types'
+import { parts, sections } from '../content/sections'
+import { useReadingTimes } from '../hooks/useReadingTimes'
 import { PhoneFrame, Ph, Reveal } from '../components/ui'
 
 const titleWords = meta.title.split(' ')
@@ -11,7 +13,6 @@ export function Overview() {
     <section id="overview" aria-labelledby="overview-title" className="relative overflow-hidden pt-14">
       <Hero />
       <TitleBlock />
-      <Context />
     </section>
   )
 }
@@ -129,11 +130,11 @@ function Hero() {
             <PhoneFrame src="assets/prototype/short-trip-builder.jpg" alt="" className="aspect-[1/2]" />
           </motion.div>
         </motion.div>
-        <span className="absolute -bottom-2 left-6 font-mono text-[11px] text-faint">Prototype · Healthcare Journey / Short Trip / Explore</span>
+        <span className="absolute -bottom-2 left-6 font-mono text-[12px] text-faint">Prototype · Healthcare Journey / Short Trip / Explore</span>
       </motion.div>
 
       <a href="#title-block" className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-faint hover:text-blue md:flex" aria-label="Scroll to title block">
-        <span className="font-mono text-[11px] uppercase tracking-[0.16em]">Scroll</span>
+        <span className="font-mono text-[12px] uppercase tracking-[0.16em]">Scroll</span>
         <span className="scroll-cue relative block h-10 w-px overflow-hidden bg-line" />
         <ArrowDown size={14} aria-hidden className="sr-only" />
       </a>
@@ -199,6 +200,53 @@ function TitleBlock() {
   )
 }
 
+/** Project context plus a map of how the report is organised (sits after the abstract). */
+export function ReportMap() {
+  const times = useReadingTimes()
+  const mainParts = parts.filter((p) => p.key === 'research' || p.key === 'design')
+  const total = sections.reduce((n, s) => n + (times[s.id] ?? 0), 0)
+  return (
+    <section id="contents" aria-labelledby="map-title" className="border-t border-line bg-paper">
+      <Context />
+      <div className="container-x pb-20 md:pb-28">
+        <Reveal>
+          <div className="flex flex-wrap items-baseline justify-between gap-3 border-t-2 border-ink pt-5">
+            <h2 id="map-title" className="text-2xl font-bold">
+              How this report reads
+            </h2>
+            {total > 0 && <p className="font-mono text-[12px] text-muted">About {total} min in total · each part can be read on its own</p>}
+          </div>
+        </Reveal>
+        <div className="mt-6 grid gap-8 md:grid-cols-2 md:gap-12">
+          {mainParts.map((p, k) => (
+            <Reveal key={p.key} delay={k * 0.06}>
+              <p className="eyebrow text-blue">{p.label}</p>
+              <p className="mt-1 text-[15px] text-muted">{p.summary}</p>
+              <ol className="mt-4 border-t border-line">
+                {sections
+                  .filter((s) => s.part === p.key)
+                  .map((s) => (
+                    <li key={s.id}>
+                      <a href={`#${s.id}`} className="group grid grid-cols-[36px_1fr_auto] items-baseline gap-3 border-b border-line py-2.5">
+                        <span className="font-mono text-[12px] text-blue">{s.num}</span>
+                        <span className="font-display font-semibold tracking-tight transition-colors group-hover:text-blue">{s.label}</span>
+                        <span className="font-mono text-[12px] text-faint">{times[s.id] ? `${times[s.id]} min` : ''}</span>
+                      </a>
+                    </li>
+                  ))}
+              </ol>
+            </Reveal>
+          ))}
+        </div>
+        <p className="mt-6 text-[14px] text-muted">
+          Also: <a href="#abstract" className="link-grow text-ink">Abstract</a> · <a href="#references" className="link-grow text-ink">References</a> ·{' '}
+          <a href="#appendix" className="link-grow text-ink">Appendix</a>
+        </p>
+      </div>
+    </section>
+  )
+}
+
 function Context() {
   const steps = [
     { k: 'The problem', v: 'Students often arrive with plenty of information, but still struggle to turn it into action in unfamiliar, real-world situations.' },
@@ -212,7 +260,7 @@ function Context() {
     ['6', 'feature concepts'],
   ]
   return (
-    <div className="border-t border-line bg-paper py-20 md:py-28">
+    <div className="py-20 md:py-28">
       <div className="container-x grid gap-12 md:grid-cols-12">
         <Reveal className="md:col-span-5">
           <p className="eyebrow">Project context</p>
@@ -238,7 +286,7 @@ function Context() {
                   <dt className="sr-only">{l}</dt>
                   <dd>
                     <span className="block font-display text-4xl font-bold text-blue">{n}</span>
-                    <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-muted">{l}</span>
+                    <span className="font-mono text-[12px] uppercase tracking-[0.12em] text-muted">{l}</span>
                   </dd>
                 </div>
               ))}

@@ -28,7 +28,7 @@ export function Challenges() {
                   aria-current={active === i ? 'true' : undefined}
                   className={`flex items-center gap-2 rounded-[3px] px-3 py-1.5 text-[13px] transition-colors ${active === i ? 'bg-ink text-white' : 'text-muted hover:text-ink'}`}
                 >
-                  <span className="font-mono text-[11px] opacity-70">T{i + 1}</span>
+                  <span className="font-mono text-[12px] opacity-70">T{i + 1}</span>
                   {c.short}
                 </a>
               </li>
@@ -62,7 +62,7 @@ function JourneyStrip() {
         <div className="grid grid-cols-1 sm:grid-cols-5">
           {journeyMap.map((j, i) => (
             <div key={j.stage} className={`relative p-4 ${i ? 'border-t border-line sm:border-l sm:border-t-0' : ''} ${i === 3 ? 'bg-sun-soft' : 'bg-canvas'}`}>
-              <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-blue">
+              <p className="font-mono text-[12px] uppercase tracking-[0.12em] text-blue">
                 {String(i + 1).padStart(2, '0')} {j.stage}
               </p>
               <p className="mt-3 font-serif text-[19px] italic leading-snug">“{j.voice}”</p>
@@ -70,7 +70,7 @@ function JourneyStrip() {
             </div>
           ))}
         </div>
-        <figcaption className="border-t border-line bg-paper px-4 py-3 font-mono text-[11px] text-faint">
+        <figcaption className="border-t border-line bg-paper px-4 py-3 font-mono text-[12px] text-faint">
           Customer journey map from our A0 poster. Statements are journey-map voice summarising the stage, not participant quotes.
         </figcaption>
       </figure>
@@ -104,11 +104,11 @@ function Chapter({ c, index, active }: { c: Challenge; index: number; active: bo
           {/* Scenario */}
           <Reveal>
             <div className="relative overflow-hidden bg-ink p-6 text-white sm:p-8">
-              <p className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.14em] text-sun">
+              <p className="flex items-center gap-2 font-mono text-[12px] uppercase tracking-[0.14em] text-sun">
                 <MapPin size={14} aria-hidden /> {c.scenario.label}
               </p>
               <p className="mt-4 font-display text-[clamp(1.25rem,2.2vw,1.6rem)] font-semibold leading-snug">{c.scenario.text}</p>
-              <p className="mt-4 font-mono text-[11px] text-white/50">Based on the experience of {c.scenario.participants.join(', ')}</p>
+              <p className="mt-4 font-mono text-[12px] text-white/50">Based on the experience of {c.scenario.participants.join(', ')}</p>
             </div>
           </Reveal>
 
@@ -127,7 +127,7 @@ function Chapter({ c, index, active }: { c: Challenge; index: number; active: bo
                   </figure>
                 </Reveal>
               ))}
-              <p className="font-mono text-[11px] text-faint sm:col-span-2">{quoteNote}</p>
+              <p className="font-mono text-[12px] text-faint sm:col-span-2">{quoteNote}</p>
             </div>
           )}
 
@@ -148,7 +148,7 @@ function Chapter({ c, index, active }: { c: Challenge; index: number; active: bo
                 >
                   <p className="text-[15px] text-ink-2">{s.text}</p>
                   <p className="mt-3 flex flex-wrap items-center gap-1.5">
-                    <span className="mr-1 font-mono text-[11px] text-faint">Participants</span>
+                    <span className="mr-1 font-mono text-[12px] text-faint">Participants</span>
                     {s.participants.map((p) => (
                       <PBadge key={p} id={p} />
                     ))}

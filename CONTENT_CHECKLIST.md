@@ -18,9 +18,10 @@ Use this list to finish and verify the report. Edit values in `src/content/` (se
 
 - [x] **Participant level split.** Confirmed by the team: 2 Foundation/Diploma, 2 Bachelor’s, 4 Master’s (matches the A0 poster). The field report text still says “4 undergraduates and 4 postgraduate students” — update the report if it should match.
 - [ ] **HMW design reasoning** (`hmw.ts`): which theme leads to which keyword (T1 → information, T2 → use, T3 → real-life situations, T4 → help) is our synthesis. Check the wording.
-- [ ] **Design opportunity wording** in 07 Outcome (`outcome.ts`). Findings come from the report and features from the poster; the opportunity column is our design interpretation linking them.
+- [ ] **Design opportunity wording** in 06 Outcome (`outcome.ts`). Findings come from the report and features from the poster; the opportunity column is our design interpretation linking them.
 - [ ] **Everyday scenarios** in 04 Challenges are short narrative retellings of participants' reported experiences (P5, P8, P3, P2), labelled with the participant. Check the wording.
 - [ ] **Usability evaluation** results come from the evaluation deck (6 participants). The deck does not say whether these were the same people as interview P1–P8, so evaluation participant IDs are not shown.
+- [ ] **Section takeaways** in `sections.ts` (one line per section, shown in the part openers) are our summaries. Check the wording.
 
 ## Content sources used
 
@@ -29,7 +30,7 @@ Use this list to finish and verify the report. Edit values in `src/content/` (se
 | Field report (“A Field Report on International Students Settling into Melbourne”) | Title block, abstract, literature, study design, challenges, conclusions, references, appendix |
 | Coding table (10 themes × P1–P8) | Affinity map — reproduced verbatim |
 | A0 poster | Brand, journey map, six design features, prototype screen montage, poster in appendix |
-| Usability evaluation deck (Oct 2026) | Evaluate stage, 07 Outcome evaluation results, limitations and next round |
+| Usability evaluation deck (Oct 2026) | Evaluate stage, 06 Outcome evaluation results, limitations and next round |
 | Day One prototype (current build) | Five screenshots captured 2 Nov 2026 |
 
 ## Integrity rules followed

@@ -50,7 +50,7 @@ function ScrollHMW() {
                 <BridgeCard key={s.theme} step={s} k={k} p={p} />
               ))}
             </motion.ol>
-            <motion.p className="mt-3 font-mono text-[11px] text-white/45" style={{ opacity: cardsOpacity }}>
+            <motion.p className="mt-3 font-mono text-[12px] text-white/45" style={{ opacity: cardsOpacity }}>
               {hmwBridge.note}
             </motion.p>
             <motion.div className="absolute inset-x-0 top-0 grid gap-6 text-white/75 sm:grid-cols-2" style={{ opacity: outro, y: outroY }}>
@@ -107,7 +107,7 @@ function BridgeCard({ step, k, p }: { step: (typeof hmwBridge.steps)[number]; k:
   const border = useTransform(p, [s - 0.02, s, s + STEP_LEN - 0.02, s + STEP_LEN], ['rgba(255,255,255,0.15)', '#f4b63f', '#f4b63f', 'rgba(255,255,255,0.15)'])
   return (
     <motion.li className="flex flex-col border bg-white/[0.04] p-3 sm:p-4" style={{ opacity, borderColor: border }}>
-      <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-sun">
+      <p className="font-mono text-[12px] uppercase tracking-[0.12em] text-sun">
         {step.theme} · {step.short}
       </p>
       <p className="mt-1.5 font-display text-[15px] font-semibold text-white sm:text-[17px]">→ “{step.keyword.join(' ').replace('?', '')}”</p>
@@ -132,7 +132,7 @@ function StaticHMW() {
         <ol className="mt-12 grid gap-3 sm:grid-cols-2 md:grid-cols-4">
           {hmwBridge.steps.map((s) => (
             <li key={s.theme} className="border border-white/15 p-4">
-              <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-sun">
+              <p className="font-mono text-[12px] uppercase tracking-[0.12em] text-sun">
                 {s.theme} · {s.short}
               </p>
               <p className="mt-1.5 font-display text-[17px] font-semibold">→ “{s.keyword.join(' ').replace('?', '')}”</p>
@@ -141,7 +141,7 @@ function StaticHMW() {
           ))}
         </ol>
         <p className="mt-10 max-w-[56ch] text-white/75">{hmwBridge.outro}</p>
-        <p className="mt-4 font-mono text-[11px] text-white/45">{hmwBridge.note}</p>
+        <p className="mt-4 font-mono text-[12px] text-white/45">{hmwBridge.note}</p>
       </div>
     </section>
   )

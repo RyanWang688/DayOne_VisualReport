@@ -137,7 +137,7 @@ function Evidence({ stage }: { stage: ProcessStage }) {
       {stage.anchor && (
         <figure className="mt-4 border-l-2 border-sun pl-3 [@media(max-height:760px)]:lg:hidden">
           <blockquote className="font-serif text-[16px] italic leading-snug text-ink">“{stage.anchor.text}”</blockquote>
-          <figcaption className="mt-1 font-mono text-[11px] text-faint">{stage.anchor.by}</figcaption>
+          <figcaption className="mt-1 font-mono text-[12px] text-faint">{stage.anchor.by}</figcaption>
         </figure>
       )}
     </div>
@@ -150,7 +150,7 @@ function StageVisual({ stage }: { stage: ProcessStage }) {
     return (
       <figure>
         <img src={asset(v.src)} alt={v.alt} loading="lazy" className="mx-auto max-h-[300px] w-auto object-contain" />
-        <figcaption className="mt-3 font-mono text-[11px] text-faint">{v.caption}</figcaption>
+        <figcaption className="mt-3 font-mono text-[12px] text-faint">{v.caption}</figcaption>
       </figure>
     )
 
@@ -160,7 +160,7 @@ function StageVisual({ stage }: { stage: ProcessStage }) {
         <div className="grid grid-cols-4 gap-2 sm:gap-3">
           {Array.from({ length: 8 }, (_, i) => (
             <div key={i} className="flex aspect-square flex-col justify-between border border-line bg-paper p-2 sm:p-3">
-              <span className="font-mono text-[11px] text-faint">Interview</span>
+              <span className="font-mono text-[12px] text-faint">Interview</span>
               <span className="font-display text-xl font-bold text-blue sm:text-2xl">P{i + 1}</span>
             </div>
           ))}
@@ -182,7 +182,7 @@ function StageVisual({ stage }: { stage: ProcessStage }) {
           {clusters.map((c) => (
             <li
               key={c.title}
-              className="rotate-[-0.6deg] px-1.5 py-0.5 text-[11px] leading-tight text-ink-2 shadow-[1px_1px_0_rgba(0,0,0,0.06)] odd:rotate-[0.8deg] sm:px-2 sm:py-1 sm:text-[12px]"
+              className="rotate-[-0.6deg] px-1.5 py-0.5 text-[12px] leading-tight text-ink-2 shadow-[1px_1px_0_rgba(0,0,0,0.06)] odd:rotate-[0.8deg] sm:px-2 sm:py-1 sm:text-[12px]"
               style={{ backgroundColor: c.color.note }}
             >
               {c.title}
@@ -204,7 +204,7 @@ function StageVisual({ stage }: { stage: ProcessStage }) {
     <ol aria-label="Six feature concepts" className="grid grid-cols-2 gap-px border border-line bg-line sm:grid-cols-3">
       {stage.outputs.map((o, i) => (
         <li key={o} className="flex min-h-[72px] flex-col justify-between bg-paper p-3">
-          <span className="font-mono text-[11px] text-blue">0{i + 1}</span>
+          <span className="font-mono text-[12px] text-blue">0{i + 1}</span>
           <span className="font-display text-[15px] font-semibold leading-tight">{o}</span>
         </li>
       ))}

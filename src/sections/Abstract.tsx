@@ -6,21 +6,21 @@ const wordCount = (s: string) => s.trim().split(/\s+/).length
 
 export function Abstract() {
   return (
-    <section id="abstract" aria-labelledby="abstract-title" className="border-b border-line bg-paper py-24 md:py-32">
+    <section id="abstract" aria-labelledby="abstract-title" className="border-t border-line bg-canvas py-20 md:py-28">
       <div className="container-x grid gap-10 md:grid-cols-12">
         <Reveal className="md:col-span-3">
           <div className="flex items-center gap-3 font-mono text-[12px] uppercase tracking-[0.14em] text-muted">
-            <span className="text-blue">06</span>
+            <span>Front matter</span>
             <span className="h-px w-8 bg-line" />
-            <span>Abstract</span>
+            <span className="text-blue">Abstract</span>
           </div>
           <dl className="mt-8 space-y-4 text-[14px]">
             <div>
-              <dt className="font-mono text-[11px] uppercase tracking-[0.12em] text-faint">Length</dt>
+              <dt className="font-mono text-[12px] uppercase tracking-[0.12em] text-faint">Length</dt>
               <dd>{wordCount(abstract.text)} words</dd>
             </div>
             <div>
-              <dt className="font-mono text-[11px] uppercase tracking-[0.12em] text-faint">Keywords</dt>
+              <dt className="font-mono text-[12px] uppercase tracking-[0.12em] text-faint">Keywords</dt>
               <dd className="text-muted">{abstract.keywords.join(' · ')}</dd>
             </div>
           </dl>
@@ -35,7 +35,7 @@ export function Abstract() {
                 <CircleDashed size={12} aria-hidden /> Draft — condensed from the field report abstract, awaiting team approval
               </p>
             )}
-            <p className="font-serif text-[clamp(1.25rem,2.1vw,1.6rem)] leading-[1.55] text-ink first-letter:float-left first-letter:mr-2 first-letter:font-display first-letter:text-[3.4em] first-letter:font-extrabold first-letter:leading-[0.85] first-letter:text-blue">
+            <p className="max-w-[62ch] text-[clamp(1.1rem,1.6vw,1.3rem)] leading-[1.7] text-ink first-letter:float-left first-letter:mr-2 first-letter:mt-1 first-letter:font-display first-letter:text-[3.2em] first-letter:font-extrabold first-letter:leading-[0.8] first-letter:text-blue">
               {abstract.text}
             </p>
           </Reveal>

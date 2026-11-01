@@ -92,7 +92,7 @@ function InsightBlock({ ins }: { ins: LitInsight }) {
       <Reveal delay={0.12} className="md:col-span-5">
         <figure className="border border-line bg-canvas p-6">
           <Diagram kind={ins.diagram} />
-          <figcaption className="mt-4 font-mono text-[11px] text-faint">Conceptual diagram — illustrates the argument, not data.</figcaption>
+          <figcaption className="mt-4 font-mono text-[12px] text-faint">Conceptual diagram — illustrates the argument, not data.</figcaption>
         </figure>
       </Reveal>
     </article>
@@ -150,7 +150,7 @@ function Diagram({ kind }: { kind: LitInsight['diagram'] }) {
         ].map(([t, x, y]) => (
           <g key={t as string}>
             <rect x={(x as number) - 46} y={(y as number) - 13} width="92" height="22" fill="var(--color-paper)" stroke="var(--color-ink)" />
-            <text x={x as number} y={(y as number) + 2} textAnchor="middle" className="fill-[var(--color-ink)] font-sans text-[11px] font-medium">
+            <text x={x as number} y={(y as number) + 2} textAnchor="middle" className="fill-[var(--color-ink)] font-sans text-[12px] font-medium">
               {t}
             </text>
           </g>

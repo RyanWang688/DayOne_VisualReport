@@ -1,18 +1,26 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion, useScroll, useSpring } from 'motion/react'
 import { Menu, X } from 'lucide-react'
-import { sections } from '../content/sections'
+import { parts, sections } from '../content/sections'
 import { useActiveSection } from '../hooks/useActiveSection'
+import { useReadingTimes } from '../hooks/useReadingTimes'
 import { asset } from './ui'
 
-const ids = sections.map((s) => s.id)
+/** Blocks between sections that should also update the "Now reading" indicator. */
+const landmarks = [
+  { id: 'contents', num: '', label: 'Contents' },
+  { id: 'part-research', num: '', label: 'Part I · Research' },
+  { id: 'part-design', num: '', label: 'Part II · Design' },
+]
+const ids = [...sections.map((s) => s.id), ...landmarks.map((l) => l.id)]
 
 export function Nav() {
   const active = useActiveSection(ids)
+  const times = useReadingTimes()
   const { scrollYProgress } = useScroll()
   const progress = useSpring(scrollYProgress, { stiffness: 220, damping: 40, restDelta: 0.001 })
   const [open, setOpen] = useState(false)
-  const current = sections.find((s) => s.id === active) ?? sections[0]
+  const current: { id: string; num: string; label: string } = sections.find((s) => s.id === active) ?? landmarks.find((l) => l.id === active) ?? sections[0]
   const dark = active === 'hmw' || active === 'conclusions'
 
   useEffect(() => {
@@ -35,7 +43,7 @@ export function Nav() {
           <a href="#overview" className="flex items-center gap-2.5" aria-label="Day One — back to top">
             <img src={asset('assets/brand/dayone-logo.jpg')} alt="" className="h-8 w-8 rounded-[4px] object-cover" />
             <span className="font-display text-[15px] font-bold tracking-tight">Day One</span>
-            <span className={`hidden font-mono text-[11px] uppercase tracking-[0.14em] sm:inline ${dark ? 'text-white/50' : 'text-faint'}`}>Visual Report</span>
+            <span className={`hidden font-mono text-[12px] uppercase tracking-[0.14em] sm:inline ${dark ? 'text-white/50' : 'text-faint'}`}>Visual Report</span>
           </a>
 
           {/* Active section indicator */}
@@ -50,7 +58,9 @@ export function Nav() {
                 transition={{ duration: 0.2 }}
                 className="truncate font-mono text-[12px] uppercase tracking-[0.12em]"
               >
-                <span className={dark ? 'text-sun' : 'text-blue'}>{current.num}</span> {current.label}
+                {current.num && <span className={dark ? 'text-sun' : 'text-blue'}>{current.num} </span>}
+                {current.label}
+                {times[current.id] && <span className={`hidden sm:inline ${dark ? 'text-white/50' : 'text-faint'}`}> · {times[current.id]} min</span>}
               </motion.span>
             </AnimatePresence>
             <button
@@ -71,17 +81,18 @@ export function Nav() {
       {/* Desktop side rail */}
       <nav aria-label="Sections" className="fixed right-5 top-1/2 z-40 hidden -translate-y-1/2 xl:block">
         <ol className="flex flex-col gap-1">
-          {sections.map((s) => {
+          {sections.map((s, i) => {
             const isActive = s.id === active
+            const newPart = i > 0 && sections[i - 1].part !== s.part
             return (
-              <li key={s.id}>
+              <li key={s.id} className={newPart ? 'mt-3' : ''}>
                 <a
                   href={`#${s.id}`}
                   aria-current={isActive ? 'true' : undefined}
                   className="group flex items-center justify-end gap-3 py-1"
                 >
                   <span
-                    className={`rounded-[3px] px-1.5 py-0.5 font-mono text-[11px] uppercase tracking-[0.1em] transition-all duration-300 ${
+                    className={`rounded-[3px] px-1.5 py-0.5 font-mono text-[12px] uppercase tracking-[0.1em] transition-all duration-300 ${
                       'translate-x-1 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100 ' +
                       (dark ? 'bg-blue-ink text-white' : 'bg-paper shadow-sm ' + (isActive ? 'text-ink' : 'text-muted'))
                     }`}
@@ -126,21 +137,31 @@ export function Nav() {
                   <X size={18} aria-hidden />
                 </button>
               </div>
-              <ol className="flex flex-col">
-                {sections.map((s) => (
-                  <li key={s.id} className="border-t border-line">
-                    <a
-                      href={`#${s.id}`}
-                      onClick={() => setOpen(false)}
-                      aria-current={s.id === active ? 'true' : undefined}
-                      className={`flex items-baseline gap-4 py-3 font-display text-xl font-semibold ${s.id === active ? 'text-blue' : 'text-ink'}`}
-                    >
-                      <span className="w-6 font-mono text-[12px] font-normal text-faint">{s.num}</span>
-                      {s.label}
-                    </a>
-                  </li>
+              <div className="-mx-6 flex-1 overflow-y-auto px-6">
+                {parts.map((p) => (
+                  <div key={p.key} className="mb-5">
+                    <p className="mb-1 font-mono text-[12px] uppercase tracking-[0.14em] text-faint">{p.label}</p>
+                    <ol className="flex flex-col">
+                      {sections
+                        .filter((s) => s.part === p.key)
+                        .map((s) => (
+                          <li key={s.id} className="border-t border-line">
+                            <a
+                              href={`#${s.id}`}
+                              onClick={() => setOpen(false)}
+                              aria-current={s.id === active ? 'true' : undefined}
+                              className={`flex items-baseline gap-4 py-2.5 font-display text-lg font-semibold ${s.id === active ? 'text-blue' : 'text-ink'}`}
+                            >
+                              <span className="w-6 font-mono text-[12px] font-normal text-faint">{s.num}</span>
+                              <span className="flex-1">{s.label}</span>
+                              {times[s.id] && <span className="font-mono text-[12px] font-normal text-faint">{times[s.id]} min</span>}
+                            </a>
+                          </li>
+                        ))}
+                    </ol>
+                  </div>
                 ))}
-              </ol>
+              </div>
             </motion.nav>
           </motion.div>
         )}

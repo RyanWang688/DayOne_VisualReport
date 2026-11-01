@@ -1,5 +1,6 @@
 import { conclusions } from '../content/conclusions'
 import { Reveal } from '../components/ui'
+import { sectionById } from '../content/sections'
 
 export function Conclusions() {
   const cols = [
@@ -12,7 +13,7 @@ export function Conclusions() {
       <div className="container-x">
         <Reveal>
           <div className="flex items-center gap-3 font-mono text-[12px] uppercase tracking-[0.14em] text-white/60">
-            <span className="text-sun">08</span>
+            <span className="text-sun">{sectionById.conclusions.num}</span>
             <span className="h-px w-8 bg-white/30" />
             <span>Conclusions & key findings</span>
           </div>

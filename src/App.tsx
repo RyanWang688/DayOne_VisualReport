@@ -1,6 +1,7 @@
 import { MotionConfig } from 'motion/react'
 import { Nav } from './components/Nav'
-import { Overview } from './sections/Overview'
+import { Overview, ReportMap } from './sections/Overview'
+import { PartDivider } from './components/PartDivider'
 import { ResearchProcess } from './sections/ResearchProcess'
 import { Literature } from './sections/Literature'
 import { StudyDesign } from './sections/StudyDesign'
@@ -18,13 +19,19 @@ export default function App() {
     <MotionConfig reducedMotion="user">
       <Nav />
       <main id="main">
+        {/* Front matter */}
         <Overview />
+        <Abstract />
+        <ReportMap />
+
+        <PartDivider part="research" />
         <ResearchProcess />
         <Literature />
         <StudyDesign />
         <Challenges />
+
+        <PartDivider part="design" />
         <HMW />
-        <Abstract />
         <Outcome />
         <Conclusions />
         <References />

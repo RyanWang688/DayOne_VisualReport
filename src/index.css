@@ -8,7 +8,7 @@
   --color-ink: #0e1422;
   --color-ink-2: #2a3142;
   --color-muted: #5d6576;
-  --color-faint: #8a90a0;
+  --color-faint: #687080; /* ≥4.5:1 on canvas for small labels */
   --color-blue: #1f4fd8;
   --color-blue-deep: #1238a8;
   --color-blue-soft: #e9eefc;

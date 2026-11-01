@@ -125,7 +125,7 @@ export function Expandable({ label, children, tone = 'light', defaultOpen = fals
 }
 
 export function SourceTag({ children, tone = 'light' }: { children: ReactNode; tone?: 'light' | 'dark' }) {
-  return <p className={`font-mono text-[11px] uppercase tracking-[0.12em] ${tone === 'dark' ? 'text-white/45' : 'text-faint'}`}>Source · {children}</p>
+  return <p className={`font-mono text-[12px] uppercase tracking-[0.12em] ${tone === 'dark' ? 'text-white/45' : 'text-faint'}`}>Source · {children}</p>
 }
 
 export function PhoneFrame({ src, alt, className = '' }: { src: string; alt: string; className?: string }) {

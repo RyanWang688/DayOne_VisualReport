@@ -10,7 +10,7 @@ _Last updated: 2 Nov 2026_
 | Browser console | No errors |
 | Desktop 1440 × 900 | All sections checked |
 | Mobile 375 × 812 | No horizontal overflow; menu, filters and anchors work |
-| GitHub Pages workflow | `.github/workflows/deploy.yml` added — needs **Settings → Pages → Source: GitHub Actions** once |
+| GitHub Pages workflow | `.github/workflows/deploy.yml` — CI build passes; Pages source set to GitHub Actions |
 
 ## Sections
 

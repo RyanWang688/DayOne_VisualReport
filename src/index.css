@@ -1,0 +1,99 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-paper: #ffffff;
+  --color-canvas: #f7f6f2;
+  --color-sand: #efede6;
+  --color-line: #e3e0d8;
+  --color-ink: #0e1422;
+  --color-ink-2: #2a3142;
+  --color-muted: #5d6576;
+  --color-faint: #8a90a0;
+  --color-blue: #1f4fd8;
+  --color-blue-deep: #1238a8;
+  --color-blue-soft: #e9eefc;
+  --color-blue-ink: #0b1b4d;
+  --color-sun: #f4b63f;
+  --color-sun-soft: #fdf1d6;
+
+  --font-display: 'Inter Tight', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --font-serif: 'Newsreader', Georgia, serif;
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 72px;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-canvas text-ink font-sans antialiased;
+    font-size: 17px;
+    line-height: 1.6;
+    text-rendering: optimizeLegibility;
+  }
+  /* Let grid items shrink below their min-content (horizontal scrollers inside grids). */
+  .grid > * {
+    min-width: 0;
+  }
+  ::selection {
+    background: var(--color-sun-soft);
+    color: var(--color-ink);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-blue);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+  }
+}
+
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-[1240px] px-4 sm:px-8 lg:px-12;
+  }
+  .eyebrow {
+    @apply font-mono text-[12px] uppercase tracking-[0.14em] text-muted;
+  }
+  .hairline {
+    @apply border-line;
+  }
+  .mark-sun {
+    background-image: linear-gradient(transparent 62%, var(--color-sun) 62%, var(--color-sun) 92%, transparent 92%);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+  }
+  .pill-p {
+    @apply inline-flex items-center rounded-[3px] border border-line bg-paper px-1.5 py-px font-mono text-[11px] font-medium text-ink-2;
+  }
+}
+
+/* Gentle CSS-only scroll cue */
+@keyframes cue {
+  0% { transform: translateY(-100%); }
+  60%, 100% { transform: translateY(200%); }
+}
+.scroll-cue::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--color-blue);
+  animation: cue 2.2s var(--ease-out-soft) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .scroll-cue::after { animation: none; transform: none; }
+  *, *::before, *::after { transition-duration: 0.01ms !important; }
+}

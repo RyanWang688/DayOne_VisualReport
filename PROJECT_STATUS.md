@@ -10,7 +10,7 @@ _Last updated: 2 Nov 2026_
 | Browser console | No errors |
 | Desktop 1440 × 900 | All sections checked |
 | Mobile 375 × 812 | No horizontal overflow; menu, filters and anchors work |
-| GitHub Pages workflow | `.github/workflows/deploy.yml` — CI build passes; deploy waits on **Settings → Pages → Source: GitHub Actions** |
+| GitHub Pages workflow | `.github/workflows/deploy.yml` — live at https://ryanwang688.github.io/DayOne_VisualReport/ |
 
 ## Sections
 
@@ -32,7 +32,7 @@ _Last updated: 2 Nov 2026_
 
 - Scroll progress bar, active-section indicator (header + desktop side rail), mobile section menu
 - Research Process: sticky stage index, scroll-filled progress line, active stage highlight, expandable details
-- Affinity map: filter by cluster, trace a participant, hover/focus to highlight related notes, expand clusters; stacked fallback on mobile
+- Affinity board: 142 sticky notes drop as a pile, scatter as raw codes, then settle into 10 clusters (Raw notes / Grouped / Replay); hover a note to preview it and highlight the same participant; trace P1–P8; click a cluster to open a pin-board viewer (← → between clusters, Esc to close); responsive 2/3/5-column layout
 - Challenges: sticky theme index, expandable evidence with participant badges
 - HMW: scroll-driven word reveal, background transition, animated emphasis on key words
 - Outcome: hover a row to trace finding → opportunity → feature

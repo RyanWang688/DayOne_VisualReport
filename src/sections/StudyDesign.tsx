@@ -1,7 +1,7 @@
 import { study } from '../content/study'
 import { totalNotes, clusters } from '../content/affinity'
 import { Reveal, SectionHeader } from '../components/ui'
-import { AffinityMap } from '../components/AffinityMap'
+import { AffinityBoard } from '../components/AffinityBoard'
 import { ShieldCheck } from 'lucide-react'
 
 export function StudyDesign() {
@@ -70,11 +70,11 @@ export function StudyDesign() {
                 </h3>
               </div>
               <p className="max-w-[44ch] text-[15px] text-muted">
-                Every note is a real code from our coding table. Filter by cluster or participant, hover a note to trace the same participant across clusters, and open a cluster to read all its evidence.
+                Every sticky note is a real code from our coding table. Watch the raw codes settle into clusters, trace a participant across the board, and open any cluster to read its notes.
               </p>
             </div>
           </Reveal>
-          <AffinityMap />
+          <AffinityBoard />
         </div>
       </div>
     </section>

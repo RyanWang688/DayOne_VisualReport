@@ -68,7 +68,7 @@ public/assets/
   prototype/   Screens captured from the Day One prototype
 src/
   content/     Editable content (see table above)
-  components/  Nav, AffinityMap, shared UI (Reveal, Expandable, Cite, Ph…)
+  components/  Nav, AffinityBoard + ClusterViewer, shared UI (Reveal, Expandable, Cite, Ph…)
   hooks/       Active section / active step observers
   sections/    One component per report section
 ```
@@ -81,7 +81,7 @@ React 19 · Vite · TypeScript · Tailwind CSS 4 · Motion for React · Lucide R
 
 - Skip link, landmark sections, keyboard-operable menus, filters and disclosures (`aria-expanded`, `aria-pressed`, `aria-current`).
 - Visible focus rings; affinity notes are focusable and show related notes on focus as well as hover.
-- `prefers-reduced-motion` is respected: Motion runs with `reducedMotion="user"`, the HMW scroll sequence becomes a static composition, and CSS animations stop.
+- `prefers-reduced-motion` is respected: Motion runs with `reducedMotion="user"`, the affinity board starts already grouped, the HMW scroll sequence becomes a static composition, and CSS animations stop.
 
 ## Content integrity
 

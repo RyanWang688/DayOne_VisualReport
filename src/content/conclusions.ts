@@ -9,7 +9,7 @@ export const conclusions = {
   practicalExperience:
     'Mistakes and difficulties are part of the learning process. Guidance from others — peers, the university, people nearby — helps bridge the gap between knowing information and local experience.',
   limitations: [
-    'Small sample of eight, mostly Chinese students (6 China, 1 Malaysia, 1 Indonesia); all speak Chinese. Findings cannot be generalised to all international students.',
+    'Small sample of eight, mostly Chinese students, with participants from Malaysia and Indonesia; all speak Chinese. Findings cannot be generalised to all international students.',
     'Interviews relied on participants’ recollections; behaviour in real settings was not observed.',
     'Interviews were conducted in Chinese and translated with tools before being checked by the researchers.',
   ],

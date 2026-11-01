@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="flag-my" viewBox="0 0 640 480">
+  <!-- Malaysia (Jalur Gemilang), simplified 4:3 crop drawn for this project -->
+  <path fill="#cc0001" d="M0 0h640v34.786H0z"/>
+  <path fill="#fff" d="M0 34.286h640v34.786H0z"/>
+  <path fill="#cc0001" d="M0 68.571h640v34.786H0z"/>
+  <path fill="#fff" d="M0 102.857h640v34.786H0z"/>
+  <path fill="#cc0001" d="M0 137.143h640v34.786H0z"/>
+  <path fill="#fff" d="M0 171.429h640v34.786H0z"/>
+  <path fill="#cc0001" d="M0 205.714h640v34.786H0z"/>
+  <path fill="#fff" d="M0 240h640v34.786H0z"/>
+  <path fill="#cc0001" d="M0 274.286h640v34.786H0z"/>
+  <path fill="#fff" d="M0 308.571h640v34.786H0z"/>
+  <path fill="#cc0001" d="M0 342.857h640v34.786H0z"/>
+  <path fill="#fff" d="M0 377.143h640v34.786H0z"/>
+  <path fill="#cc0001" d="M0 411.429h640v34.786H0z"/>
+  <path fill="#fff" d="M0 445.714h640v34.786H0z"/>
+  <path fill="#010066" d="M0 0h320v274.286H0z"/>
+  <circle cx="122" cy="137" r="96" fill="#fc0"/>
+  <circle cx="148" cy="137" r="82" fill="#010066"/>
+  <path fill="#fc0" d="M252,77L257.56,112.63L278.03,82.94L267.59,117.45L298.91,99.59L274.52,126.15L310.5,123.65L277,137L310.5,150.35L274.52,147.85L298.91,174.41L267.59,156.55L278.03,191.06L257.56,161.37L252,197L246.44,161.37L225.97,191.06L236.41,156.55L205.09,174.41L229.48,147.85L193.5,150.35L227,137L193.5,123.65L229.48,126.15L205.09,99.59L236.41,117.45L225.97,82.94L246.44,112.63z"/>
+</svg>

@@ -1,3 +1,4 @@
+import { motion } from 'motion/react'
 import { litContext, litFraming, litInsights, type LitInsight } from '../content/literature'
 import { refByKey } from '../content/references'
 import { Cite, Expandable, Reveal, SectionHeader } from '../components/ui'
@@ -110,7 +111,19 @@ function Diagram({ kind }: { kind: LitInsight['diagram'] }) {
         <rect x="202" y="50" width="110" height="80" fill="var(--color-blue)" />
         <path d="M232 92l14 14 30-30" stroke="#fff" strokeWidth="5" fill="none" />
         <text x="257" y="150" textAnchor="middle" className="fill-[var(--color-muted)] font-mono text-[10px]">ACTION</text>
-        <path d="M124 90 H196" stroke="var(--color-ink)" strokeDasharray="4 5" />
+        <motion.rect
+          x="124"
+          y="89"
+          width="72"
+          height="2"
+          fill="var(--color-ink)"
+          opacity={0.5}
+          style={{ transformBox: 'fill-box', transformOrigin: 'left' }}
+          initial={{ scaleX: 0 }}
+          whileInView={{ scaleX: 1 }}
+          viewport={{ once: true, margin: '0px 0px -20% 0px' }}
+          transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+        />
         <rect x="140" y="72" width="40" height="36" fill="var(--color-sun-soft)" stroke="var(--color-sun)" />
         <text x="160" y="96" textAnchor="middle" className="fill-[var(--color-ink)] font-display text-[18px] font-bold">?</text>
       </svg>
@@ -119,12 +132,16 @@ function Diagram({ kind }: { kind: LitInsight['diagram'] }) {
     return (
       <svg viewBox="0 0 320 200" className="w-full" role="img" aria-label="A loop: try, mistake, feedback or help, try again">
         <circle cx="160" cy="100" r="66" fill="none" stroke="var(--color-line)" strokeWidth="2" />
-        <path d="M160 34 A66 66 0 0 1 226 100" fill="none" stroke="var(--color-blue)" strokeWidth="3" markerEnd="url(#ah)" />
-        <defs>
-          <marker id="ah" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-            <path d="M0 0L10 5L0 10z" fill="var(--color-blue)" />
-          </marker>
-        </defs>
+        <motion.path
+          d="M160 34 A66 66 0 1 1 94 100"
+          fill="none"
+          stroke="var(--color-blue)"
+          strokeWidth="3"
+          initial={{ pathLength: 0 }}
+          whileInView={{ pathLength: 1 }}
+          viewport={{ once: true, margin: '0px 0px -20% 0px' }}
+          transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+        />
         {[
           ['Try', 160, 26],
           ['Mistake', 252, 104],
@@ -150,7 +167,19 @@ function Diagram({ kind }: { kind: LitInsight['diagram'] }) {
               {l.toUpperCase()}
             </text>
             <rect x="88" y="2" width="224" height="14" fill="var(--color-paper)" stroke="var(--color-line)" />
-            <rect x="88" y="2" width={w * 0.97} height="14" fill={i === 0 ? 'var(--color-blue)' : 'var(--color-blue)'} opacity={i === 0 ? 1 : 0.45} />
+            <motion.rect
+              x="88"
+              y="2"
+              width={w * 0.97}
+              height="14"
+              fill="var(--color-blue)"
+              opacity={i === 0 ? 1 : 0.45}
+              style={{ transformBox: 'fill-box', transformOrigin: 'left' }}
+              initial={{ scaleX: 0 }}
+              whileInView={{ scaleX: 1 }}
+              viewport={{ once: true, margin: '0px 0px -20% 0px' }}
+              transition={{ duration: 0.9, delay: 0.2 + i * 0.15, ease: [0.22, 1, 0.36, 1] }}
+            />
           </g>
         )
       })}

@@ -76,7 +76,28 @@ const table: [string, ParticipantId, string][] = [
 ]
 
 export type AffinityNote = { id: string; cluster: number; participant: ParticipantId; text: string }
-export type AffinityCluster = { index: number; title: string; notes: AffinityNote[]; participants: ParticipantId[] }
+export type AffinityCluster = {
+  index: number
+  title: string
+  notes: AffinityNote[]
+  participants: ParticipantId[]
+  /** Sticky-note fill and a darker ink tone for labels. */
+  color: { note: string; ink: string }
+}
+
+/** One muted colour per cluster, in table order. */
+const palette = [
+  { note: '#fbe7a1', ink: '#8a6400' },
+  { note: '#f9d5bd', ink: '#a24d16' },
+  { note: '#f6cdd6', ink: '#a3324f' },
+  { note: '#ddd5f4', ink: '#5e45b0' },
+  { note: '#cfe0f8', ink: '#2453b5' },
+  { note: '#cdeadb', ink: '#24774a' },
+  { note: '#c9e7e9', ink: '#17707a' },
+  { note: '#ebe0c9', ink: '#7a5a22' },
+  { note: '#ecd3ea', ink: '#86367f' },
+  { note: '#e1ecc2', ink: '#56701a' },
+]
 
 export const participants: ParticipantId[] = ['P1', 'P2', 'P3', 'P4', 'P5', 'P6', 'P7', 'P8']
 
@@ -91,7 +112,7 @@ export const clusters: AffinityCluster[] = (() => {
         .filter(Boolean)
         .map((text, i) => ({ id: `${index}-${r}-${i}`, cluster: index, participant, text })),
     )
-    return { index, title, notes, participants: rows.map((r) => r[1]) }
+    return { index, title, notes, participants: rows.map((r) => r[1]), color: palette[index % palette.length] }
   })
 })()
 

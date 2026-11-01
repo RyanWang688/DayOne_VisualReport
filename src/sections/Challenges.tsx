@@ -37,8 +37,19 @@ export function Challenges() {
         </nav>
 
         {challenges.map((c, i) => (
-          <Chapter key={c.num} c={c} index={i} />
+          <Chapter key={c.num} c={c} index={i} active={active === i} />
         ))}
+
+        <Reveal>
+          <a href="#hmw" className="group flex flex-wrap items-baseline justify-between gap-4 border-t-2 border-ink pt-6">
+            <span className="font-display text-[clamp(1.4rem,2.6vw,2rem)] font-bold">
+              Four themes. <span className="text-blue">One design question.</span>
+            </span>
+            <span className="font-mono text-[12px] uppercase tracking-[0.14em] text-muted transition-colors group-hover:text-blue">
+              Continue ↓
+            </span>
+          </a>
+        </Reveal>
       </div>
     </section>
   )
@@ -67,14 +78,17 @@ function JourneyStrip() {
   )
 }
 
-function Chapter({ c, index }: { c: Challenge; index: number }) {
+function Chapter({ c, index, active }: { c: Challenge; index: number; active: boolean }) {
   return (
     <article id={`challenge-${index}`} data-index={index} className="scroll-mt-32 border-t border-line py-16 md:py-24" aria-labelledby={`ch-title-${index}`}>
       <div className="grid gap-10 lg:grid-cols-12">
         <div className="lg:col-span-5">
           <div className="lg:sticky lg:top-36">
             <Reveal>
-              <p className="font-display text-[clamp(5rem,10vw,8.5rem)] font-extrabold leading-[0.8] tracking-[-0.06em] text-blue-soft" aria-hidden>
+              <p
+                className={`font-display text-[clamp(5rem,10vw,8.5rem)] font-extrabold leading-[0.8] tracking-[-0.06em] transition-colors duration-500 ${active ? 'text-blue' : 'text-blue-soft'}`}
+                aria-hidden
+              >
                 {c.num}
               </p>
               <p className="eyebrow mt-4 text-blue">Theme {index + 1}</p>
@@ -103,7 +117,7 @@ function Chapter({ c, index }: { c: Challenge; index: number }) {
             <div className="grid gap-4 sm:grid-cols-2">
               {c.quotes.map((q, i) => (
                 <Reveal key={q.text} delay={i * 0.05} className={c.quotes.length % 2 && i === c.quotes.length - 1 ? 'sm:col-span-2' : ''}>
-                  <figure className="h-full border-l-2 border-blue bg-canvas p-5">
+                  <figure className="lift h-full border-l-2 border-blue bg-canvas p-5">
                     <QuoteIcon size={18} className="text-blue" aria-hidden />
                     <blockquote className="mt-2 font-serif text-[20px] italic leading-snug text-ink">“{q.text}”</blockquote>
                     <figcaption className="mt-3 flex flex-wrap items-center gap-2 text-[13px] text-muted">

@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { motion, useScroll, useSpring } from 'motion/react'
+import { AnimatePresence, motion, useScroll, useSpring } from 'motion/react'
 import { processStages, type ProcessStage } from '../content/process'
 import { clusters } from '../content/affinity'
 import { useActiveIndex } from '../hooks/useActiveSection'
@@ -49,7 +49,19 @@ export function ResearchProcess() {
                   </li>
                 ))}
               </ol>
-              <p className="mt-6 hidden max-w-[32ch] text-[15px] text-muted lg:block">Research → Define → Ideate → Prototype → Evaluate, with evaluation feeding the next iteration.</p>
+              <div className="mt-8 hidden lg:block" aria-live="polite">
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.div
+                    key={active}
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+                  >
+                    <Evidence stage={processStages[active]} />
+                  </motion.div>
+                </AnimatePresence>
+              </div>
             </div>
           </nav>
 
@@ -68,7 +80,11 @@ function StagePanel({ stage, index, active }: { stage: ProcessStage; index: numb
   return (
     <article id={`stage-${index}`} data-index={index} className="scroll-mt-28" aria-labelledby={`stage-title-${index}`}>
       <Reveal>
-        <div className={`border bg-paper transition-shadow duration-500 ${active ? 'border-ink/20 shadow-[0_24px_48px_-32px_rgba(14,20,34,0.35)]' : 'border-line'}`}>
+        <div
+          className={`border bg-paper transition-[opacity,box-shadow,border-color] duration-500 ${
+            active ? 'border-ink/20 shadow-[0_24px_48px_-32px_rgba(14,20,34,0.35)]' : 'border-line lg:opacity-55'
+          }`}
+        >
           <div className="border-b border-line bg-canvas/60 p-5 sm:p-8">
             <StageVisual stage={stage} />
           </div>
@@ -87,6 +103,9 @@ function StagePanel({ stage, index, active }: { stage: ProcessStage; index: numb
                 </li>
               ))}
             </ul>
+            <div className="mt-6 lg:hidden">
+              <Evidence stage={stage} />
+            </div>
             <div className="mt-6">
               <Expandable label="Details">
                 <ul className="space-y-2 text-[15px] text-muted">
@@ -106,6 +125,29 @@ function StagePanel({ stage, index, active }: { stage: ProcessStage; index: numb
         </div>
       </Reveal>
     </article>
+  )
+}
+
+/** Key evidence for a stage — shown in the sticky column on desktop, inline on mobile. */
+function Evidence({ stage }: { stage: ProcessStage }) {
+  return (
+    <div className="border-t-2 border-ink pt-4">
+      <p className="eyebrow">Evidence · {stage.title}</p>
+      <dl className="mt-3 space-y-2.5">
+        {stage.evidence.map((e) => (
+          <div key={e.label} className="grid grid-cols-[64px_1fr] items-baseline gap-3">
+            <dt className="font-display text-2xl font-bold leading-none text-blue">{e.value}</dt>
+            <dd className="text-[14px] leading-snug text-muted">{e.label}</dd>
+          </div>
+        ))}
+      </dl>
+      {stage.anchor && (
+        <figure className="mt-4 border-l-2 border-sun pl-3">
+          <blockquote className="font-serif text-[17px] italic leading-snug text-ink">“{stage.anchor.text}”</blockquote>
+          <figcaption className="mt-1 font-mono text-[11px] text-faint">{stage.anchor.by}</figcaption>
+        </figure>
+      )}
+    </div>
   )
 }
 

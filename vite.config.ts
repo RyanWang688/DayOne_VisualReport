@@ -7,4 +7,6 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig({
   base: './',
   plugins: [react(), tailwindcss()],
+  // One ~500 kB bundle (~158 kB gzip) is fine for a single-page report.
+  build: { chunkSizeWarningLimit: 600 },
 })

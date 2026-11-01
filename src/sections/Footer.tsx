@@ -22,8 +22,9 @@ export function Footer() {
           </p>
           <p>{meta.authors.map((a) => a.name).join(' & ')}</p>
         </div>
-        <a href="#overview" className="inline-flex items-center gap-2 self-start font-mono text-[12px] uppercase tracking-[0.14em] text-blue hover:underline md:self-auto">
-          <ArrowUp size={14} aria-hidden /> Back to top
+        <a href="#overview" className="group inline-flex items-center gap-2 self-start font-mono text-[12px] uppercase tracking-[0.14em] text-blue md:self-auto">
+          <ArrowUp size={14} aria-hidden className="transition-transform duration-200 group-hover:-translate-y-0.5" />
+          <span className="link-grow">Back to top</span>
         </a>
       </div>
     </footer>

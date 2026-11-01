@@ -1,6 +1,6 @@
 import { study } from '../content/study'
 import { totalNotes, clusters } from '../content/affinity'
-import { Reveal, SectionHeader } from '../components/ui'
+import { Reveal, SectionHeader, asset } from '../components/ui'
 import { AffinityBoard } from '../components/AffinityBoard'
 import { ShieldCheck } from 'lucide-react'
 
@@ -12,31 +12,47 @@ export function StudyDesign() {
 
         <div className="grid gap-12 md:grid-cols-12">
           <Reveal className="md:col-span-5">
-            <dl className="grid grid-cols-2 border-t-2 border-ink">
+            <dl className="grid grid-cols-3 border-y-2 border-ink">
               {study.facts.map((f, i) => (
-                <div key={f.label} className={`border-b border-line py-5 ${i % 2 ? 'pl-5' : 'border-r pr-5'}`}>
+                <div key={f.label} className={`py-5 ${i ? 'border-l border-line pl-4 sm:pl-5' : 'pr-4'}`}>
                   <dt className="sr-only">{f.label}</dt>
                   <dd>
-                    <span className="block font-display text-4xl font-bold">{f.value}</span>
-                    <span className="mt-1 block text-[14px] text-muted">{f.label}</span>
+                    <span className="block font-display text-[clamp(1.8rem,3.4vw,2.4rem)] font-bold leading-none">{f.value}</span>
+                    <span className="mt-2 block text-[13px] text-muted">{f.label}</span>
                   </dd>
                 </div>
               ))}
             </dl>
+
             <div className="mt-8">
-              <p className="eyebrow">Participants by country of origin</p>
-              <div className="mt-4 flex h-10 w-full overflow-hidden" role="img" aria-label="6 from China, 1 from Malaysia, 1 from Indonesia">
-                {study.origins.map((o, i) => (
-                  <div key={o.country} style={{ flex: o.count }} className={`flex items-center px-3 text-[13px] font-medium ${i === 0 ? 'bg-blue text-white' : i === 1 ? 'bg-blue-soft text-blue-ink' : 'bg-sun-soft text-ink'} ${i ? 'border-l-2 border-canvas' : ''}`}>
-                    {o.count}
+              <p className="eyebrow">Study level</p>
+              <div className="mt-3 flex h-11 w-full gap-[3px]" role="img" aria-label={study.levels.map((l) => `${l.count} ${l.label}`).join(', ')}>
+                {study.levels.map((l, i) => (
+                  <div
+                    key={l.label}
+                    style={{ flex: l.count }}
+                    className={`flex items-center justify-between px-3 font-display text-lg font-bold ${['bg-blue-soft text-blue-ink', 'bg-blue/70 text-white', 'bg-blue text-white'][i]}`}
+                  >
+                    {l.count}
                   </div>
                 ))}
               </div>
-              <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-[14px] text-muted">
-                {study.origins.map((o, i) => (
-                  <li key={o.country} className="flex items-center gap-2">
-                    <span aria-hidden className={`h-2.5 w-2.5 ${i === 0 ? 'bg-blue' : i === 1 ? 'bg-blue-soft ring-1 ring-blue/30' : 'bg-sun-soft ring-1 ring-sun'}`} />
-                    {o.country} · {o.count}
+              <ul className="mt-2 flex gap-[3px] text-[13px] leading-tight text-muted" aria-hidden>
+                {study.levels.map((l) => (
+                  <li key={l.label} style={{ flex: l.count }} className="min-w-0 px-1">
+                    {l.label}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="mt-8">
+              <p className="eyebrow">Countries of origin</p>
+              <ul className="mt-3 flex flex-wrap gap-2">
+                {study.origins.map((o) => (
+                  <li key={o.country} className="flex items-center gap-2 border border-line bg-paper py-1.5 pl-1.5 pr-3 text-[14px] text-ink-2">
+                    <img src={asset(o.flag)} alt="" className="h-[18px] w-6 object-cover shadow-[0_0_0_1px_rgba(14,20,34,0.08)]" />
+                    {o.country}
                   </li>
                 ))}
               </ul>

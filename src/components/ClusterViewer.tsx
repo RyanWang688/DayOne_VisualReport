@@ -64,8 +64,9 @@ export function ClusterViewer({ index, onClose, onNavigate }: { index: number | 
           >
             <header className="flex flex-wrap items-start justify-between gap-4 border-b border-line bg-paper p-4 sm:p-6">
               <div className="min-w-0">
-                <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-blue">
-                  Cluster {String(c.index + 1).padStart(2, '0')} of {clusters.length}
+                <p className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.12em]" style={{ color: c.color.ink }}>
+                  <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: c.color.ink }} aria-hidden />
+                  Theme {String(c.index + 1).padStart(2, '0')} of {clusters.length}
                 </p>
                 <h3 id="cv-title" className="mt-1 text-[clamp(1.4rem,3vw,2.2rem)] font-bold">
                   {c.title}
@@ -112,15 +113,16 @@ export function ClusterViewer({ index, onClose, onNavigate }: { index: number | 
                       whileHover={{ rotate: 0, scale: 1.03, transition: { duration: 0.15 } }}
                       onMouseEnter={() => setHover(n.participant)}
                       onMouseLeave={() => setHover(null)}
-                      className={`relative flex min-h-[150px] flex-col justify-between p-4 pt-6 shadow-[0_2px_3px_rgba(14,20,34,0.12),0_14px_22px_-14px_rgba(14,20,34,0.45)] ${
-                        on ? 'bg-[#fde08a]' : 'bg-[#fdeeb8]'
-                      }`}
+                      className="relative flex min-h-[150px] flex-col justify-between p-4 pt-6 shadow-[0_2px_3px_rgba(14,20,34,0.12),0_14px_22px_-14px_rgba(14,20,34,0.45)]"
+                      style={{ backgroundColor: c.color.note, boxShadow: on ? `0 0 0 2px ${c.color.ink}, 0 14px 22px -14px rgba(14,20,34,0.45)` : undefined }}
                     >
                       <span aria-hidden className="absolute -top-2 left-1/2 h-4 w-14 -translate-x-1/2 rotate-[-2deg] bg-white/60 shadow-sm" />
                       <p className="font-display text-[16px] font-medium leading-snug text-ink">{n.text}</p>
                       <p className="mt-4 flex items-center justify-between font-mono text-[11px] text-ink/50">
                         <span>Code</span>
-                        <span className={`rounded-[2px] px-1.5 py-px ${on ? 'bg-blue text-white' : 'bg-ink/10 text-ink/70'}`}>{n.participant}</span>
+                        <span className="rounded-[2px] px-1.5 py-px" style={on ? { backgroundColor: c.color.ink, color: '#fff' } : { backgroundColor: 'rgba(14,20,34,0.08)' }}>
+                          {n.participant}
+                        </span>
                       </p>
                     </motion.li>
                   )

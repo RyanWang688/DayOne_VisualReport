@@ -3,15 +3,21 @@ export const study = {
   approach:
     'A qualitative study using semi-structured interviews. Fixed questionnaires could not capture experiences that differ from person to person, so we used 11 core questions with open follow-up questions.',
   facts: [
-    { value: '8', label: 'International students interviewed' },
-    { value: '4 + 4', label: 'Undergraduate + postgraduate' },
-    { value: '20–30', label: 'Minutes per interview' },
-    { value: '11', label: 'Core interview questions' },
+    { value: '8', label: 'Students interviewed' },
+    { value: '20–30', label: 'Minutes each' },
+    { value: '11', label: 'Core questions' },
   ],
+  /** Study level of the 8 participants (confirmed by the team; matches the A0 poster). */
+  levels: [
+    { label: 'Foundation / Diploma', count: 2 },
+    { label: 'Bachelor’s', count: 2 },
+    { label: 'Master’s', count: 4 },
+  ],
+  /** Countries of origin — shown as flags only, without per-country counts. */
   origins: [
-    { country: 'China', count: 6 },
-    { country: 'Malaysia', count: 1 },
-    { country: 'Indonesia', count: 1 },
+    { country: 'China', flag: 'assets/flags/cn.svg' },
+    { country: 'Indonesia', flag: 'assets/flags/id.svg' },
+    { country: 'Malaysia', flag: 'assets/flags/my.svg' },
   ],
   steps: [
     {

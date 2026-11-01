@@ -1,4 +1,4 @@
-import { motion, useMotionValue, useReducedMotion, useSpring, useTransform } from 'motion/react'
+import { motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react'
 import { ArrowDown, ArrowUpRight, PlayCircle } from 'lucide-react'
 import { meta } from '../content/meta'
 import { isPlaceholder } from '../content/types'
@@ -24,6 +24,10 @@ function Hero() {
   const sy = useSpring(my, { stiffness: 80, damping: 20 })
   const back = { x: useTransform(sx, (v) => v * -10), y: useTransform(sy, (v) => v * -8) }
   const front = { x: useTransform(sx, (v) => v * 14), y: useTransform(sy, (v) => v * 10) }
+  // Composition drifts up and fades slightly as the page scrolls past the hero.
+  const { scrollY } = useScroll()
+  const driftY = useTransform(scrollY, [0, 700], [0, reduce ? 0 : -70])
+  const driftO = useTransform(scrollY, [0, 700], [1, reduce ? 1 : 0.4])
 
   const onMove = (e: React.PointerEvent<HTMLDivElement>) => {
     if (reduce || e.pointerType !== 'mouse') return
@@ -98,7 +102,8 @@ function Hero() {
       </div>
 
       {/* Interactive hero composition — real prototype screens */}
-      <div
+      <motion.div
+        style={{ y: driftY, opacity: driftO }}
         className="relative mx-auto h-[440px] w-full max-w-[460px] sm:h-[540px] lg:col-span-5 lg:h-[620px]"
         onPointerMove={onMove}
         onPointerLeave={() => {
@@ -125,7 +130,7 @@ function Hero() {
           </motion.div>
         </motion.div>
         <span className="absolute -bottom-2 left-6 font-mono text-[11px] text-faint">Prototype · Healthcare Journey / Short Trip / Explore</span>
-      </div>
+      </motion.div>
 
       <a href="#title-block" className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-faint hover:text-blue md:flex" aria-label="Scroll to title block">
         <span className="font-mono text-[11px] uppercase tracking-[0.16em]">Scroll</span>
@@ -175,8 +180,9 @@ function TitleBlock() {
             <p className="eyebrow">Title block</p>
             <p className="mt-3 font-display text-2xl font-bold leading-tight">{meta.reportTitle}</p>
             <p className="mt-3 text-[15px] text-muted">{meta.title}</p>
-            <a href="#abstract" className="mt-5 inline-flex items-center gap-1 text-[15px] font-medium text-blue hover:underline">
-              Read the abstract <ArrowUpRight size={16} aria-hidden />
+            <a href="#abstract" className="group mt-5 inline-flex items-center gap-1 text-[15px] font-medium text-blue">
+              <span className="link-grow">Read the abstract</span>
+              <ArrowUpRight size={16} aria-hidden className="transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
             </a>
           </div>
           <dl className="md:col-span-8 md:pl-8">

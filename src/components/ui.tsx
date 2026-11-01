@@ -130,7 +130,9 @@ export function SourceTag({ children, tone = 'light' }: { children: ReactNode; t
 
 export function PhoneFrame({ src, alt, className = '' }: { src: string; alt: string; className?: string }) {
   return (
-    <div className={`overflow-hidden rounded-[28px] border-[6px] border-ink bg-ink shadow-[0_30px_60px_-30px_rgba(14,20,34,0.45)] ${className}`}>
+    <div
+      className={`overflow-hidden rounded-[28px] border-[6px] border-ink bg-ink shadow-[0_30px_60px_-30px_rgba(14,20,34,0.45)] transition-transform duration-300 ease-out group-hover:-translate-y-1 ${className}`}
+    >
       <img src={asset(src)} alt={alt} loading="lazy" decoding="async" className="block h-full w-full rounded-[22px] object-cover object-top" />
     </div>
   )

@@ -67,7 +67,7 @@ export function Outcome() {
           <div className="-mx-4 mt-10 flex snap-x snap-mandatory gap-6 overflow-x-auto px-4 pb-6 sm:-mx-8 sm:px-8 lg:-mx-12 lg:px-12" tabIndex={0} aria-label="Prototype screens, scroll horizontally">
             {prototypeScreens.map((s, i) => (
               <Reveal key={s.src} delay={i * 0.05} className="w-[220px] shrink-0 snap-start sm:w-[250px]">
-                <figure>
+                <figure className="group">
                   <PhoneFrame src={s.src} alt={`Day One prototype: ${s.title}`} className="aspect-[1/2]" />
                   <figcaption className="mt-4">
                     <p className="font-semibold">{s.title}</p>
@@ -101,7 +101,7 @@ export function Outcome() {
             <div className="md:col-span-8">
               <ul className="grid gap-px border border-line bg-line sm:grid-cols-2">
                 {evaluation.findings.map((f, i) => (
-                  <Reveal as="li" key={f.title} delay={i * 0.05} className="bg-paper p-5">
+                  <Reveal as="li" key={f.title} delay={i * 0.05} className="lift relative bg-paper p-5 hover:z-10">
                     <p className="font-display text-4xl font-bold text-blue">{f.fraction}</p>
                     <p className="mt-2 font-semibold leading-snug">{f.title}</p>
                     <p className="mt-1 text-[14px] text-muted">{f.text}</p>

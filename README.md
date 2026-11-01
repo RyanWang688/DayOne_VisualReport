@@ -43,6 +43,7 @@ All academic content lives in `src/content/` — no component code needs to chan
 | `study.ts` | 03 Study Design facts, steps and ethics |
 | `affinity.ts` | 03 Affinity map — the coding table, verbatim (cluster, participant, codes) |
 | `challenges.ts` | 04 Challenges — four themes, sub-findings, quotes, scenarios, implications |
+| `hmw.ts` | 05 HMW — how each theme (T1–T4) leads to a keyword in the question |
 | `abstract.ts` | 06 Abstract (~100 words) and its draft/approved status |
 | `outcome.ts` | 07 Finding → opportunity → feature map, prototype screens, usability evaluation |
 | `conclusions.ts` | 08 Conclusions, limitations, implications, future work |

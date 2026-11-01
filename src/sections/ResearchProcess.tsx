@@ -24,7 +24,7 @@ export function ResearchProcess() {
         <div ref={ref} className="relative grid gap-10 lg:grid-cols-12">
           {/* Sticky stage index with scroll-driven progress */}
           <nav aria-label="Process stages" className="lg:col-span-4">
-            <div className="lg:sticky lg:top-28">
+            <div className="lg:sticky lg:top-24">
               <ol className="relative flex gap-2 overflow-x-auto pb-2 lg:flex-col lg:gap-0 lg:overflow-visible lg:pb-0 lg:pl-6">
                 <span aria-hidden className="absolute bottom-3 left-[3px] top-3 hidden w-px bg-line lg:block" />
                 <motion.span aria-hidden className="absolute left-[3px] top-3 hidden w-px origin-top bg-blue lg:block" style={{ scaleY: fill, bottom: 12 }} />
@@ -33,23 +33,23 @@ export function ResearchProcess() {
                     <a
                       href={`#stage-${i}`}
                       aria-current={active === i ? 'step' : undefined}
-                      className={`relative flex items-baseline gap-3 rounded-[3px] border px-3 py-2 transition-colors duration-300 lg:border-0 lg:px-0 lg:py-3 ${
+                      className={`relative flex items-baseline gap-3 rounded-[3px] border px-3 py-2 transition-colors duration-300 lg:border-0 lg:px-0 lg:py-1.5 ${
                         active === i ? 'border-blue bg-blue-soft text-ink lg:bg-transparent' : 'border-line text-faint hover:text-ink'
                       }`}
                     >
                       <span
                         aria-hidden
-                        className={`absolute -left-[27px] top-[18px] hidden h-[9px] w-[9px] rounded-full border-2 transition-colors lg:block ${
+                        className={`absolute -left-[27px] top-1/2 hidden h-[9px] w-[9px] -translate-y-1/2 rounded-full border-2 transition-colors lg:block ${
                           active >= i ? 'border-blue bg-blue' : 'border-line bg-canvas'
                         }`}
                       />
                       <span className="font-mono text-[12px]">0{i + 1}</span>
-                      <span className={`font-display font-bold tracking-tight transition-all duration-300 lg:text-[clamp(1.6rem,2.4vw,2.2rem)] ${active === i ? 'text-ink' : ''}`}>{s.title}</span>
+                      <span className={`font-display font-bold tracking-tight lg:text-[clamp(1.3rem,1.7vw,1.65rem)] ${active === i ? 'text-ink' : ''}`}>{s.title}</span>
                     </a>
                   </li>
                 ))}
               </ol>
-              <div className="mt-8 hidden lg:block" aria-live="polite">
+              <div className="mt-6 hidden lg:block [@media(max-height:560px)]:hidden" aria-live="polite">
                 <AnimatePresence mode="wait" initial={false}>
                   <motion.div
                     key={active}
@@ -96,13 +96,6 @@ function StagePanel({ stage, index, active }: { stage: ProcessStage; index: numb
               {stage.title}
             </h3>
             <p className="mt-3 max-w-[60ch] text-ink-2">{stage.summary}</p>
-            <ul className="mt-5 flex flex-wrap gap-2">
-              {stage.outputs.map((o) => (
-                <li key={o} className="rounded-[3px] border border-line px-2.5 py-1 text-[13px] text-ink-2">
-                  {o}
-                </li>
-              ))}
-            </ul>
             <div className="mt-6 lg:hidden">
               <Evidence stage={stage} />
             </div>
@@ -131,19 +124,19 @@ function StagePanel({ stage, index, active }: { stage: ProcessStage; index: numb
 /** Key evidence for a stage — shown in the sticky column on desktop, inline on mobile. */
 function Evidence({ stage }: { stage: ProcessStage }) {
   return (
-    <div className="border-t-2 border-ink pt-4">
+    <div className="border-t-2 border-ink pt-3">
       <p className="eyebrow">Evidence · {stage.title}</p>
-      <dl className="mt-3 space-y-2.5">
+      <dl className="mt-3 grid grid-cols-3 gap-3">
         {stage.evidence.map((e) => (
-          <div key={e.label} className="grid grid-cols-[64px_1fr] items-baseline gap-3">
-            <dt className="font-display text-2xl font-bold leading-none text-blue">{e.value}</dt>
-            <dd className="text-[14px] leading-snug text-muted">{e.label}</dd>
+          <div key={e.label}>
+            <dt className="font-display text-[1.6rem] font-bold leading-none text-blue">{e.value}</dt>
+            <dd className="mt-1 text-[13px] leading-tight text-muted">{e.label}</dd>
           </div>
         ))}
       </dl>
       {stage.anchor && (
-        <figure className="mt-4 border-l-2 border-sun pl-3">
-          <blockquote className="font-serif text-[17px] italic leading-snug text-ink">“{stage.anchor.text}”</blockquote>
+        <figure className="mt-4 border-l-2 border-sun pl-3 [@media(max-height:760px)]:lg:hidden">
+          <blockquote className="font-serif text-[16px] italic leading-snug text-ink">“{stage.anchor.text}”</blockquote>
           <figcaption className="mt-1 font-mono text-[11px] text-faint">{stage.anchor.by}</figcaption>
         </figure>
       )}
@@ -156,7 +149,7 @@ function StageVisual({ stage }: { stage: ProcessStage }) {
   if (v.kind === 'image')
     return (
       <figure>
-        <img src={asset(v.src)} alt={v.alt} loading="lazy" className="mx-auto max-h-[380px] w-auto object-contain" />
+        <img src={asset(v.src)} alt={v.alt} loading="lazy" className="mx-auto max-h-[300px] w-auto object-contain" />
         <figcaption className="mt-3 font-mono text-[11px] text-faint">{v.caption}</figcaption>
       </figure>
     )
@@ -187,7 +180,11 @@ function StageVisual({ stage }: { stage: ProcessStage }) {
       <div aria-label="Ten affinity clusters synthesised into four themes" className="grid gap-4 sm:grid-cols-[1fr_auto_auto] sm:items-center">
         <ul className="flex flex-wrap gap-1.5">
           {clusters.map((c) => (
-            <li key={c.title} className="rotate-[-0.6deg] bg-sun-soft px-2 py-1 text-[12px] text-ink-2 shadow-[1px_1px_0_rgba(0,0,0,0.06)] odd:rotate-[0.8deg]">
+            <li
+              key={c.title}
+              className="rotate-[-0.6deg] px-1.5 py-0.5 text-[11px] leading-tight text-ink-2 shadow-[1px_1px_0_rgba(0,0,0,0.06)] odd:rotate-[0.8deg] sm:px-2 sm:py-1 sm:text-[12px]"
+              style={{ backgroundColor: c.color.note }}
+            >
               {c.title}
             </li>
           ))}
@@ -206,7 +203,7 @@ function StageVisual({ stage }: { stage: ProcessStage }) {
   return (
     <ol aria-label="Six feature concepts" className="grid grid-cols-2 gap-px border border-line bg-line sm:grid-cols-3">
       {stage.outputs.map((o, i) => (
-        <li key={o} className="flex min-h-[86px] flex-col justify-between bg-paper p-3">
+        <li key={o} className="flex min-h-[72px] flex-col justify-between bg-paper p-3">
           <span className="font-mono text-[11px] text-blue">0{i + 1}</span>
           <span className="font-display text-[15px] font-semibold leading-tight">{o}</span>
         </li>

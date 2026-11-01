@@ -4,6 +4,7 @@
  * placeholder on the site. Replace it with a plain string once confirmed.
  */
 import { placeholder, type Editable } from './types'
+import { hmwText } from './hmw'
 
 export const meta = {
   projectName: 'Day One',
@@ -15,7 +16,8 @@ export const meta = {
   introLead: 'Having information does not mean knowing how to act on it.',
   intro:
     'Day One began as a field study of how international students prepare for, arrive in and gradually settle into Melbourne. Our interviews showed that students rarely lack information. What they lack is a way to turn that information into action in unfamiliar, real-life situations. This report follows the research from interviews to themes, and from themes to the design of the Day One prototype.',
-  researchQuestion: 'How might we help international students use information in real-life situations?',
+  /** Single source: the HMW question in hmw.ts. */
+  researchQuestion: hmwText,
 
   university: 'The University of Melbourne',
   faculty: 'Faculty of Engineering and Information Technology',

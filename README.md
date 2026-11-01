@@ -3,7 +3,7 @@
 An interactive UX case study for **INFO90009 User Experience Design Project** (2026 Semester 2), Faculty of Engineering and Information Technology, The University of Melbourne.
 
 **Day One — Supporting International Students' Adaptation in Melbourne.**
-Research question: *How might we help international students use information in real-life situations?*
+Research question: *How might we help international students find useful information, understand everyday situations, and feel more confident exploring Melbourne?*
 
 Authors: Yue Wang, Yao Chen.
 
@@ -44,7 +44,7 @@ All academic content lives in `src/content/` — no component code needs to chan
 | `study.ts` | 03 Study Design facts, steps and ethics |
 | `affinity.ts` | 03 Affinity map — the coding table, verbatim (cluster, participant, codes) |
 | `challenges.ts` | 04 Challenges — four themes, sub-findings, quotes, scenarios, implications |
-| `hmw.ts` | 05 HMW — how each theme (T1–T4) leads to a keyword in the question |
+| `hmw.ts` | 05 HMW — the question (single source, also used by the hero) and how each theme T1–T4 leads to a phrase in it |
 | `abstract.ts` | Abstract (front matter, ~100 words) and its draft/approved status |
 | `outcome.ts` | 06 Finding → opportunity → feature map, prototype screens, usability evaluation |
 | `conclusions.ts` | 07 Conclusions, limitations, implications, future work |

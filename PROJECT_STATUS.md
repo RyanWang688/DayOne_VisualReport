@@ -1,4 +1,4 @@
-﻿# Project Status
+# Project Status
 
 _Last updated: 2 Nov 2026_
 
@@ -40,7 +40,7 @@ Reading order (set in `src/content/sections.ts`): front matter → Part I · Res
 - Literature: diagrams draw progressively on view (loop, gap line, uneven bars)
 - Affinity board: 142 sticky notes auto-play pile → scatter → grouped; notes take their theme colour as they settle; one replay icon. Side panel (sticky on desktop): select a theme, filter by participant, expand participant evidence; “Open as pin board” viewer (← → between themes, Esc to close)
 - Challenges: sticky theme index, active theme number lights up, expandable evidence with participant badges, bridge into HMW
-- HMW: scroll scene connecting T1–T4 to the keywords of the question (information, use, real-life situations, help), then the full question resolves; static version under reduced motion
+- HMW: spring-smoothed scroll scene; each theme T1–T4 lights its phrase of the question word by word with a sweeping underline while its card's progress bar fills; then the full question resolves; static version under reduced motion
 - Micro-interactions: consistent button press feedback, card lift, growing link underline, phone-frame hover
 - Outcome: hover a row to trace finding → opportunity → feature
 - Reduced motion respected throughout

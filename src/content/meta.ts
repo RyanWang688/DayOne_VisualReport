@@ -21,12 +21,13 @@ export const meta = {
 
   university: 'The University of Melbourne',
   faculty: 'Faculty of Engineering and Information Technology',
-  degree: placeholder('Degree name (e.g. Master of …) — to confirm') as Editable,
+  discipline: 'Human-Computer Interaction (HCI)' as Editable,
   subject: 'INFO90009 User Experience Design Project',
   semester: '2026 Semester 2',
-  supervisor: placeholder('Supervisor name — to confirm') as Editable,
+  supervisor: 'Arzoo Atiq' as Editable,
   date: placeholder('Submission date — to confirm') as Editable,
-  videoUrl: placeholder('Video link — to be supplied') as Editable,
+  /** Any YouTube watch/share link; the site plays it in an in-page player. */
+  videoUrl: 'https://www.youtube.com/watch?v=EtDkfVKqdao' as Editable,
   prototypeUrl: placeholder('Prototype URL — to be supplied') as Editable,
   researchDataUrl: placeholder('Research Data and Code link — to be supplied') as Editable,
 

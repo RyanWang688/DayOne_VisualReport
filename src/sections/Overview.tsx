@@ -1,5 +1,6 @@
 import { motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react'
-import { ArrowDown, ArrowUpRight, PlayCircle } from 'lucide-react'
+import { ArrowDown, ArrowUpRight } from 'lucide-react'
+import { VideoButton } from '../components/VideoButton'
 import { meta } from '../content/meta'
 import { isPlaceholder } from '../content/types'
 import { parts, sections } from '../content/sections'
@@ -100,6 +101,12 @@ function Hero() {
           </div>
           <ArrowUpRight className="mt-1 shrink-0 text-blue transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" size={20} aria-hidden />
         </motion.a>
+
+        {!isPlaceholder(meta.videoUrl) && (
+          <motion.div className="mt-6" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 1 }}>
+            <VideoButton url={meta.videoUrl} />
+          </motion.div>
+        )}
       </div>
 
       {/* Interactive hero composition — real prototype screens */}
@@ -147,11 +154,11 @@ function TitleBlock() {
     ['Report', meta.reportTitle],
     ['University', meta.university],
     ['Faculty', meta.faculty],
-    ['Degree', <Ph value={meta.degree} />],
+    ['Discipline', <Ph value={meta.discipline} />],
     ['Subject', `${meta.subject} · ${meta.semester}`],
     ['Supervisor', <Ph value={meta.supervisor} />],
     [
-      'Authors',
+      'Students',
       <span className="flex flex-col">
         {meta.authors.map((a) => (
           <span key={a.name}>
@@ -164,13 +171,7 @@ function TitleBlock() {
     ['Date', <Ph value={meta.date} />],
     [
       'Video',
-      isPlaceholder(meta.videoUrl) ? (
-        <Ph value={meta.videoUrl} />
-      ) : (
-        <a href={meta.videoUrl} className="inline-flex items-center gap-1.5 text-blue underline underline-offset-4" target="_blank" rel="noreferrer">
-          <PlayCircle size={16} aria-hidden /> Watch the video
-        </a>
-      ),
+      isPlaceholder(meta.videoUrl) ? <Ph value={meta.videoUrl} /> : <VideoButton url={meta.videoUrl} variant="inline" />,
     ],
   ]
   return (

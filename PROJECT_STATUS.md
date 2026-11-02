@@ -18,7 +18,7 @@ Reading order (set in `src/content/sections.ts`): front matter → Part I · Res
 
 | # | Section | Part | Status | Source material |
 | --- | --- | --- | --- | --- |
-| 00 | Overview + title block | Front | Done — 4 title-block fields are placeholders | Field report cover, A0 poster |
+| 00 | Overview + title block | Front | Done — discipline, supervisor and video filled; submission date still a placeholder. “Watch the video” plays in an in-page YouTube player | Field report cover, A0 poster, team |
 | — | Abstract | Front | **Draft** — 96-word condensed version, awaiting approval | Field report Abstract |
 | — | Project context + “How this report reads” map | Front | Done — reading times measured from the page | — |
 | 01 | Research Process (interactive timeline) | I | Done | Field report Method, A0 poster, evaluation deck |

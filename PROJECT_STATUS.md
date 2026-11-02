@@ -14,13 +14,13 @@ _Last updated: 2 Nov 2026_
 
 ## Sections
 
-Reading order (set in `src/content/sections.ts`): front matter → Part I · Research → Part II · Design → back matter. Each part opens with a divider listing its sections, takeaways and reading time.
+Reading order (set in `src/content/sections.ts`): front matter → Part I · Research → Part II · Design → back matter. Each part opens with a divider listing its sections and takeaways.
 
 | # | Section | Part | Status | Source material |
 | --- | --- | --- | --- | --- |
-| 00 | Overview + title block | Front | Done — discipline, supervisor and video filled; submission date still a placeholder. “Watch the video” plays in an in-page YouTube player | Field report cover, A0 poster, team |
+| 00 | Overview + title block | Front | Done — all title-block fields filled (submission date 5 November 2026). “Watch the video” plays in an in-page YouTube player | Field report cover, A0 poster, team |
 | — | Abstract | Front | **Draft** — 96-word condensed version, awaiting approval | Field report Abstract |
-| — | Project context + “How this report reads” map | Front | Done — reading times measured from the page | — |
+| — | Project context + “How this report reads” map | Front | Done | — |
 | 01 | Research Process (interactive timeline) | I | Done | Field report Method, A0 poster, evaluation deck |
 | 02 | Literature Review | I | Done — 3 major insights + 2 context blocks, 12 references | Field report Literature Review |
 | 03 | Study Design + affinity map (3.1, 3.2) | I | Done — 142 coded notes, 10 clusters, P1–P8; 2 Foundation/Diploma · 2 Bachelor’s · 4 Master’s; countries as flags | Field report Method/Ethics, coding table, team confirmation |
@@ -33,7 +33,7 @@ Reading order (set in `src/content/sections.ts`): front matter → Part I · Res
 
 ## Interactions
 
-- Scroll progress bar, active-section indicator with reading time (header + desktop side rail grouped by part), mobile section menu grouped by part
+- Scroll progress bar, active-section indicator (header + desktop side rail grouped by part), mobile section menu grouped by part
 - Readability: 12px minimum for labels, faint grey darkened to ≥4.5:1 contrast, abstract set in the body face
 - Hero composition: pointer parallax and a gentle scroll drift
 - Research Process: sticky stage index, scroll-filled progress line, active stage highlight; a sticky evidence panel (key numbers + quote) changes with the active stage; inactive stage cards recede

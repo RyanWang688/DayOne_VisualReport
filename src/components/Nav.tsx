@@ -3,7 +3,6 @@ import { AnimatePresence, motion, useScroll, useSpring } from 'motion/react'
 import { Menu, X } from 'lucide-react'
 import { parts, sections } from '../content/sections'
 import { useActiveSection } from '../hooks/useActiveSection'
-import { useReadingTimes } from '../hooks/useReadingTimes'
 import { asset } from './ui'
 
 /** Blocks between sections that should also update the "Now reading" indicator. */
@@ -16,7 +15,6 @@ const ids = [...sections.map((s) => s.id), ...landmarks.map((l) => l.id)]
 
 export function Nav() {
   const active = useActiveSection(ids)
-  const times = useReadingTimes()
   const { scrollYProgress } = useScroll()
   const progress = useSpring(scrollYProgress, { stiffness: 220, damping: 40, restDelta: 0.001 })
   const [open, setOpen] = useState(false)
@@ -60,7 +58,6 @@ export function Nav() {
               >
                 {current.num && <span className={dark ? 'text-sun' : 'text-blue'}>{current.num} </span>}
                 {current.label}
-                {times[current.id] && <span className={`hidden sm:inline ${dark ? 'text-white/50' : 'text-faint'}`}> · {times[current.id]} min</span>}
               </motion.span>
             </AnimatePresence>
             <button
@@ -154,7 +151,6 @@ export function Nav() {
                             >
                               <span className="w-6 font-mono text-[12px] font-normal text-faint">{s.num}</span>
                               <span className="flex-1">{s.label}</span>
-                              {times[s.id] && <span className="font-mono text-[12px] font-normal text-faint">{times[s.id]} min</span>}
                             </a>
                           </li>
                         ))}

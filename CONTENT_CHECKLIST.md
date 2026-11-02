@@ -6,8 +6,8 @@ Use this list to finish and verify the report. Edit values in `src/content/` (se
 
 - [x] **Discipline** — Human-Computer Interaction (HCI) — `meta.ts → discipline`
 - [x] **Supervisor** — Arzoo Atiq — `meta.ts → supervisor`
-- [ ] **Submission date** — `meta.ts → date`
-- [x] **Video** — https://www.youtube.com/watch?v=EtDkfVKqdao, plays in an in-page player from the hero and the title block — `meta.ts → videoUrl`
+- [x] **Submission date** — 5 November 2026 — `meta.ts → date`
+- [x] **Video** — https://www.youtube.com/watch?v=EtDkfVKqdao, one "Watch the video" button in the hero plays it in-page; the title block lists the link — `meta.ts → videoUrl`
 - [ ] **Prototype URL** (optional) — `meta.ts → prototypeUrl`
 - [ ] **Research Data and Code link** (consent templates, transcripts) — `meta.ts → researchDataUrl`
 - [ ] **Approve the ~100-word abstract** (currently 96 words, condensed from the 148-word field report abstract) — then set `abstract.ts → status: 'approved'`

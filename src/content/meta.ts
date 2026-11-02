@@ -25,7 +25,7 @@ export const meta = {
   subject: 'INFO90009 User Experience Design Project',
   semester: '2026 Semester 2',
   supervisor: 'Arzoo Atiq' as Editable,
-  date: placeholder('Submission date — to confirm') as Editable,
+  date: '5 November 2026' as Editable,
   /** Any YouTube watch/share link; the site plays it in an in-page player. */
   videoUrl: 'https://www.youtube.com/watch?v=EtDkfVKqdao' as Editable,
   prototypeUrl: placeholder('Prototype URL — to be supplied') as Editable,

@@ -4,7 +4,6 @@ import { VideoButton } from '../components/VideoButton'
 import { meta } from '../content/meta'
 import { isPlaceholder } from '../content/types'
 import { parts, sections } from '../content/sections'
-import { useReadingTimes } from '../hooks/useReadingTimes'
 import { PhoneFrame, Ph, Reveal } from '../components/ui'
 
 const titleWords = meta.title.split(' ')
@@ -171,7 +170,14 @@ function TitleBlock() {
     ['Date', <Ph value={meta.date} />],
     [
       'Video',
-      isPlaceholder(meta.videoUrl) ? <Ph value={meta.videoUrl} /> : <VideoButton url={meta.videoUrl} variant="inline" />,
+      isPlaceholder(meta.videoUrl) ? (
+        <Ph value={meta.videoUrl} />
+      ) : (
+        // Plain link here; the play button lives in the hero.
+        <a href={meta.videoUrl} target="_blank" rel="noreferrer" className="break-all text-blue underline decoration-blue/30 underline-offset-4 hover:decoration-blue">
+          {meta.videoUrl.replace(/^https?:\/\/(www\.)?/, '')}
+        </a>
+      ),
     ],
   ]
   return (
@@ -203,9 +209,7 @@ function TitleBlock() {
 
 /** Project context plus a map of how the report is organised (sits after the abstract). */
 export function ReportMap() {
-  const times = useReadingTimes()
   const mainParts = parts.filter((p) => p.key === 'research' || p.key === 'design')
-  const total = sections.reduce((n, s) => n + (times[s.id] ?? 0), 0)
   return (
     <section id="contents" aria-labelledby="map-title" className="border-t border-line bg-paper">
       <Context />
@@ -215,7 +219,7 @@ export function ReportMap() {
             <h2 id="map-title" className="text-2xl font-bold">
               How this report reads
             </h2>
-            {total > 0 && <p className="font-mono text-[12px] text-muted">About {total} min in total · each part can be read on its own</p>}
+            <p className="font-mono text-[12px] text-muted">Each part can be read on its own</p>
           </div>
         </Reveal>
         <div className="mt-6 grid gap-8 md:grid-cols-2 md:gap-12">
@@ -228,10 +232,9 @@ export function ReportMap() {
                   .filter((s) => s.part === p.key)
                   .map((s) => (
                     <li key={s.id}>
-                      <a href={`#${s.id}`} className="group grid grid-cols-[36px_1fr_auto] items-baseline gap-3 border-b border-line py-2.5">
+                      <a href={`#${s.id}`} className="group grid grid-cols-[36px_1fr] items-baseline gap-3 border-b border-line py-2.5">
                         <span className="font-mono text-[12px] text-blue">{s.num}</span>
                         <span className="font-display font-semibold tracking-tight transition-colors group-hover:text-blue">{s.label}</span>
-                        <span className="font-mono text-[12px] text-faint">{times[s.id] ? `${times[s.id]} min` : ''}</span>
                       </a>
                     </li>
                   ))}

@@ -20,67 +20,59 @@ export function Overview() {
 
 function Hero() {
   const ease = [0.22, 1, 0.36, 1] as const
-  const intro = (
-    <div className="py-8">
-      <motion.p className="eyebrow mb-6 flex flex-wrap gap-x-3 gap-y-1" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }}>
+  const lead = (
+    <div>
+      <motion.p className="eyebrow mb-5 flex flex-wrap gap-x-3 gap-y-1" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }}>
         <span>{meta.university}</span>
         <span className="text-sun">•</span>
         <span>INFO90009</span>
         <span className="text-sun">•</span>
         <span>{meta.semester}</span>
       </motion.p>
-
       <h1 id="overview-title" className="sr-only">
         {meta.projectName} — {meta.title}
       </h1>
       <motion.p
         aria-hidden
-        className="font-display text-[clamp(3.25rem,6vw,5.5rem)] font-extrabold leading-[0.85] tracking-[-0.05em] text-blue [@media(max-height:780px)]:lg:text-[4.25rem]"
+        className="font-display text-[clamp(3.25rem,6vw,5.5rem)] font-extrabold leading-[0.85] tracking-[-0.05em] text-blue [@media(max-height:760px)]:lg:text-[4rem]"
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease }}
       >
         Day One
       </motion.p>
-      <p aria-hidden className="mt-5 max-w-[20ch] font-display text-[clamp(1.35rem,2vw,1.85rem)] font-semibold leading-[1.12] tracking-[-0.02em]">
+      <p aria-hidden className="mt-4 max-w-[20ch] font-display text-[clamp(1.35rem,2vw,1.8rem)] font-semibold leading-[1.12] tracking-[-0.02em]">
         {titleWords.map((w, i) => (
-          <motion.span
-            key={i}
-            className="mr-[0.25em] inline-block"
-            initial={{ opacity: 0, y: '0.5em' }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.25 + i * 0.05, ease }}
-          >
+          <motion.span key={i} className="mr-[0.25em] inline-block" initial={{ opacity: 0, y: '0.5em' }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.25 + i * 0.05, ease }}>
             {w}
           </motion.span>
         ))}
       </p>
-      <motion.p className="mt-5 max-w-[40ch] text-[17px] text-muted" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.7 }}>
+    </div>
+  )
+  const more = (
+    <div className="pt-5 [@media(max-height:760px)]:lg:pt-3">
+      <p className="max-w-[40ch] text-[17px] text-muted [@media(max-height:760px)]:lg:text-[15px]">
         Helping international students move from knowing what to do to <span className="mark-sun text-ink">confidently doing it.</span>
-      </motion.p>
-
-      <motion.a
+      </p>
+      <a
         href="#hmw"
-        className="group mt-7 flex max-w-xl items-start gap-4 border-l-2 border-blue bg-paper/90 py-3.5 pl-5 pr-4 shadow-[0_1px_0_var(--color-line)] backdrop-blur transition-colors hover:bg-blue-soft [@media(max-height:780px)]:lg:mt-5"
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.85 }}
+        className="group mt-5 flex max-w-xl items-start gap-4 border-l-2 border-blue bg-paper/90 py-3 pl-5 pr-4 shadow-[0_1px_0_var(--color-line)] transition-colors hover:bg-blue-soft [@media(max-height:760px)]:lg:mt-3"
       >
         <div>
           <span className="eyebrow text-blue">Research question</span>
-          <span className="mt-1 block font-display text-[16px] font-semibold leading-snug xl:text-[17px]">{meta.researchQuestion}</span>
+          <span className="mt-1 block font-display text-[16px] font-semibold leading-snug [@media(max-height:760px)]:lg:text-[14px]">{meta.researchQuestion}</span>
         </div>
         <ArrowUpRight className="mt-1 shrink-0 text-blue transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" size={20} aria-hidden />
-      </motion.a>
-
+      </a>
       {!isPlaceholder(meta.videoUrl) && (
-        <motion.div className="mt-6" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 1 }}>
+        <div className="mt-5 [@media(max-height:760px)]:lg:mt-3">
           <VideoButton url={meta.videoUrl} />
-        </motion.div>
+        </div>
       )}
     </div>
   )
-  return <HeroShowcase intro={intro} />
+  return <HeroShowcase lead={lead} more={more} />
 }
 function TitleBlock() {
   const rows: [string, React.ReactNode][] = [

@@ -1,6 +1,6 @@
 import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion, useAnimationFrame, useInView, useMotionValue, useReducedMotion, useSpring, useTransform } from 'motion/react'
-import { ArrowRight, Expand } from 'lucide-react'
+import { ArrowRight, ChevronLeft, ChevronRight, Expand } from 'lucide-react'
 import { evolutionTrace, fidelityStages, hifiGroups, sketches, wireGroups, type FidelityStage, type Screen, type ScreenGroup } from '../content/iteration'
 import { challenges } from '../content/challenges'
 import { Lightbox, type LightboxItem } from '../components/Lightbox'
@@ -100,7 +100,7 @@ function Trace({ onOpen }: { onOpen: (items: LightboxItem[], i: number) => void 
   )
 }
 
-/** 6.1 — tabbed fidelity explorer: stages → feature groups → screens. */
+/** 6.1 — fidelity explorer: stage tabs → feature row with prev/next → screens. */
 function Explorer({ onOpen }: { onOpen: (items: LightboxItem[], i: number) => void }) {
   const [stage, setStage] = useState<FidelityStage['key']>('low')
   const k = fidelityStages.findIndex((s) => s.key === stage)
@@ -108,8 +108,8 @@ function Explorer({ onOpen }: { onOpen: (items: LightboxItem[], i: number) => vo
 
   return (
     <div className="mt-8">
-      {/* Stage tabs with a progress rail */}
-      <div role="tablist" aria-label="Fidelity stage" className="relative grid grid-cols-3 border-b border-line">
+      {/* Stage tabs: centred labels, each on its own rule; the blue bar slides to the active stage */}
+      <div role="tablist" aria-label="Fidelity stage" className="grid grid-cols-3 gap-3 sm:gap-6">
         {fidelityStages.map((s, i) => (
           <button
             key={s.key}
@@ -126,24 +126,19 @@ function Explorer({ onOpen }: { onOpen: (items: LightboxItem[], i: number) => vo
               document.getElementById(`${tabsId}-tab-${next.key}`)?.focus()
             }}
             tabIndex={stage === s.key ? 0 : -1}
-            className={`relative flex flex-col items-start gap-1 px-1 pb-4 pt-2 text-left transition-colors sm:px-2 ${stage === s.key ? 'text-ink' : 'text-faint hover:text-ink'}`}
+            className={`relative border-b-2 border-line pb-4 pt-2 text-center font-display text-[15px] font-semibold transition-colors sm:text-lg ${stage === s.key ? 'text-ink' : 'text-faint hover:text-ink-2'}`}
           >
-            <span className="font-mono text-[12px] text-blue">0{i + 1}</span>
-            <span className="font-display text-[15px] font-semibold sm:text-lg">
-              <span className="sm:hidden">{s.short}</span>
-              <span className="hidden sm:inline">{s.label}</span>
-            </span>
-            {stage === s.key && <motion.span layoutId={`${tabsId}-pill`} className="absolute inset-x-0 -bottom-px h-[3px] bg-blue" transition={{ duration: 0.35, ease }} />}
+            <span className="sm:hidden">{s.short}</span>
+            <span className="hidden sm:inline">{s.label}</span>
+            {stage === s.key && <motion.span layoutId={`${tabsId}-bar`} className="absolute inset-x-0 -bottom-[2px] h-[3px] bg-blue" transition={{ type: 'spring', stiffness: 380, damping: 34 }} />}
           </button>
         ))}
-        {/* how far along the fidelity scale we are */}
-        <motion.span aria-hidden className="pointer-events-none absolute -bottom-px left-0 h-px origin-left bg-blue/40" style={{ width: '100%' }} animate={{ scaleX: (k + 1) / 3 }} transition={{ duration: 0.5, ease }} />
       </div>
 
-      <div id={`${tabsId}-panel`} role="tabpanel" aria-labelledby={`${tabsId}-tab-${stage}`} className="pt-6">
+      <div id={`${tabsId}-panel`} role="tabpanel" aria-labelledby={`${tabsId}-tab-${stage}`} className="pt-8">
         <AnimatePresence mode="wait" initial={false}>
           <motion.div key={stage} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.3, ease }}>
-            <p className="max-w-[62ch] text-ink-2">{fidelityStages[k].summary}</p>
+            <p className="mx-auto max-w-[60ch] text-center text-ink-2">{fidelityStages[k].summary}</p>
             {stage === 'low' ? <Sketches onOpen={onOpen} /> : <Groups groups={stage === 'wire' ? wireGroups : hifiGroups} stage={fidelityStages[k]} onOpen={onOpen} />}
           </motion.div>
         </AnimatePresence>
@@ -155,7 +150,7 @@ function Explorer({ onOpen }: { onOpen: (items: LightboxItem[], i: number) => vo
 function Sketches({ onOpen }: { onOpen: (items: LightboxItem[], i: number) => void }) {
   const items = sketches.map((s) => ({ src: s.src, alt: s.alt, caption: s.caption }))
   return (
-    <div className="mt-6 grid gap-6 md:grid-cols-[1fr_1.45fr]">
+    <div className="mt-8 grid gap-6 md:grid-cols-[1fr_1.45fr]">
       {sketches.map((s, i) => (
         <motion.figure
           key={s.src}
@@ -166,7 +161,7 @@ function Sketches({ onOpen }: { onOpen: (items: LightboxItem[], i: number) => vo
           <button type="button" onClick={() => onOpen(items, i)} aria-label={`Enlarge: ${s.alt}`} className="group block w-full border border-line bg-white p-2 shadow-[0_18px_34px_-28px_rgba(14,20,34,0.5)] transition-transform duration-300 hover:-translate-y-1">
             <img src={asset(s.src)} alt={s.alt} width={s.w} height={s.h} loading="lazy" decoding="async" className="block h-auto w-full" />
           </button>
-          <figcaption className="mt-3 text-[14px] text-muted">{s.caption}</figcaption>
+          <figcaption className="mt-3 text-center text-[14px] text-muted">{s.caption}</figcaption>
         </motion.figure>
       ))}
     </div>
@@ -174,69 +169,128 @@ function Sketches({ onOpen }: { onOpen: (items: LightboxItem[], i: number) => vo
 }
 
 function Groups({ groups, stage, onOpen }: { groups: ScreenGroup[]; stage: FidelityStage; onOpen: (items: LightboxItem[], i: number) => void }) {
-  const [key, setKey] = useState(groups[0].key)
-  const g = groups.find((x) => x.key === key) ?? groups[0]
+  const [idx, setIdx] = useState(0)
+  const [dir, setDir] = useState(1)
+  const rowId = useId()
+  const g = groups[idx]
   const items = g.screens.map((s) => ({ src: s.src, alt: s.alt, caption: `${stage.label} · ${g.name}` }))
+  const go = (n: number) => {
+    const next = (n + groups.length) % groups.length
+    setDir(n > idx ? 1 : -1)
+    setIdx(next)
+  }
 
   return (
-    <div className="mt-6">
-      <div className="flex flex-wrap gap-2" role="group" aria-label="Feature">
-        {groups.map((x) => (
-          <button
-            key={x.key}
-            type="button"
-            aria-pressed={x.key === g.key}
-            onClick={() => setKey(x.key)}
-            className={`flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-[14px] transition-colors ${x.key === g.key ? 'border-ink bg-ink text-white' : 'border-line bg-canvas text-ink-2 hover:border-ink/40'}`}
-          >
-            {x.name}
-            <span className={`font-mono text-[11px] ${x.key === g.key ? 'text-white/60' : 'text-faint'}`}>{x.screens.length}</span>
-          </button>
-        ))}
+    <div className="mt-8">
+      {/* Feature row: plain text, the active one grows and gets an underline that glides between features */}
+      <div className="flex flex-wrap items-end justify-center gap-x-6 gap-y-2 sm:gap-x-9" role="tablist" aria-label="Feature">
+        {groups.map((x, i) => {
+          const on = i === idx
+          return (
+            <button
+              key={x.key}
+              id={`${rowId}-${i}`}
+              type="button"
+              role="tab"
+              aria-selected={on}
+              tabIndex={on ? 0 : -1}
+              onClick={() => go(i)}
+              onKeyDown={(e) => {
+                if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return
+                const n = (i + (e.key === 'ArrowRight' ? 1 : -1) + groups.length) % groups.length
+                go(e.key === 'ArrowRight' ? idx + 1 : idx - 1)
+                document.getElementById(`${rowId}-${n}`)?.focus()
+              }}
+              className="relative px-1.5 pb-2"
+            >
+              <motion.span
+                className={`block origin-bottom font-display font-semibold tracking-tight ${on ? 'text-ink' : 'text-faint hover:text-ink-2'}`}
+                initial={false}
+                animate={{ scale: on ? 1.1 : 1 }}
+                transition={{ type: 'spring', stiffness: 320, damping: 24 }}
+                style={{ fontSize: 'clamp(0.95rem, 1.4vw, 1.15rem)' }}
+              >
+                {x.name}
+              </motion.span>
+              {on && <motion.span layoutId={`${rowId}-line`} className="absolute -bottom-0.5 left-1/2 h-[2px] w-6 -translate-x-1/2 rounded-full bg-ink" transition={{ type: 'spring', stiffness: 380, damping: 32 }} />}
+            </button>
+          )
+        })}
+      </div>
+
+      {/* Screens, flanked by prev / next */}
+      <div className="relative mt-6 flex items-center gap-2 sm:gap-4">
+        <NavArrow side="prev" label={`Previous feature: ${groups[(idx - 1 + groups.length) % groups.length].name}`} onClick={() => go(idx - 1)} />
+        <div className="relative min-w-0 flex-1 overflow-hidden">
+          <AnimatePresence mode="wait" initial={false} custom={dir}>
+            <motion.div
+              key={g.key}
+              custom={dir}
+              variants={{
+                enter: (d: number) => ({ opacity: 0, x: d * 80, filter: 'blur(4px)' }),
+                center: { opacity: 1, x: 0, filter: 'blur(0px)' },
+                exit: (d: number) => ({ opacity: 0, x: d * -80, filter: 'blur(4px)' }),
+              }}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{ duration: 0.38, ease }}
+            >
+              <ScreenCarousel screens={g.screens} label={g.name} onOpen={(i) => onOpen(items, i)} />
+              <p className="mx-auto mt-2 max-w-[60ch] text-center text-[15px] text-muted">
+                <span className="font-semibold text-ink">{g.name}</span>
+                {g.note && <span className="text-faint"> ({g.note})</span>} · {g.intro}
+              </p>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+        <NavArrow side="next" label={`Next feature: ${groups[(idx + 1) % groups.length].name}`} onClick={() => go(idx + 1)} />
       </div>
 
       <AnimatePresence mode="wait" initial={false}>
-        <motion.div key={g.key} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
-          <p className="mt-5 max-w-[62ch] text-[15px] text-muted">
-            {g.intro}
-            {g.note && <span className="ml-2 font-mono text-[12px] uppercase tracking-[0.1em] text-faint">· {g.note}</span>}
-          </p>
-          {g.addresses && (
-            <div className="mt-5 border border-line bg-canvas p-4 sm:p-5">
-              <p className="eyebrow">Designed to address · interview challenges</p>
-              <ul className="mt-3 grid gap-3 md:grid-cols-2">
-                {g.addresses.map((a, i) => (
-                  <motion.li
-                    key={a.finding}
-                    className="flex gap-3"
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.35, ease, delay: 0.1 + i * 0.08 }}
+        {g.addresses && (
+          <motion.div key={g.key} className="mx-auto mt-8 max-w-[880px] border border-line bg-canvas p-4 sm:p-5" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.3, ease }}>
+            <p className="eyebrow">Designed to address · interview challenges</p>
+            <ul className="mt-3 grid gap-3 md:grid-cols-2">
+              {g.addresses.map((a, i) => (
+                <motion.li key={a.finding} className="flex gap-3" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35, ease, delay: 0.1 + i * 0.08 }}>
+                  <a
+                    href={`#challenge-${a.theme - 1}`}
+                    className="h-fit shrink-0 rounded-[3px] bg-blue px-1.5 py-0.5 font-mono text-[12px] text-white transition-colors hover:bg-blue-deep"
+                    aria-label={`Theme ${a.theme}: ${challenges[a.theme - 1].short}`}
                   >
-                    <a
-                      href={`#challenge-${a.theme - 1}`}
-                      className="h-fit shrink-0 rounded-[3px] bg-blue px-1.5 py-0.5 font-mono text-[12px] text-white transition-colors hover:bg-blue-deep"
-                      aria-label={`Theme ${a.theme}: ${challenges[a.theme - 1].short}`}
-                    >
-                      T{a.theme}
-                    </a>
-                    <span className="text-[14px] leading-snug">
-                      <span className="font-semibold text-ink">{challenges[a.theme - 1].short}</span>
-                      <span className="text-faint"> · {a.finding}</span>
-                      <span className="mt-0.5 block text-muted">{a.how}</span>
-                    </span>
-                  </motion.li>
-                ))}
-              </ul>
-            </div>
-          )}
-          <ScreenCarousel screens={g.screens} label={g.name} onOpen={(i) => onOpen(items, i)} />
-        </motion.div>
+                    T{a.theme}
+                  </a>
+                  <span className="text-[14px] leading-snug">
+                    <span className="font-semibold text-ink">{challenges[a.theme - 1].short}</span>
+                    <span className="text-faint"> · {a.finding}</span>
+                    <span className="mt-0.5 block text-muted">{a.how}</span>
+                  </span>
+                </motion.li>
+              ))}
+            </ul>
+          </motion.div>
+        )}
       </AnimatePresence>
     </div>
   )
 }
 
+/** Round prev/next button; the chevron nudges in its direction on hover. */
+function NavArrow({ side, label, onClick }: { side: 'prev' | 'next'; label: string; onClick: () => void }) {
+  const Icon = side === 'prev' ? ChevronLeft : ChevronRight
+  return (
+    <motion.button
+      type="button"
+      onClick={onClick}
+      aria-label={label}
+      className="group grid h-11 w-11 shrink-0 place-items-center rounded-full border border-line bg-paper text-muted transition-colors hover:border-ink/40 hover:text-ink sm:h-12 sm:w-14"
+      whileTap={{ scale: 0.92 }}
+    >
+      <Icon size={20} className={`transition-transform duration-200 ${side === 'prev' ? 'group-hover:-translate-x-0.5' : 'group-hover:translate-x-0.5'}`} />
+    </motion.button>
+  )
+}
 const SPEED = 38 // px per second
 const GAP = 16
 
@@ -350,7 +404,7 @@ function ScreenCarousel({ screens, label, onOpen }: { screens: Screen[]; label: 
         ref={wrap}
         role="region"
         aria-label={`${label} screens`}
-        className={`relative overflow-hidden pb-5 pt-10 ${loop ? '[mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)]' : ''}`}
+        className={`relative flex overflow-hidden pb-5 pt-10 ${loop ? '' : 'justify-center '}${loop ? '[mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)]' : ''}`}
         onMouseEnter={() => setHeld(true)}
         onMouseLeave={() => {
           setHeld(false)

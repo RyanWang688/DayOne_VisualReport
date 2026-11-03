@@ -23,7 +23,7 @@ export const sections = [
   { id: 'hmw', num: '04', label: 'HMW', part: 'design', question: 'What should a design answer?', takeaway: 'The four themes converge into one design question.' },
   { id: 'outcome', num: '05', label: 'Design Concept', part: 'design', question: 'What should Day One offer?', takeaway: 'Each research finding mapped to a design opportunity and a feature.' },
   { id: 'iteration', num: '06', label: 'Iteration', part: 'design', question: 'How did the design take shape?', takeaway: 'Low-fi sketches, then wireframes, then an initial hi-fi prototype.' },
-  { id: 'evaluation', num: '07', label: 'Evaluation', part: 'design', question: 'Did it work, and what changed?', takeaway: 'Six students tested it; eight problems led to refined designs.' },
+  { id: 'evaluation', num: '07', label: 'Evaluation', part: 'design', question: 'Did it work, and what changed?', takeaway: 'Six students tested it; eight problems led to the final prototype.' },
   { id: 'conclusions', num: '08', label: 'Conclusions', part: 'design', question: 'What did we learn?', takeaway: 'Information is the first step; practice, help and time do the rest.' },
   { id: 'references', num: '', label: 'References', part: 'back', question: 'Which sources informed us?', takeaway: 'Twelve academic sources, APA 7.' },
   { id: 'appendix', num: '', label: 'Appendix', part: 'back', question: 'Where are the materials?', takeaway: 'Interview questions and the A0 poster.' },

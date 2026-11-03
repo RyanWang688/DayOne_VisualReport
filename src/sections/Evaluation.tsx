@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
 import { AnimatePresence, animate, motion, useInView, useMotionValue, useMotionValueEvent, useReducedMotion, useTransform } from 'motion/react'
-import { ChevronsLeftRight, Quote as QuoteIcon } from 'lucide-react'
+import { ChevronDown, ChevronsLeftRight, Quote as QuoteIcon } from 'lucide-react'
 import { evalMethod, featureOrder, problems, refinements, type UsabilityProblem } from '../content/evaluation'
 import { LiveDemo } from '../components/LiveDemo'
 import { Expandable, Reveal, SectionHeader, SubHeader, asset } from '../components/ui'
@@ -72,9 +72,17 @@ function Method() {
 
 function Problems() {
   const features = featureOrder.filter((f) => problems.some((x) => x.feature === f))
-  const [sel, setSel] = useState(() => problems.findIndex((x) => x.feature === features[0]))
-  const p = problems[sel]
+  const first = problems.findIndex((x) => x.feature === features[0])
+  const [open, setOpen] = useState<number | null>(null)
+  const [shown, setShown] = useState(first) // last problem opened; drives the annotated screen
+  const [touched, setTouched] = useState(false) // stop the hint once the reader has clicked
+  const p = problems[shown]
   const high = problems.filter((x) => x.severity === 'High').length
+  const toggle = (i: number) => {
+    setTouched(true)
+    setShown(i)
+    setOpen((o) => (o === i ? null : i))
+  }
 
   return (
     <div className="mt-24">
@@ -96,16 +104,16 @@ function Problems() {
                     <li key={x.id} className="border-b border-line">
                       <button
                         type="button"
-                        aria-expanded={sel === i}
-                        onClick={() => setSel(i)}
-                        className={`group flex w-full items-baseline gap-3 py-3.5 text-left transition-colors ${sel === i ? 'text-ink' : 'text-ink-2 hover:text-blue'}`}
+                        aria-expanded={open === i}
+                        onClick={() => toggle(i)}
+                        className={`group flex w-full items-center gap-3 py-3.5 text-left transition-colors ${open === i ? 'text-ink' : 'text-ink-2 hover:text-blue'}`}
                       >
-                        <span className="w-8 shrink-0 font-mono text-[12px] text-faint">{x.id}</span>
                         <span className="flex-1 font-display text-[17px] font-semibold tracking-tight">{x.title}</span>
                         <SeverityTag s={x.severity} />
+                        <Chevron open={open === i} hint={!touched && i === first} />
                       </button>
                       <AnimatePresence initial={false}>
-                        {sel === i && (
+                        {open === i && (
                           <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.35, ease }} className="overflow-hidden">
                             <ProblemDetail p={x} />
                           </motion.div>
@@ -130,6 +138,24 @@ function Problems() {
   )
 }
 
+/** Row chevron: turns when the row opens; the first one nudges downwards until the reader clicks something. */
+function Chevron({ open, hint }: { open: boolean; hint: boolean }) {
+  const reduce = useReducedMotion()
+  return (
+    <motion.span
+      aria-hidden
+      className={`grid h-7 w-7 shrink-0 place-items-center rounded-full border transition-colors ${open ? 'border-ink bg-ink text-white' : 'border-line text-muted group-hover:border-blue group-hover:text-blue'}`}
+      animate={{ rotate: open ? 180 : 0, y: hint && !reduce ? [0, 4, 0, 3, 0] : 0 }}
+      transition={{
+        rotate: { type: 'spring', stiffness: 300, damping: 22 },
+        y: hint && !reduce ? { duration: 1.4, repeat: Infinity, repeatDelay: 0.8, ease: 'easeInOut' } : { duration: 0.2 },
+      }}
+    >
+      <ChevronDown size={16} />
+    </motion.span>
+  )
+}
+
 function ProblemDetail({ p }: { p: UsabilityProblem }) {
   return (
     <div className="grid gap-5 pb-6 pl-11 sm:grid-cols-[1fr_auto]">
@@ -149,7 +175,7 @@ function ProblemDetail({ p }: { p: UsabilityProblem }) {
           </figure>
         )}
         <div className="mt-4 flex gap-3 border border-blue/25 bg-blue-soft/60 p-3.5">
-          <span className="shrink-0 font-mono text-[12px] text-blue">→ {p.recommendation.id}</span>
+          <span className="shrink-0 font-mono text-[12px] uppercase tracking-[0.08em] text-blue">Fix →</span>
           <p className="text-[14px] text-ink">
             {p.recommendation.text}
             {p.recommendation.priority && <span className="ml-1 text-faint">({p.recommendation.priority} priority)</span>}
@@ -193,7 +219,7 @@ function AnnotatedScreen({ p }: { p: UsabilityProblem }) {
         />
       </div>
       <figcaption className="mt-3 flex items-center justify-between gap-3 text-[13px]">
-        <span className="font-mono uppercase tracking-[0.1em] text-faint">{p.id}</span>
+        <span className="font-mono uppercase tracking-[0.1em] text-faint">{p.feature}</span>
         <span className="text-muted">{p.screen.region}</span>
       </figcaption>
     </figure>
@@ -268,33 +294,117 @@ function Ring({ n }: { n: number }) {
 
 /* 7.3 ─────────────────────────────────────────────────────────────── */
 
+/** Feature tabs for 7.3: Short Trip groups its two views (planning, route). */
+const refineTabs = [
+  { label: 'Homepage', keys: ['home'] },
+  { label: 'Short Trip', sub: ['Planning', 'Route'], keys: ['plan', 'route'] },
+  { label: 'Journey Tree', keys: ['journey'] },
+  { label: 'AR Lens', keys: ['ar'] },
+  { label: 'Ask This Place', keys: ['ask'] },
+] as const
+
 function Refinements() {
-  const [k, setK] = useState(0)
-  const r = refinements[k]
+  const [tab, setTab] = useState(0)
+  const [view, setView] = useState(0)
+  const [dir, setDir] = useState(1)
+  const tabsId = useId()
+  const key = refineTabs[tab].keys[Math.min(view, refineTabs[tab].keys.length - 1)]
+  const r = refinements.find((x) => x.key === key)!
+  // Position along the whole sequence, so content slides in from the side you moved towards.
+  const order = refineTabs.flatMap((t) => t.keys as readonly string[])
+  const go = (t: number, v = 0) => {
+    const next = refineTabs[t].keys[v]
+    setDir(order.indexOf(next) >= order.indexOf(key) ? 1 : -1)
+    setTab(t)
+    setView(v)
+  }
+
   return (
     <div className="mt-24">
       <SubHeader num="7.3" label="From problem to refinement" title="Before and after, feature by feature." />
 
-      <div className="flex flex-wrap gap-2" role="tablist" aria-label="Refined feature">
-        {refinements.map((x, i) => (
-          <button
-            key={x.key}
-            type="button"
-            role="tab"
-            aria-selected={i === k}
-            onClick={() => setK(i)}
-            className={`shrink-0 rounded-full border px-3.5 py-1.5 text-[14px] transition-colors ${i === k ? 'border-ink bg-ink text-white' : 'border-line bg-paper text-ink-2 hover:border-ink/40'}`}
-          >
-            {x.name}
-          </button>
-        ))}
+      <div role="tablist" aria-label="Refined feature" className="grid grid-cols-2 gap-y-4 sm:grid-cols-3 lg:grid-cols-5">
+        {refineTabs.map((t, i) => {
+          const active = i === tab
+          return (
+            <div key={t.label} className={`relative px-3 lg:px-5 ${i ? 'lg:border-l lg:border-line' : 'lg:pl-0'}`}>
+              <button
+                id={`${tabsId}-${i}`}
+                type="button"
+                role="tab"
+                aria-selected={active}
+                aria-controls={`${tabsId}-panel`}
+                tabIndex={active ? 0 : -1}
+                onClick={() => go(i)}
+                onKeyDown={(e) => {
+                  if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return
+                  const n = (i + (e.key === 'ArrowRight' ? 1 : -1) + refineTabs.length) % refineTabs.length
+                  go(n)
+                  document.getElementById(`${tabsId}-${n}`)?.focus()
+                }}
+                className="group block text-left"
+              >
+                <motion.span
+                  className="block font-mono text-[12px]"
+                  animate={{ color: active ? '#b42318' : '#687080' }}
+                  transition={{ duration: 0.3 }}
+                >
+                  0{i + 1}
+                </motion.span>
+                <motion.span
+                  className={`relative mt-1 inline-block origin-left font-display font-semibold tracking-tight ${active ? 'text-ink' : 'text-faint group-hover:text-ink-2'}`}
+                  animate={{ scale: active ? 1 : 0.8 }}
+                  initial={false}
+                  transition={{ type: 'spring', stiffness: 320, damping: 26 }}
+                  style={{ fontSize: 'clamp(1.25rem, 2vw, 1.6rem)' }}
+                >
+                  {t.label}
+                  {active && <motion.span layoutId={`${tabsId}-bar`} className="absolute -bottom-2 left-0 right-0 h-[3px] rounded-full bg-ink" transition={{ type: 'spring', stiffness: 380, damping: 32 }} />}
+                </motion.span>
+              </button>
+              {'sub' in t && (
+                <div className="mt-3 flex gap-3 font-mono text-[12px]" role="group" aria-label={`${t.label} view`}>
+                  {t.sub.map((s, v) => {
+                    const on = active && v === view
+                    return (
+                      <button
+                        key={s}
+                        type="button"
+                        aria-pressed={on}
+                        onClick={() => go(i, v)}
+                        className={`relative uppercase tracking-[0.08em] transition-colors ${on ? 'text-ink' : 'text-faint hover:text-ink-2'}`}
+                      >
+                        {s}
+                        {on && <motion.span layoutId={`${tabsId}-sub`} className="absolute -bottom-1 left-0 right-0 h-px bg-ink" transition={{ type: 'spring', stiffness: 380, damping: 32 }} />}
+                      </button>
+                    )
+                  })}
+                </div>
+              )}
+            </div>
+          )
+        })}
       </div>
 
-      <AnimatePresence mode="wait" initial={false}>
-        <motion.div key={r.key} role="tabpanel" aria-label={r.name} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.3, ease }} className="mt-8">
-          <Compare r={r} />
-        </motion.div>
-      </AnimatePresence>
+      <div id={`${tabsId}-panel`} role="tabpanel" aria-labelledby={`${tabsId}-${tab}`} className="relative mt-10 overflow-hidden">
+        <AnimatePresence mode="wait" initial={false} custom={dir}>
+          <motion.div
+            key={r.key}
+            custom={dir}
+            variants={{
+              enter: (d: number) => ({ opacity: 0, x: d * 70 }),
+              center: { opacity: 1, x: 0 },
+              exit: (d: number) => ({ opacity: 0, x: d * -70 }),
+            }}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{ duration: 0.35, ease }}
+          >
+            <Compare r={r} />
+          </motion.div>
+        </AnimatePresence>
+      </div>
     </div>
   )
 }
@@ -403,7 +513,6 @@ function Compare({ r }: { r: (typeof refinements)[number] }) {
             After
           </button>
         </div>
-        <p className="mt-3 text-center font-mono text-[12px] text-faint">Recommendation {r.recs.join(' + ')}</p>
       </div>
 
       <motion.div className="md:col-span-4" style={{ opacity: solutionO }}>

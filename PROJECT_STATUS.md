@@ -59,3 +59,6 @@ See `CONTENT_CHECKLIST.md` for the items the team still needs to supply or confi
 
 - Horizontal scrollers replaced by wrapping grids and tab rows; only the sticky theme index in 03 Challenges still swipes, with its scrollbar hidden
 - In-page source notes and caveats that cited the team's own materials (field report, poster, evaluation report, design files, coding table) were removed at the team's request; provenance stays in this file and CONTENT_CHECKLIST.md
+- 7.2 starts collapsed; each problem row has a chevron (the first nudges until the reader clicks), and report section numbers (4.x / 5.x) are no longer shown on the page
+- 7.3 uses numbered feature tabs (Short Trip groups Planning / Route) with a sliding underline and direction-aware transitions
+- 7.4 is framed as the final prototype (after evaluation)

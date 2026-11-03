@@ -34,8 +34,22 @@ export function LiveDemo() {
     <div ref={ref} className="mt-24">
       <SubHeader
         num="7.4"
-        label="Try Day One"
-        title="The live prototype, one feature at a time."
+        label="Final prototype"
+        title={
+          <>
+            The <span className="text-blue">final Day One prototype</span>, live.
+          </>
+        }
+        lead="The version built after evaluation, with the refinements above. Choose a feature and try it on the phone."
+        aside={
+          <span className="inline-flex items-center gap-2.5 border-l-[3px] border-solution bg-[#eef7f1] py-2 pl-3 pr-4 font-mono text-[12px] uppercase tracking-[0.12em] text-solution">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-solution opacity-60 motion-reduce:animate-none" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-solution" />
+            </span>
+            Final version · live
+          </span>
+        }
       />
 
       {/* Feature tabs */}
@@ -67,6 +81,10 @@ export function LiveDemo() {
       <div id={`${tabsId}-panel`} role="tabpanel" aria-labelledby={`${tabsId}-${f.key}`} className="mt-10 grid items-start gap-10 md:grid-cols-12">
         {/* Phone with the real app */}
         <div className="md:col-span-5 lg:col-span-4">
+          <p className="mx-auto mb-3 flex w-full max-w-[360px] items-center justify-between font-mono text-[12px] uppercase tracking-[0.12em]">
+            <span className="text-ink">Final prototype</span>
+            <span className="text-solution">After evaluation</span>
+          </p>
           <div className="relative mx-auto w-full max-w-[360px] overflow-hidden rounded-[40px] border-[10px] border-ink bg-ink shadow-[0_40px_70px_-36px_rgba(14,20,34,0.55)]">
             <div className="relative aspect-[390/780] w-full overflow-hidden rounded-[30px] bg-[#f6f7fb]">
               {near && (

@@ -43,3 +43,5 @@ Use this list to finish and verify the report. Edit values in `src/content/` (se
 - [x] Literature diagrams are labelled as conceptual, not data
 - [x] Journey-map statements are labelled as journey-map voice, not participant quotes
 - [x] Missing information is shown as labelled placeholders
+
+- Appendix A3 (Research Data and Code link) and Acknowledgements were removed from the site at the team's request; the placeholders are no longer shown.

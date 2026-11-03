@@ -31,7 +31,7 @@ Reading order (set in `src/content/sections.ts`): front matter → Part I · Res
 | 07 | Evaluation (7.1–7.4) | II | Done — method, 8 problems (2 High · 6 Medium), 6 before/after refinements, embedded live prototype | Usability Evaluation Report; Evaluation Comparison archive |
 | 08 | Conclusions | II | Done | Field report Discussion & Conclusion |
 | — | References | Back | Done — 12 APA entries with DOIs | Field report References |
-| — | Appendices | Back | Interview questions, poster, research-data link (placeholder), acknowledgements (placeholder) | Field report Appendix |
+| — | Appendices | Back | Interview questions (A1), A0 poster (A2) | Field report Appendix |
 
 ## Interactions
 

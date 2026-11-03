@@ -1,7 +1,5 @@
-import { acknowledgements, interviewGuide } from '../content/appendix'
-import { meta } from '../content/meta'
-import { isPlaceholder } from '../content/types'
-import { Expandable, Ph, Reveal, asset } from '../components/ui'
+import { interviewGuide } from '../content/appendix'
+import { Expandable, Reveal, asset } from '../components/ui'
 
 export function Appendix() {
   let q = 0
@@ -43,23 +41,6 @@ export function Appendix() {
               <img src={asset('assets/poster/dayone-poster-a0.jpg')} alt="Day One A0 landscape poster: problem, solution, research and design process, student journey and expected design value" loading="lazy" className="w-full" />
             </a>
             <p className="mt-2 font-mono text-[12px] text-faint">Open full size in a new tab.</p>
-          </Expandable>
-          <Expandable label="A3 · Research data, consent forms and transcripts">
-            <p className="text-[15px] text-muted">
-              Plain language statement and consent form templates, original transcripts and signed consent forms are held in the Research Data and Code folder.
-            </p>
-            <p className="mt-3">
-              {isPlaceholder(meta.researchDataUrl) ? (
-                <Ph value={meta.researchDataUrl} />
-              ) : (
-                <a href={meta.researchDataUrl} className="text-blue underline">
-                  Research Data and Code
-                </a>
-              )}
-            </p>
-          </Expandable>
-          <Expandable label="Acknowledgements">
-            <Ph value={acknowledgements} />
           </Expandable>
         </div>
       </div>

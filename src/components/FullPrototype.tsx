@@ -1,3 +1,4 @@
+import { createPortal } from 'react-dom'
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import { ArrowUpRight, Loader2, Smartphone, X } from 'lucide-react'
@@ -51,6 +52,7 @@ export function FullPrototypeButton() {
         <ArrowUpRight size={18} aria-hidden className="ml-1 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
       </motion.button>
 
+      {createPortal(
       <AnimatePresence>
         {open && (
           <motion.div
@@ -110,7 +112,9 @@ export function FullPrototypeButton() {
             </motion.div>
           </motion.div>
         )}
-      </AnimatePresence>
+      </AnimatePresence>,
+        document.body,
+      )}
     </>
   )
 }

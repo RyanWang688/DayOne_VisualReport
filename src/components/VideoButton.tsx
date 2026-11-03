@@ -1,3 +1,4 @@
+import { createPortal } from 'react-dom'
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { ExternalLink, Play, X } from 'lucide-react'
@@ -56,6 +57,7 @@ export function VideoButton({ url, label = 'Watch the video', variant = 'primary
         {label}
       </button>
 
+      {createPortal(
       <AnimatePresence>
         {open && (
           <motion.div
@@ -112,7 +114,9 @@ export function VideoButton({ url, label = 'Watch the video', variant = 'primary
             </motion.div>
           </motion.div>
         )}
-      </AnimatePresence>
+      </AnimatePresence>,
+        document.body,
+      )}
     </>
   )
 }

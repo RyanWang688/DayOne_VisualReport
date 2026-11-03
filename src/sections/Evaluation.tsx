@@ -318,10 +318,6 @@ function Compare({ r }: { r: (typeof refinements)[number] }) {
   // Red when the tested screen dominates, green when the refined one does.
   const accent = useTransform(split, [0, 50, 100], ['#b42318', '#f4b63f', '#157a3c'])
   const ring = useTransform(accent, (c) => `0 0 0 3px ${c}, 0 30px 60px -30px rgba(14,20,34,0.45)`)
-  const afterO = useTransform(split, [0, 60], [0.4, 1])
-  const beforeO = useTransform(split, [40, 100], [1, 0.4])
-  const afterS = useTransform(split, [0, 100], [0.92, 1.08])
-  const beforeS = useTransform(split, [0, 100], [1.08, 0.92])
   const state = val <= 35 ? 'before' : val >= 65 ? 'after' : 'mixed'
   useMotionValueEvent(split, 'change', (v) => setVal(Math.round(v)))
 
@@ -376,12 +372,6 @@ function Compare({ r }: { r: (typeof refinements)[number] }) {
             className="absolute inset-0 block h-full w-full object-cover object-top"
             style={{ clipPath: clip }}
           />
-          <motion.span className="pointer-events-none absolute left-3 top-3 origin-top-left rounded-[3px] bg-solution px-1.5 py-0.5 font-mono text-[11px] uppercase tracking-[0.08em] text-white" style={{ opacity: afterO, scale: afterS }}>
-            After
-          </motion.span>
-          <motion.span className="pointer-events-none absolute right-3 top-3 origin-top-right rounded-[3px] bg-problem px-1.5 py-0.5 font-mono text-[11px] uppercase tracking-[0.08em] text-white" style={{ opacity: beforeO, scale: beforeS }}>
-            Before
-          </motion.span>
           <motion.span aria-hidden className="pointer-events-none absolute inset-y-0 w-[2px] -translate-x-1/2" style={{ left, backgroundColor: accent }}>
             <motion.span className="absolute left-1/2 top-1/2 grid h-9 w-9 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full text-white shadow-md" style={{ backgroundColor: accent }}>
               <ChevronsLeftRight size={18} />

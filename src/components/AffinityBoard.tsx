@@ -113,6 +113,8 @@ export function AffinityBoard() {
       <div className="grid lg:grid-cols-[minmax(0,1fr)_340px]">
         {/* Board */}
         <div className="relative border-b border-line bg-canvas bg-[radial-gradient(var(--color-line)_1px,transparent_1px)] [background-size:18px_18px] lg:border-b-0 lg:border-r">
+          {/* Stays in view on desktop while the theme panel beside it grows with the page */}
+          <div className="lg:sticky lg:top-[80px]">
           <div className="flex items-center justify-between gap-3 px-4 pt-4 sm:px-6">
             <p className="font-mono text-[12px] uppercase tracking-[0.12em] text-faint" aria-live="polite">
               {statusText}
@@ -211,10 +213,11 @@ export function AffinityBoard() {
               )}
             </div>
           </div>
+          </div>
         </div>
 
         {/* Panel: theme selection + participant evidence */}
-        <aside aria-label="Affinity map explorer" className="flex flex-col lg:sticky lg:top-[72px] lg:max-h-[calc(100svh-76px)] lg:self-start">
+        <aside aria-label="Affinity map explorer" className="flex flex-col">
           <div className="shrink-0 border-b border-line p-4 sm:p-5">
             <p id="ab-person" className="mb-2 font-mono text-[12px] uppercase tracking-[0.12em] text-faint">
               Participant
@@ -231,7 +234,7 @@ export function AffinityBoard() {
             </div>
           </div>
 
-          <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
+          <div>
             <AnimatePresence mode="wait" initial={false}>
               {selected === null ? (
                 <motion.div key="list" initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -8 }} transition={{ duration: 0.2 }}>

@@ -6,6 +6,7 @@ import { isPlaceholder } from '../content/types'
 import { parts, sections } from '../content/sections'
 import { Ph, Reveal } from '../components/ui'
 import { HeroShowcase } from '../components/HeroShowcase'
+import { IntroLogo } from '../components/IntroLogo'
 
 const titleWords = meta.title.split(' ')
 
@@ -32,15 +33,7 @@ function Hero() {
       <h1 id="overview-title" className="sr-only">
         {meta.projectName} — {meta.title}
       </h1>
-      <motion.p
-        aria-hidden
-        className="font-display text-[clamp(3.25rem,6vw,5.5rem)] font-extrabold leading-[0.85] tracking-[-0.05em] text-blue [@media(max-height:760px)]:lg:text-[4rem]"
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease }}
-      >
-        Day One
-      </motion.p>
+      <IntroLogo className="-ml-[3%] w-[clamp(220px,24vw,360px)] [@media(max-height:760px)]:lg:w-[260px]" />
       <p aria-hidden className="mt-4 max-w-[20ch] font-display text-[clamp(1.35rem,2vw,1.8rem)] font-semibold leading-[1.12] tracking-[-0.02em]">
         {titleWords.map((w, i) => (
           <motion.span key={i} className="mr-[0.25em] inline-block" initial={{ opacity: 0, y: '0.5em' }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.25 + i * 0.05, ease }}>

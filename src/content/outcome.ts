@@ -49,46 +49,6 @@ export const outcomeMap: OutcomeRow[] = [
   },
 ]
 
-/** Formative usability evaluation — from the team's evaluation deck. */
-export const evaluation = {
-  label: 'Formative usability evaluation',
-  method: '6 students · 20–40 min sessions · think-aloud with short interviews · clickable prototype with no back end',
-  questions: [
-    { id: 'RQ1', feature: 'Short Trip', q: 'Do new students understand the walking routes, and would they use them instead of Google Maps?' },
-    { id: 'RQ2', feature: 'Healthcare Journey', q: 'Does the step-by-step guide help someone who has never seen a GP know what to do?' },
-    { id: 'RQ3', feature: 'AR Lens & Ask This Place', q: 'Do these tools give the right information, and are they easy to find when needed?' },
-  ],
-  findings: [
-    { fraction: '6/6', title: 'The healthcare guide was the most useful part', text: 'Everyone said it explained the GP process clearly. Several trusted it more than asking a chatbot.' },
-    { fraction: '5/6', title: 'There is too much text to read', text: 'Most wanted steps shorter, easier to skim, or shown as video.' },
-    { fraction: '4/5', title: 'People want to choose their own stops', text: 'Short Trip was easy to follow, but a fixed route felt like a detour.' },
-    { fraction: '4/6', title: 'On-site tools are useful but hard to reach', text: 'People liked scanning signs and machines, but wanted it one tap away from the map.' },
-  ],
-  fractionNote: 'Fractions show how many of the participants who tested that feature said this. One participant did not test Short Trip.',
-  problems: [
-    { id: 'U1', severity: 'High', text: 'Short Trip gives one fixed route; stops cannot be added, removed or changed.', who: '4 of 5' },
-    { id: 'U2', severity: 'Medium', text: 'Healthcare steps are long and must be read in order.', who: '6 of 6' },
-    { id: 'U3', severity: 'High', text: 'AR Lens and Ask This Place are hidden in the Tools tab.', who: '4 of 6' },
-    { id: 'U4', severity: 'Medium', text: 'Ask This Place guesses the location and it cannot be changed.', who: '2 of 6' },
-  ],
-  recommendations: [
-    { id: 'R1', from: 'U1', priority: 'High', text: 'Let people build their own route on the map.' },
-    { id: 'R2', from: 'U2', priority: 'High', text: 'Show the key points first; let people jump between steps.' },
-    { id: 'R3', from: 'U3, U4', priority: 'Medium', text: 'Put the tools where people need them — on the map screen.' },
-  ],
-  limitations: [
-    'All six participants speak Chinese, and most had lived in Melbourne for over a year.',
-    'The prototype had no back end, so some features were explained rather than used.',
-    'Task time and success rate were not measured.',
-  ],
-  nextRound: [
-    'Test with 6–8 students who arrived in the last 3 months.',
-    'Compare the new designs with the current ones.',
-    'Measure task time, success rate and SUS score.',
-    'Test on site at a tram stop and a clinic.',
-  ],
-}
-
 /** Real screens from the current prototype build (captured 2 Nov 2026). */
 export const prototypeScreens = [
   { src: 'assets/prototype/home.jpg', title: 'Home', caption: 'Tools, Short Trip and small discoveries.' },

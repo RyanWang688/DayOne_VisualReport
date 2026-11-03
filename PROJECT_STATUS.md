@@ -21,19 +21,21 @@ Reading order (set in `src/content/sections.ts`): front matter → Part I · Res
 | 00 | Overview + title block | Front | Done — all title-block fields filled (submission date 5 November 2026). “Watch the video” plays in an in-page YouTube player | Field report cover, A0 poster, team |
 | — | Abstract | Front | **Draft** — 96-word condensed version, awaiting approval | Field report Abstract |
 | — | Project context + “How this report reads” map | Front | Done | — |
-| — | Project Overview (interactive process timeline) — sits just before Part I | Front | Done | Field report Method, A0 poster, evaluation deck |
+| — | Project Overview (interactive process timeline) — sits just before Part I | Front | Done | Field report Method, A0 poster, usability evaluation report |
 | 01 | Literature Review | I | Done — 3 major insights + 2 context blocks, 12 references | Field report Literature Review |
 | 02 | Study Design + affinity map (2.1, 2.2) | I | Done — 142 coded notes, 10 clusters, P1–P8; 2 Foundation/Diploma · 2 Bachelor’s · 4 Master’s; countries as flags | Field report Method/Ethics, coding table, team confirmation |
 | 03 | Challenges (4 themes) | I | Done — sub-findings, 7 translated quotes, scenarios, implications | Field report Findings |
 | 04 | HMW | II | Done | Research question |
-| 05 | Outcome (5.1–5.3) | II | Done — finding → opportunity → feature map, prototype screens, usability results | Field report Conclusion, A0 poster, evaluation deck |
-| 06 | Conclusions | II | Done | Field report Discussion & Conclusion |
+| 05 | Design Concept (5.1) | II | Done — finding → opportunity → feature map | Field report Conclusion, A0 poster |
+| 06 | Iteration (6.1–6.2) | II | Done — driver licence journey traced Low-fi → Wireframe → Initial hi-fi; fidelity explorer with all 2 sketch sheets, 16 wireframes, 22 initial hi-fi screens | Team design archives |
+| 07 | Evaluation (7.1–7.4) | II | Done — method, 8 problems (2 High · 6 Medium), 6 before/after refinements, final design + live build | Usability Evaluation Report; Evaluation Comparison archive |
+| 08 | Conclusions | II | Done | Field report Discussion & Conclusion |
 | — | References | Back | Done — 12 APA entries with DOIs | Field report References |
 | — | Appendices | Back | Interview questions, poster, research-data link (placeholder), acknowledgements (placeholder) | Field report Appendix |
 
 ## Interactions
 
-- Story line: every chapter opens with a guiding question (e.g. "How did we listen?") above a measured headline, and Literature, Study Design and Outcome end with a "Next" hand-off naming the next chapter's question; part openers list each chapter's question
+- Story line: every chapter opens with a guiding question (e.g. "How did we listen?") above a measured headline, and Literature, Study Design, Design Concept, Iteration and Evaluation end with a "Next" hand-off naming the next chapter's question; part openers list each chapter's question
 - Wayfinding: header breadcrumb (part / chapter) plus a segmented chapter-progress bar (one segment per section, grouped by part; the current one fills as you read, hover for its name); Contents sheet available on every screen size, highlighting the current chapter
 - Type scale: display headings reduced (section titles max 2.4rem, sub-headings ~1.85rem, hero wordmark 7rem) so headlines no longer dominate the reading flow
 - Readability: 12px minimum for labels, faint grey darkened to ≥4.5:1 contrast, abstract set in the body face
@@ -44,7 +46,9 @@ Reading order (set in `src/content/sections.ts`): front matter → Part I · Res
 - Challenges: sticky theme index, active theme number lights up, expandable evidence with participant badges, bridge into HMW
 - HMW: spring-smoothed scroll scene; each theme T1–T4 lights its phrase of the question word by word with a sweeping underline while its card's progress bar fills; then the full question resolves; static version under reduced motion
 - Micro-interactions: consistent button press feedback, card lift, growing link underline, phone-frame hover
-- Outcome: hover a row to trace finding → opportunity → feature
+- Design Concept: hover a row to trace finding → opportunity → feature
+- Iteration: the three fidelities of one journey arrive in sequence as a connector line draws; fidelity explorer tabs (arrow-key navigable) with feature chips, screens dealt from a pile into a row, and a full-screen viewer (← → Esc)
+- Evaluation: severity bar fills on view; selecting a problem expands its evidence, draws an n/6 participant ring and moves a highlight box onto the relevant region of the tested screen; before/after slider sweeps once on first view, then drag, ← → or Before/After buttons; problem and solution columns brighten with the slider; final design toggles between refined designs and the live build
 - Reduced motion respected throughout
 
 ## Open items

@@ -46,8 +46,10 @@ All academic content lives in `src/content/` — no component code needs to chan
 | `challenges.ts` | 03 Challenges — four themes, sub-findings, quotes, scenarios, implications |
 | `hmw.ts` | 04 HMW — the question (single source, also used by the hero) and how each theme T1–T4 leads to a phrase in it |
 | `abstract.ts` | Abstract (front matter, ~100 words) and its draft/approved status |
-| `outcome.ts` | 05 Finding → opportunity → feature map, prototype screens, usability evaluation |
-| `conclusions.ts` | 06 Conclusions, limitations, implications, future work |
+| `outcome.ts` | 05 Design Concept: finding → opportunity → feature map; live-build prototype screens |
+| `iteration.ts` | 06 Iteration: Low-fi sketches, wireframe and initial hi-fi screen groups, the driver licence trace |
+| `evaluation.ts` | 07 Evaluation: method, eight usability problems, before/after refinements |
+| `conclusions.ts` | 08 Conclusions, limitations, implications, future work |
 | `references.ts` | APA reference list (in-text citations link here) |
 | `appendix.ts` | Interview questions, journey map, acknowledgements |
 
@@ -68,6 +70,7 @@ public/assets/
   brand/       Day One wordmark (transparent PNG) and favicon
   poster/      A0 poster and the poster's prototype-screen montage
   prototype/   Screens captured from the Day One prototype
+  iteration/   Low-fi, wireframe, initial hi-fi and before/after screens (web JPGs of the team's design files)
 src/
   content/     Editable content (see table above)
   components/  Nav, AffinityBoard + ClusterViewer, shared UI (Reveal, Expandable, Cite, Ph…)

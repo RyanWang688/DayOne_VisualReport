@@ -9,6 +9,8 @@ import { Challenges } from './sections/Challenges'
 import { HMW } from './sections/HMW'
 import { Abstract } from './sections/Abstract'
 import { Outcome } from './sections/Outcome'
+import { Iteration } from './sections/Iteration'
+import { Evaluation } from './sections/Evaluation'
 import { Conclusions } from './sections/Conclusions'
 import { References } from './sections/References'
 import { Appendix } from './sections/Appendix'
@@ -33,6 +35,8 @@ export default function App() {
         <PartDivider part="design" />
         <HMW />
         <Outcome />
+        <Iteration />
+        <Evaluation />
         <Conclusions />
         <References />
         <Appendix />

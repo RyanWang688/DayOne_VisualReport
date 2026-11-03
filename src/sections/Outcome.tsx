@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { ArrowRight } from 'lucide-react'
-import { evaluation, outcomeMap, outcomeSummary, prototypeScreens } from '../content/outcome'
-import { Expandable, NextChapter, PhoneFrame, Reveal, SectionHeader, SourceTag } from '../components/ui'
+import { outcomeMap, outcomeSummary } from '../content/outcome'
+import { NextChapter, Reveal, SectionHeader, SourceTag } from '../components/ui'
 
 export function Outcome() {
   const [hover, setHover] = useState<number | null>(null)
@@ -57,109 +57,6 @@ export function Outcome() {
         </ol>
         <div className="mt-4">
           <SourceTag>Findings — field report · Features — A0 poster · Opportunities — team design interpretation</SourceTag>
-        </div>
-
-        {/* Prototype screens */}
-        <div className="mt-24">
-          <Reveal>
-            <p className="eyebrow text-blue">5.2 · The prototype</p>
-            <h3 className="mt-2 text-[clamp(1.4rem,2.2vw,1.85rem)] font-semibold">Day One, as built.</h3>
-          </Reveal>
-          <div className="-mx-4 mt-10 flex snap-x snap-mandatory gap-6 overflow-x-auto px-4 pb-6 sm:-mx-8 sm:px-8 lg:-mx-12 lg:px-12" tabIndex={0} aria-label="Prototype screens, scroll horizontally">
-            {prototypeScreens.map((s, i) => (
-              <Reveal key={s.src} delay={i * 0.05} className="w-[220px] shrink-0 snap-start sm:w-[250px]">
-                <figure className="group">
-                  <PhoneFrame src={s.src} alt={`Day One prototype: ${s.title}`} className="aspect-[1/2]" />
-                  <figcaption className="mt-4">
-                    <p className="font-semibold">{s.title}</p>
-                    <p className="text-[14px] text-muted">{s.caption}</p>
-                  </figcaption>
-                </figure>
-              </Reveal>
-            ))}
-          </div>
-          <SourceTag>Screens captured from the current prototype build, 2 Nov 2026. Photos inside the app are credited in the prototype’s PHOTO-CREDITS.</SourceTag>
-        </div>
-
-        {/* Evaluation */}
-        <div className="mt-24 border-t-2 border-ink pt-10">
-          <div className="grid gap-10 md:grid-cols-12">
-            <Reveal className="md:col-span-4">
-              <p className="eyebrow text-blue">5.3 · {evaluation.label}</p>
-              <h3 className="mt-2 text-[clamp(1.4rem,2.2vw,1.85rem)] font-semibold">What testing told us.</h3>
-              <p className="mt-4 text-[15px] text-muted">{evaluation.method}</p>
-              <ul className="mt-6 space-y-3 text-[14px]">
-                {evaluation.questions.map((q) => (
-                  <li key={q.id} className="grid grid-cols-[44px_1fr]">
-                    <span className="font-mono text-[12px] text-blue">{q.id}</span>
-                    <span>
-                      <span className="font-semibold">{q.feature}.</span> <span className="text-muted">{q.q}</span>
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </Reveal>
-            <div className="md:col-span-8">
-              <ul className="grid gap-px border border-line bg-line sm:grid-cols-2">
-                {evaluation.findings.map((f, i) => (
-                  <Reveal as="li" key={f.title} delay={i * 0.05} className="lift relative bg-paper p-5 hover:z-10">
-                    <p className="font-display text-3xl font-bold text-blue">{f.fraction}</p>
-                    <p className="mt-2 font-semibold leading-snug">{f.title}</p>
-                    <p className="mt-1 text-[14px] text-muted">{f.text}</p>
-                  </Reveal>
-                ))}
-              </ul>
-              <p className="mt-3 font-mono text-[12px] text-faint">{evaluation.fractionNote}</p>
-
-              <div className="mt-8">
-                <Expandable label="Usability problems (U1–U4) and recommendations (R1–R3)">
-                  <div className="grid gap-6 sm:grid-cols-2">
-                    <ul className="space-y-3 text-[14px]">
-                      {evaluation.problems.map((p) => (
-                        <li key={p.id} className="grid grid-cols-[36px_1fr]">
-                          <span className="font-mono text-[12px] text-blue">{p.id}</span>
-                          <span>
-                            {p.text}{' '}
-                            <span className="text-faint">
-                              ({p.who} · severity {p.severity})
-                            </span>
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                    <ul className="space-y-3 text-[14px]">
-                      {evaluation.recommendations.map((r) => (
-                        <li key={r.id} className="grid grid-cols-[36px_1fr]">
-                          <span className="font-mono text-[12px] text-blue">{r.id}</span>
-                          <span>
-                            {r.text} <span className="text-faint">(from {r.from} · {r.priority} priority)</span>
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <p className="mt-4 text-[13px] text-faint">Severity uses Nielsen’s 0–4 scale (high = 3, medium = 2).</p>
-                </Expandable>
-                <Expandable label="Evaluation limitations and next round">
-                  <div className="grid gap-6 text-[14px] text-muted sm:grid-cols-2">
-                    <ul className="list-disc space-y-1 pl-5">
-                      {evaluation.limitations.map((l) => (
-                        <li key={l}>{l}</li>
-                      ))}
-                    </ul>
-                    <ul className="list-disc space-y-1 pl-5">
-                      {evaluation.nextRound.map((l) => (
-                        <li key={l}>{l}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </Expandable>
-                <div className="border-t border-line pt-3">
-                  <SourceTag>Usability evaluation deck (Oct 2026)</SourceTag>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
 
         <NextChapter from="outcome" />

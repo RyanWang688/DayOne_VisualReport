@@ -28,7 +28,8 @@ export const meta = {
   date: '5 November 2026' as Editable,
   /** Any YouTube watch/share link; the site plays it in an in-page player. */
   videoUrl: 'https://www.youtube.com/watch?v=EtDkfVKqdao' as Editable,
-  prototypeUrl: placeholder('Prototype URL — to be supplied') as Editable,
+  /** Live prototype (v14), as linked from the team's Low-to-High report. */
+  prototypeUrl: 'https://ryanwang688.github.io/day-one-mobile/?v=14' as Editable,
   researchDataUrl: placeholder('Research Data and Code link — to be supplied') as Editable,
 
   /** Student IDs are kept here for the submitted PDF but hidden on the public site by default. */

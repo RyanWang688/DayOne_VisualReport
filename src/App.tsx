@@ -23,9 +23,9 @@ export default function App() {
         <Overview />
         <Abstract />
         <ReportMap />
+        <ResearchProcess />
 
         <PartDivider part="research" />
-        <ResearchProcess />
         <Literature />
         <StudyDesign />
         <Challenges />

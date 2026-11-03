@@ -1,5 +1,6 @@
 import { study } from '../content/study'
 import { totalNotes, clusters } from '../content/affinity'
+import { sectionById } from '../content/sections'
 import { Reveal, SectionHeader, asset } from '../components/ui'
 import { AffinityBoard } from '../components/AffinityBoard'
 import { ShieldCheck } from 'lucide-react'
@@ -8,11 +9,11 @@ export function StudyDesign() {
   return (
     <section id="study-design" className="border-t border-line py-24 md:py-32">
       <div className="container-x">
-        <SectionHeader num="03" label="Study Design" title="Eight conversations, coded note by note." intro={study.approach} />
+        <SectionHeader num={sectionById['study-design'].num} label="Study Design" title="Eight conversations, coded note by note." intro={study.approach} />
 
         <div className="grid gap-12 md:grid-cols-12">
           <Reveal className="md:col-span-5">
-            <p className="eyebrow mb-4 text-blue">3.1 · Participants and method</p>
+            <p className="eyebrow mb-4 text-blue">2.1 · Participants and method</p>
             <dl className="grid grid-cols-3 border-y-2 border-ink">
               {study.facts.map((f, i) => (
                 <div key={f.label} className={`py-5 ${i ? 'border-l border-line pl-4 sm:pl-5' : 'pr-4'}`}>
@@ -81,7 +82,7 @@ export function StudyDesign() {
           <Reveal>
             <div className="mb-8 flex flex-wrap items-end justify-between gap-6">
               <div>
-                <p className="eyebrow text-blue">3.2 · Interactive affinity map</p>
+                <p className="eyebrow text-blue">2.2 · Interactive affinity map</p>
                 <h3 className="mt-2 max-w-[22ch] text-[clamp(1.8rem,3.4vw,2.6rem)] font-bold">
                   {totalNotes} coded observations in {clusters.length} clusters.
                 </h3>

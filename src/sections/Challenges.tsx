@@ -1,6 +1,7 @@
 import { Lightbulb, MapPin, Quote as QuoteIcon } from 'lucide-react'
 import { challenges, quoteNote, type Challenge } from '../content/challenges'
 import { journeyMap } from '../content/appendix'
+import { sectionById } from '../content/sections'
 import { useActiveIndex } from '../hooks/useActiveSection'
 import { Expandable, PBadge, Reveal, SectionHeader, SourceTag } from '../components/ui'
 
@@ -10,7 +11,7 @@ export function Challenges() {
     <section id="challenges" className="border-t border-line bg-paper py-24 md:py-32">
       <div className="container-x">
         <SectionHeader
-          num="04"
+          num={sectionById.challenges.num}
           label="Challenges"
           title="Four themes from the interviews."
           intro="Thematic analysis of the ten clusters produced four themes. Each traces a different part of the gap between having information and acting on it."

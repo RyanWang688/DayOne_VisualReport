@@ -28,8 +28,12 @@ export function SectionHeader({ num, label, title, intro, tone = 'light' }: { nu
     <header className="mb-12 grid gap-6 md:mb-16 md:grid-cols-12">
       <Reveal className="md:col-span-3">
         <div className={`flex items-center gap-3 font-mono text-[12px] uppercase tracking-[0.14em] ${dark ? 'text-white/60' : 'text-muted'}`}>
-          <span className={dark ? 'text-white' : 'text-blue'}>{num}</span>
-          <span className={`h-px w-8 ${dark ? 'bg-white/30' : 'bg-line'}`} />
+          {num && (
+            <>
+              <span className={dark ? 'text-white' : 'text-blue'}>{num}</span>
+              <span className={`h-px w-8 ${dark ? 'bg-white/30' : 'bg-line'}`} />
+            </>
+          )}
           <span>{label}</span>
         </div>
       </Reveal>

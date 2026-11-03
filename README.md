@@ -39,15 +39,15 @@ All academic content lives in `src/content/` — no component code needs to chan
 | --- | --- |
 | `sections.ts` | Report structure: section order, numbering, parts and one-line takeaways |
 | `meta.ts` | Title block: degree, faculty, supervisor, authors, date, video link, prototype link |
-| `process.ts` | 01 Research Process timeline stages |
-| `literature.ts` | 02 Literature Review insights and citations |
-| `study.ts` | 03 Study Design facts, steps and ethics |
-| `affinity.ts` | 03 Affinity map — the coding table, verbatim (cluster, participant, codes) |
-| `challenges.ts` | 04 Challenges — four themes, sub-findings, quotes, scenarios, implications |
-| `hmw.ts` | 05 HMW — the question (single source, also used by the hero) and how each theme T1–T4 leads to a phrase in it |
+| `process.ts` | Project Overview process timeline stages (front matter, before Part I) |
+| `literature.ts` | 01 Literature Review insights and citations |
+| `study.ts` | 02 Study Design facts, steps and ethics |
+| `affinity.ts` | 02 Affinity map — the coding table, verbatim (cluster, participant, codes) |
+| `challenges.ts` | 03 Challenges — four themes, sub-findings, quotes, scenarios, implications |
+| `hmw.ts` | 04 HMW — the question (single source, also used by the hero) and how each theme T1–T4 leads to a phrase in it |
 | `abstract.ts` | Abstract (front matter, ~100 words) and its draft/approved status |
-| `outcome.ts` | 06 Finding → opportunity → feature map, prototype screens, usability evaluation |
-| `conclusions.ts` | 07 Conclusions, limitations, implications, future work |
+| `outcome.ts` | 05 Finding → opportunity → feature map, prototype screens, usability evaluation |
+| `conclusions.ts` | 06 Conclusions, limitations, implications, future work |
 | `references.ts` | APA reference list (in-text citations link here) |
 | `appendix.ts` | Interview questions, journey map, acknowledgements |
 

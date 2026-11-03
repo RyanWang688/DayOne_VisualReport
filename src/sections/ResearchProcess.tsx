@@ -2,6 +2,7 @@ import { useRef } from 'react'
 import { AnimatePresence, motion, useScroll, useSpring } from 'motion/react'
 import { processStages, type ProcessStage } from '../content/process'
 import { clusters } from '../content/affinity'
+import { sectionById } from '../content/sections'
 import { useActiveIndex } from '../hooks/useActiveSection'
 import { Expandable, Reveal, SectionHeader, SourceTag, asset } from '../components/ui'
 
@@ -12,11 +13,11 @@ export function ResearchProcess() {
   const active = useActiveIndex(processStages.length, 'stage')
 
   return (
-    <section id="research-process" className="border-t border-line py-24 md:py-32">
+    <section id="project-overview" className="border-t border-line py-24 md:py-32">
       <div className="container-x">
         <SectionHeader
-          num="01"
-          label="Research Process"
+          num={sectionById['project-overview'].num}
+          label={sectionById['project-overview'].label}
           title="A user-centred process, from listening to testing."
           intro="Each stage produced something the next one depended on: interviews became codes, codes became themes, themes became features, and features were tested with students."
         />

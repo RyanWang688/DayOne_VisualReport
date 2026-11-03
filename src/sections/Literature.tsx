@@ -1,6 +1,7 @@
 import { motion } from 'motion/react'
 import { litContext, litFraming, litInsights, type LitInsight } from '../content/literature'
 import { refByKey } from '../content/references'
+import { sectionById } from '../content/sections'
 import { Cite, Expandable, Reveal, SectionHeader } from '../components/ui'
 
 export function Literature() {
@@ -8,7 +9,7 @@ export function Literature() {
     <section id="literature" className="border-t border-line bg-paper py-24 md:py-32">
       <div className="container-x">
         <SectionHeader
-          num="02"
+          num={sectionById.literature.num}
           label="Literature Review"
           title="What earlier research told us to look for."
           intro={

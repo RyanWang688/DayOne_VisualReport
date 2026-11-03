@@ -13,7 +13,7 @@ export function Outcome() {
 
         {/* Finding → Opportunity → Feature */}
         <Reveal>
-          <p className="eyebrow mb-4 text-blue">6.1 · Findings to features</p>
+          <p className="eyebrow mb-4 text-blue">5.1 · Findings to features</p>
           <div className="hidden grid-cols-[1fr_32px_1fr_32px_1.2fr] gap-0 border-b-2 border-ink pb-3 font-mono text-[12px] uppercase tracking-[0.12em] text-faint md:grid">
             <span>Research finding</span>
             <span />
@@ -63,7 +63,7 @@ export function Outcome() {
         {/* Prototype screens */}
         <div className="mt-24">
           <Reveal>
-            <p className="eyebrow text-blue">6.2 · The prototype</p>
+            <p className="eyebrow text-blue">5.2 · The prototype</p>
             <h3 className="mt-2 text-[clamp(1.8rem,3.4vw,2.6rem)] font-bold">Day One, as built.</h3>
           </Reveal>
           <div className="-mx-4 mt-10 flex snap-x snap-mandatory gap-6 overflow-x-auto px-4 pb-6 sm:-mx-8 sm:px-8 lg:-mx-12 lg:px-12" tabIndex={0} aria-label="Prototype screens, scroll horizontally">
@@ -86,7 +86,7 @@ export function Outcome() {
         <div className="mt-24 border-t-2 border-ink pt-10">
           <div className="grid gap-10 md:grid-cols-12">
             <Reveal className="md:col-span-4">
-              <p className="eyebrow text-blue">6.3 · {evaluation.label}</p>
+              <p className="eyebrow text-blue">5.3 · {evaluation.label}</p>
               <h3 className="mt-2 text-3xl font-bold">What testing told us.</h3>
               <p className="mt-4 text-[15px] text-muted">{evaluation.method}</p>
               <ul className="mt-6 space-y-3 text-[14px]">

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { ArrowRight } from 'lucide-react'
 import { outcomeMap, outcomeSummary } from '../content/outcome'
-import { NextChapter, Reveal, SectionHeader, SourceTag } from '../components/ui'
+import { Reveal, SectionHeader, SourceTag, SubHeader } from '../components/ui'
 
 export function Outcome() {
   const [hover, setHover] = useState<number | null>(null)
@@ -11,8 +11,8 @@ export function Outcome() {
         <SectionHeader id="outcome" title="From findings to features." intro={outcomeSummary} />
 
         {/* Finding → Opportunity → Feature */}
+        <SubHeader num="5.1" label="Findings to features" title="Each finding, answered by a feature." lead="Hover a row to trace a research finding through a design opportunity to the features that respond to it." />
         <Reveal>
-          <p className="eyebrow mb-4 text-blue">5.1 · Findings to features</p>
           <div className="hidden grid-cols-[1fr_32px_1fr_32px_1.2fr] gap-0 border-b-2 border-ink pb-3 font-mono text-[12px] uppercase tracking-[0.12em] text-faint md:grid">
             <span>Research finding</span>
             <span />
@@ -58,8 +58,6 @@ export function Outcome() {
         <div className="mt-4">
           <SourceTag>Findings — field report · Features — A0 poster · Opportunities — team design interpretation</SourceTag>
         </div>
-
-        <NextChapter from="outcome" />
       </div>
     </section>
   )

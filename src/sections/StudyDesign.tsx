@@ -1,6 +1,6 @@
 import { study } from '../content/study'
 import { totalNotes, clusters } from '../content/affinity'
-import { NextChapter, Reveal, SectionHeader, asset } from '../components/ui'
+import { Reveal, SectionHeader, SubHeader, asset } from '../components/ui'
 import { AffinityBoard } from '../components/AffinityBoard'
 import { ShieldCheck } from 'lucide-react'
 
@@ -10,9 +10,9 @@ export function StudyDesign() {
       <div className="container-x">
         <SectionHeader id="study-design" title="Eight conversations, coded note by note." intro={study.approach} />
 
+        <SubHeader num="2.1" label="Participants and method" title="Eight students, one interview each." />
         <div className="grid gap-12 md:grid-cols-12">
           <Reveal className="md:col-span-5">
-            <p className="eyebrow mb-4 text-blue">2.1 · Participants and method</p>
             <dl className="grid grid-cols-3 border-y-2 border-ink">
               {study.facts.map((f, i) => (
                 <div key={f.label} className={`py-5 ${i ? 'border-l border-line pl-4 sm:pl-5' : 'pr-4'}`}>
@@ -78,23 +78,14 @@ export function StudyDesign() {
         </div>
 
         <div className="mt-24">
-          <Reveal>
-            <div className="mb-8 flex flex-wrap items-end justify-between gap-6">
-              <div>
-                <p className="eyebrow text-blue">2.2 · Interactive affinity map</p>
-                <h3 className="mt-2 max-w-[26ch] text-[clamp(1.4rem,2.2vw,1.85rem)] font-semibold leading-[1.2]">
-                  {totalNotes} coded observations in {clusters.length} clusters.
-                </h3>
-              </div>
-              <p className="max-w-[44ch] text-[15px] text-muted">
-                Every sticky note is a real code from our coding table. Watch the raw codes settle into clusters, trace a participant across the board, and open any cluster to read its notes.
-              </p>
-            </div>
-          </Reveal>
+          <SubHeader
+            num="2.2"
+            label="Interactive affinity map"
+            title={`${totalNotes} coded observations in ${clusters.length} clusters.`}
+            lead="Every sticky note is a real code from our coding table. Watch the raw codes settle into clusters, trace a participant across the board, and open any cluster to read its notes."
+          />
           <AffinityBoard />
         </div>
-
-        <NextChapter from="study-design" />
       </div>
     </section>
   )

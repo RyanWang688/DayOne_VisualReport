@@ -24,7 +24,7 @@ export function ResearchProcess() {
           {/* Sticky stage index with scroll-driven progress */}
           <nav aria-label="Process stages" className="lg:col-span-4">
             <div className="lg:sticky lg:top-24">
-              <ol className="relative flex gap-2 overflow-x-auto pb-2 lg:flex-col lg:gap-0 lg:overflow-visible lg:pb-0 lg:pl-6">
+              <ol className="relative flex flex-wrap gap-2 lg:flex-col lg:flex-nowrap lg:gap-0 lg:pl-6">
                 <span aria-hidden className="absolute bottom-3 left-[3px] top-3 hidden w-px bg-line lg:block" />
                 <motion.span aria-hidden className="absolute left-[3px] top-3 hidden w-px origin-top bg-blue lg:block" style={{ scaleY: fill, bottom: 12 }} />
                 {processStages.map((s, i) => (

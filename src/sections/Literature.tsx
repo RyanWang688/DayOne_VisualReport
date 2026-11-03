@@ -1,7 +1,7 @@
 import { motion } from 'motion/react'
 import { litContext, litFraming, litInsights, type LitInsight } from '../content/literature'
 import { refByKey } from '../content/references'
-import { Cite, Expandable, NextChapter, Reveal, SectionHeader } from '../components/ui'
+import { Cite, Expandable, Reveal, SectionHeader } from '../components/ui'
 
 export function Literature() {
   return (
@@ -40,8 +40,6 @@ export function Literature() {
             </Reveal>
           ))}
         </div>
-
-        <NextChapter from="literature" />
       </div>
     </section>
   )

@@ -2,13 +2,10 @@ import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, animate, motion, useInView, useMotionValue, useMotionValueEvent, useReducedMotion, useTransform } from 'motion/react'
 import { ChevronsLeftRight, Quote as QuoteIcon } from 'lucide-react'
 import { evalMethod, evalSource, featureOrder, problems, refinementNote, refinements, type UsabilityProblem } from '../content/evaluation'
-import { prototypeScreens } from '../content/outcome'
-import { Lightbox, type LightboxItem } from '../components/Lightbox'
 import { LiveDemo } from '../components/LiveDemo'
-import { Expandable, NextChapter, PhoneFrame, Reveal, SectionHeader, SourceTag, asset } from '../components/ui'
+import { Expandable, Reveal, SectionHeader, SourceTag, SubHeader, asset } from '../components/ui'
 
 const ease = [0.22, 1, 0.36, 1] as const
-const sub = 'text-[clamp(1.4rem,2.2vw,1.85rem)] font-semibold'
 
 export function Evaluation() {
   return (
@@ -18,9 +15,7 @@ export function Evaluation() {
         <Method />
         <Problems />
         <Refinements />
-        <FinalDesign />
         <LiveDemo />
-        <NextChapter from="evaluation" />
       </div>
     </section>
   )
@@ -30,9 +25,10 @@ export function Evaluation() {
 
 function Method() {
   return (
+    <div>
+    <SubHeader num="7.1" label="Method" title="How we tested the prototype." />
     <div className="grid gap-10 md:grid-cols-12">
       <Reveal className="md:col-span-5">
-        <p className="eyebrow mb-4 text-blue">7.1 · Method</p>
         <p className="font-mono text-[12px] uppercase tracking-[0.12em] text-faint">Research aim</p>
         <p className="mt-1 font-serif text-[1.3rem] italic leading-snug text-ink-2">{evalMethod.aim}</p>
         <dl className="mt-6 grid grid-cols-3 border-y-2 border-ink">
@@ -71,6 +67,7 @@ function Method() {
         </div>
       </div>
     </div>
+    </div>
   )
 }
 
@@ -84,16 +81,15 @@ function Problems() {
 
   return (
     <div className="mt-24">
-      <Reveal>
-        <p className="eyebrow text-blue">7.2 · Key usability problems</p>
-        <div className="mt-2 flex flex-wrap items-end justify-between gap-6">
-          <h3 className={`${sub} max-w-[26ch]`}>Eight problems, mapped to the screens where they appeared.</h3>
-          <SeverityBar high={high} medium={problems.length - high} />
-        </div>
-        <p className="mt-3 max-w-[62ch] text-[15px] text-muted">Select a problem to see the evidence, the heuristic it breaks and the screen region involved.</p>
-      </Reveal>
+      <SubHeader
+        num="7.2"
+        label="Key usability problems"
+        title="Eight problems, mapped to the screens where they appeared."
+        lead="Select a problem to see the evidence, the heuristic it breaks and the screen region involved."
+        aside={<SeverityBar high={high} medium={problems.length - high} />}
+      />
 
-      <div className="mt-10 grid gap-10 lg:grid-cols-12">
+      <div className="grid gap-10 lg:grid-cols-12">
         <div className="lg:col-span-7">
           {features.map((f) => (
             <div key={f} className="mb-6">
@@ -281,14 +277,10 @@ function Refinements() {
   const [k, setK] = useState(0)
   const r = refinements[k]
   return (
-    <div className="mt-24 border-t-2 border-ink pt-10">
-      <Reveal>
-        <p className="eyebrow text-blue">7.3 · From problem to refinement</p>
-        <h3 className={`mt-2 ${sub}`}>Before and after, feature by feature.</h3>
-        <p className="mt-3 max-w-[62ch] text-[15px] text-muted">Drag the handle (or use ← →) to compare the tested screen with its refined version.</p>
-      </Reveal>
+    <div className="mt-24">
+      <SubHeader num="7.3" label="From problem to refinement" title="Before and after, feature by feature." lead="Drag the handle (or use ← →) to compare the tested screen with its refined version." />
 
-      <div className="-mx-4 mt-6 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:flex-wrap sm:px-0" role="tablist" aria-label="Refined feature">
+      <div className="flex flex-wrap gap-2" role="tablist" aria-label="Refined feature">
         {refinements.map((x, i) => (
           <button
             key={x.key}
@@ -323,6 +315,14 @@ function Compare({ r }: { r: (typeof refinements)[number] }) {
   const left = useTransform(split, (v) => `${v}%`)
   const solutionO = useTransform(split, [20, 80], [0.35, 1])
   const problemO = useTransform(split, [20, 80], [1, 0.35])
+  // Red when the tested screen dominates, green when the refined one does.
+  const accent = useTransform(split, [0, 50, 100], ['#b42318', '#f4b63f', '#157a3c'])
+  const ring = useTransform(accent, (c) => `0 0 0 3px ${c}, 0 30px 60px -30px rgba(14,20,34,0.45)`)
+  const afterO = useTransform(split, [0, 60], [0.4, 1])
+  const beforeO = useTransform(split, [40, 100], [1, 0.4])
+  const afterS = useTransform(split, [0, 100], [0.92, 1.08])
+  const beforeS = useTransform(split, [0, 100], [1.08, 0.92])
+  const state = val <= 35 ? 'before' : val >= 65 ? 'after' : 'mixed'
   useMotionValueEvent(split, 'change', (v) => setVal(Math.round(v)))
 
   // On first view, sweep the handle across once to show what changes, then rest in the middle.
@@ -357,9 +357,11 @@ function Compare({ r }: { r: (typeof refinements)[number] }) {
       </motion.div>
 
       <div className="mx-auto w-full max-w-[290px] md:col-span-4">
-        <div
+        {/* The frame, divider and labels shift from red (before) to green (after) as the handle moves. */}
+        <motion.div
           ref={ref}
-          className="relative cursor-ew-resize touch-pan-y select-none overflow-hidden rounded-[28px] border-[6px] border-ink bg-white shadow-[0_30px_60px_-30px_rgba(14,20,34,0.45)] has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-4 has-[:focus-visible]:outline-blue"
+          className="relative cursor-ew-resize touch-pan-y select-none overflow-hidden rounded-[28px] border-[6px] border-ink bg-white has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-4 has-[:focus-visible]:outline-blue"
+          style={{ boxShadow: ring }}
           onPointerDown={(e) => {
             ;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
             dragTo(e.clientX)
@@ -374,12 +376,16 @@ function Compare({ r }: { r: (typeof refinements)[number] }) {
             className="absolute inset-0 block h-full w-full object-cover object-top"
             style={{ clipPath: clip }}
           />
-          <span className="pointer-events-none absolute left-3 top-3 rounded-[3px] bg-blue px-1.5 py-0.5 font-mono text-[11px] uppercase tracking-[0.08em] text-white">After</span>
-          <span className="pointer-events-none absolute right-3 top-3 rounded-[3px] bg-ink/75 px-1.5 py-0.5 font-mono text-[11px] uppercase tracking-[0.08em] text-white">Before</span>
-          <motion.span aria-hidden className="pointer-events-none absolute inset-y-0 w-[2px] -translate-x-1/2 bg-sun" style={{ left }}>
-            <span className="absolute left-1/2 top-1/2 grid h-9 w-9 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-sun text-ink shadow-md">
+          <motion.span className="pointer-events-none absolute left-3 top-3 origin-top-left rounded-[3px] bg-solution px-1.5 py-0.5 font-mono text-[11px] uppercase tracking-[0.08em] text-white" style={{ opacity: afterO, scale: afterS }}>
+            After
+          </motion.span>
+          <motion.span className="pointer-events-none absolute right-3 top-3 origin-top-right rounded-[3px] bg-problem px-1.5 py-0.5 font-mono text-[11px] uppercase tracking-[0.08em] text-white" style={{ opacity: beforeO, scale: beforeS }}>
+            Before
+          </motion.span>
+          <motion.span aria-hidden className="pointer-events-none absolute inset-y-0 w-[2px] -translate-x-1/2" style={{ left, backgroundColor: accent }}>
+            <motion.span className="absolute left-1/2 top-1/2 grid h-9 w-9 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full text-white shadow-md" style={{ backgroundColor: accent }}>
               <ChevronsLeftRight size={18} />
-            </span>
+            </motion.span>
           </motion.span>
           <input
             type="range"
@@ -391,24 +397,27 @@ function Compare({ r }: { r: (typeof refinements)[number] }) {
             aria-valuetext={`${val}% refined design shown`}
             className="pointer-events-none absolute inset-0 h-full w-full opacity-0"
           />
-        </div>
+        </motion.div>
         <div className="mt-4 flex items-center justify-center gap-2">
-          {(
-            [
-              ['Before', 0],
-              ['After', 100],
-            ] as const
-          ).map(([label, v]) => (
-            <button
-              key={label}
-              type="button"
-              onClick={() => animate(split, v, { duration: reduce ? 0 : 0.5, ease: 'easeInOut' })}
-              aria-pressed={val === v}
-              className={`rounded-full border px-3 py-1 font-mono text-[12px] uppercase tracking-[0.08em] transition-colors ${val === v ? 'border-ink bg-ink text-white' : 'border-line bg-paper text-muted hover:border-ink/40'}`}
-            >
-              {label}
-            </button>
-          ))}
+          <button
+            type="button"
+            onClick={() => animate(split, 0, { duration: reduce ? 0 : 0.5, ease: 'easeInOut' })}
+            aria-pressed={state === 'before'}
+            className={`rounded-full border px-3 py-1 font-mono text-[12px] uppercase tracking-[0.08em] transition-colors ${state === 'before' ? 'border-problem bg-problem text-white' : 'border-line bg-paper text-muted hover:border-problem/50 hover:text-problem'}`}
+          >
+            Before
+          </button>
+          <span aria-live="polite" className={`w-[86px] text-center font-mono text-[11px] uppercase tracking-[0.08em] transition-colors ${state === 'before' ? 'text-problem' : state === 'after' ? 'text-solution' : 'text-faint'}`}>
+            {state === 'before' ? '← Tested' : state === 'after' ? 'Refined →' : 'Comparing'}
+          </span>
+          <button
+            type="button"
+            onClick={() => animate(split, 100, { duration: reduce ? 0 : 0.5, ease: 'easeInOut' })}
+            aria-pressed={state === 'after'}
+            className={`rounded-full border px-3 py-1 font-mono text-[12px] uppercase tracking-[0.08em] transition-colors ${state === 'after' ? 'border-solution bg-solution text-white' : 'border-line bg-paper text-muted hover:border-solution/50 hover:text-solution'}`}
+          >
+            After
+          </button>
         </div>
         <p className="mt-3 text-center font-mono text-[12px] text-faint">Recommendation {r.recs.join(' + ')}</p>
       </div>
@@ -424,73 +433,6 @@ function Compare({ r }: { r: (typeof refinements)[number] }) {
           ))}
         </ul>
       </motion.div>
-    </div>
-  )
-}
-
-/* 7.4 ─────────────────────────────────────────────────────────────── */
-
-function FinalDesign() {
-  const [view, setView] = useState<'refined' | 'live'>('refined')
-  const [box, setBox] = useState<number | null>(null)
-  const refined: LightboxItem[] = refinements.map((r) => ({ src: r.after, alt: `${r.name}: refined design`, caption: `${r.name} · refined after evaluation` }))
-  const live: LightboxItem[] = prototypeScreens.map((s) => ({ src: s.src, alt: `Day One prototype: ${s.title}`, caption: `${s.title} — ${s.caption}` }))
-  const items = view === 'refined' ? refined : live
-
-  return (
-    <div className="mt-24 border-t-2 border-ink pt-10">
-      <div className="flex flex-wrap items-end justify-between gap-6">
-        <Reveal>
-          <p className="eyebrow text-blue">7.4 · Final design</p>
-          <h3 className={`mt-2 ${sub}`}>Day One, after evaluation.</h3>
-        </Reveal>
-        <div className="flex rounded-full border border-line bg-paper p-1" role="group" aria-label="Screens to show">
-          {(
-            [
-              ['refined', 'Refined designs'],
-              ['live', 'Live build'],
-            ] as const
-          ).map(([k, label]) => (
-            <button key={k} type="button" aria-pressed={view === k} onClick={() => setView(k)} className="relative rounded-full px-3.5 py-1.5 text-[14px]">
-              {view === k && <motion.span layoutId="final-view-pill" className="absolute inset-0 rounded-full bg-ink" transition={{ duration: 0.3, ease }} />}
-              <span className={`relative ${view === k ? 'text-white' : 'text-ink-2'}`}>{label}</span>
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <AnimatePresence mode="wait" initial={false}>
-        <motion.ol
-          key={view}
-          className="-mx-4 mt-10 flex snap-x snap-mandatory gap-6 overflow-x-auto px-4 pb-6 sm:-mx-8 sm:px-8 lg:-mx-12 lg:px-12 scroll-px-4 sm:scroll-px-8 lg:scroll-px-12"
-          tabIndex={0}
-          aria-label="Final screens, scroll horizontally"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
-        >
-          {items.map((s, i) => (
-            <motion.li
-              key={s.src}
-              className="w-[200px] shrink-0 snap-start sm:w-[230px]"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, ease, delay: i * 0.06 }}
-            >
-              <button type="button" onClick={() => setBox(i)} aria-label={`Enlarge: ${s.alt}`} className="group block w-full text-left">
-                <PhoneFrame src={s.src} alt={s.alt} className="aspect-[402/874]" />
-                <p className="mt-4 text-[14px] text-muted">{s.caption}</p>
-              </button>
-            </motion.li>
-          ))}
-        </motion.ol>
-      </AnimatePresence>
-
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <SourceTag>{view === 'refined' ? 'Evaluation Comparison archive — refined screens' : 'Screens captured from the current prototype build, 2 Nov 2026'}</SourceTag>
-     </div>
-      <Lightbox items={items} index={box} onClose={() => setBox(null)} onIndex={setBox} />
     </div>
   )
 }

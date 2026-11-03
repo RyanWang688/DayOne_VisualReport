@@ -34,9 +34,3 @@ export type SectionId = (typeof sections)[number]['id']
 export const sectionById = Object.fromEntries(sections.map((s) => [s.id, s])) as Record<SectionId, (typeof sections)[number]>
 
 export const partByKey = Object.fromEntries(parts.map((p) => [p.key, p])) as Record<PartKey, (typeof parts)[number]>
-
-/** The section that follows `id` in reading order (undefined for the last one). */
-export function nextSection(id: SectionId) {
-  const i = sections.findIndex((s) => s.id === id)
-  return sections[i + 1]
-}

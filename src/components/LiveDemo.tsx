@@ -4,7 +4,7 @@ import { ArrowUpRight, Loader2 } from 'lucide-react'
 import { demoFeatures } from '../content/evaluation'
 import { meta } from '../content/meta'
 import { isPlaceholder } from '../content/types'
-import { Reveal, SourceTag } from './ui'
+import { SourceTag, SubHeader } from './ui'
 
 const ease = [0.22, 1, 0.36, 1] as const
 
@@ -15,7 +15,7 @@ function demoUrl(key: string) {
   return u.toString()
 }
 
-/** 7.5 — the real prototype, one feature at a time: tabs on top, phone on the left, explanation on the right. */
+/** 7.4 — the real prototype, one feature at a time: tabs on top, phone on the left, explanation on the right. */
 export function LiveDemo() {
   const [k, setK] = useState(0)
   const [loaded, setLoaded] = useState<string | null>(null)
@@ -31,15 +31,16 @@ export function LiveDemo() {
   if (isPlaceholder(meta.prototypeUrl)) return null
 
   return (
-    <div ref={ref} className="mt-24 border-t-2 border-ink pt-10">
-      <Reveal>
-        <p className="eyebrow text-blue">7.5 · Try Day One</p>
-        <h3 className="mt-2 text-[clamp(1.4rem,2.2vw,1.85rem)] font-semibold">The live prototype, one feature at a time.</h3>
-        <p className="mt-3 max-w-[62ch] text-[15px] text-muted">Pick a feature and use it on the phone. Each demo stays inside that feature, so you can explore freely without getting lost.</p>
-      </Reveal>
+    <div ref={ref} className="mt-24">
+      <SubHeader
+        num="7.4"
+        label="Try Day One"
+        title="The live prototype, one feature at a time."
+        lead="Pick a feature and use it on the phone. Each demo stays inside that feature, so you can explore freely without getting lost."
+      />
 
       {/* Feature tabs */}
-      <div role="tablist" aria-label="Feature to try" className="-mx-4 mt-8 flex gap-1 overflow-x-auto border-b border-line px-4 sm:mx-0 sm:px-0">
+      <div role="tablist" aria-label="Feature to try" className="flex flex-wrap gap-x-1 border-b border-line">
         {demoFeatures.map((x, i) => (
           <button
             key={x.key}

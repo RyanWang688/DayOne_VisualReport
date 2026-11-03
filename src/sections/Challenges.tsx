@@ -1,7 +1,6 @@
 import { Lightbulb, MapPin, Quote as QuoteIcon } from 'lucide-react'
 import { challenges, quoteNote, type Challenge } from '../content/challenges'
 import { journeyMap } from '../content/appendix'
-import { sectionById } from '../content/sections'
 import { useActiveIndex } from '../hooks/useActiveSection'
 import { Expandable, PBadge, Reveal, SectionHeader, SourceTag } from '../components/ui'
 
@@ -20,7 +19,7 @@ export function Challenges() {
 
         {/* Chapter index */}
         <nav aria-label="Themes" className="sticky top-[68px] z-30 -mx-4 mb-4 border-b border-line bg-paper/90 px-4 backdrop-blur sm:-mx-8 sm:px-8 lg:-mx-12 lg:px-12">
-          <ol className="flex gap-1 overflow-x-auto py-3">
+          <ol className="no-scrollbar flex gap-1 overflow-x-auto py-3">
             {challenges.map((c, i) => (
               <li key={c.num} className="shrink-0">
                 <a
@@ -39,20 +38,6 @@ export function Challenges() {
         {challenges.map((c, i) => (
           <Chapter key={c.num} c={c} index={i} active={active === i} />
         ))}
-
-        <Reveal>
-          <a href="#hmw" className="group grid gap-2 border-t-2 border-ink pt-5 sm:grid-cols-[1fr_auto] sm:items-end">
-            <span>
-              <span className="font-mono text-[12px] uppercase tracking-[0.14em] text-faint">
-                Next · {sectionById.hmw.num} · {sectionById.hmw.label} · opens Part II
-              </span>
-              <span className="mt-1 block font-display text-[clamp(1.2rem,2vw,1.5rem)] font-semibold">
-                Four themes. <span className="text-blue">One design question.</span>
-              </span>
-            </span>
-            <span className="font-mono text-[12px] uppercase tracking-[0.14em] text-blue">Continue ↓</span>
-          </a>
-        </Reveal>
       </div>
     </section>
   )

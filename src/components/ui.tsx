@@ -1,9 +1,9 @@
 import { useId, useState, type ReactNode } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
-import { ArrowDown, ChevronDown, CircleDashed } from 'lucide-react'
+import { ChevronDown, CircleDashed } from 'lucide-react'
 import { isPlaceholder, type Editable, type ParticipantId, type RefKey } from '../content/types'
 import { refByKey } from '../content/references'
-import { nextSection, partByKey, sectionById, type SectionId } from '../content/sections'
+import { partByKey, sectionById, type SectionId } from '../content/sections'
 
 export const asset = (path: string) => `${import.meta.env.BASE_URL}${path}`
 
@@ -23,72 +23,71 @@ export function Reveal({ children, delay = 0, className, as = 'div' }: { childre
   )
 }
 
-/** Chapter label: number, name and the part it belongs to. */
-export function ChapterLabel({ id, tone = 'light' }: { id: SectionId; tone?: 'light' | 'dark' }) {
+/**
+ * Section opener: a large chapter number and name on a rule that draws itself in,
+ * then the guiding question and the answer as a measured headline.
+ */
+export function SectionHeader({ id, title, intro, tone = 'light', titleId }: { id: SectionId; title: ReactNode; intro?: ReactNode; tone?: 'light' | 'dark'; titleId?: string }) {
   const s = sectionById[id]
   const dark = tone === 'dark'
   return (
-    <div className={`font-mono text-[12px] uppercase tracking-[0.14em] ${dark ? 'text-white/60' : 'text-muted'}`}>
-      <p className="flex items-center gap-3">
-        {s.num && (
-          <>
-            <span className={dark ? 'text-sun' : 'text-blue'}>{s.num}</span>
-            <span className={`h-px w-6 ${dark ? 'bg-white/30' : 'bg-line'}`} />
-          </>
-        )}
-        <span className={dark ? 'text-white' : 'text-ink'}>{s.label}</span>
-      </p>
-      <p className={`mt-1.5 tracking-[0.1em] ${dark ? 'text-white/45' : 'text-faint'}`}>{partByKey[s.part].label}</p>
-    </div>
-  )
-}
-
-/** Section opener: chapter label, the guiding question, then the answer as a measured headline. */
-export function SectionHeader({ id, title, intro, tone = 'light' }: { id: SectionId; title: ReactNode; intro?: ReactNode; tone?: 'light' | 'dark' }) {
-  const dark = tone === 'dark'
-  return (
-    <header className="mb-12 grid gap-5 md:mb-14 md:grid-cols-12">
-      <Reveal className="md:col-span-3 md:pt-1">
-        <ChapterLabel id={id} tone={tone} />
+    <header className="mb-14 md:mb-16">
+      <Reveal>
+        <div className={`relative flex items-end justify-between gap-6 border-b-2 pb-4 ${dark ? 'border-white/25' : 'border-ink/15'}`}>
+          <div className="flex items-end gap-4 sm:gap-6">
+            {s.num ? (
+              <span className={`font-display text-[clamp(3rem,6.5vw,5rem)] font-bold leading-[0.78] tracking-[-0.045em] ${dark ? 'text-sun' : 'text-blue'}`}>{s.num}</span>
+            ) : (
+              <span aria-hidden className={`mb-1.5 block h-8 w-8 rounded-[4px] sm:h-10 sm:w-10 ${dark ? 'bg-sun' : 'bg-blue'}`} />
+            )}
+            <div>
+              <p className={`font-mono text-[12px] uppercase tracking-[0.12em] ${dark ? 'text-white/50' : 'text-faint'}`}>{partByKey[s.part].label}</p>
+              <p className={`mt-1 font-display text-[clamp(1.2rem,2vw,1.6rem)] font-semibold leading-none tracking-tight ${dark ? 'text-white' : 'text-ink'}`}>{s.label}</p>
+            </div>
+          </div>
+          <p className={`hidden max-w-[30ch] pb-0.5 text-right font-serif text-[1.15rem] italic leading-snug md:block ${dark ? 'text-sun' : 'text-blue'}`}>{s.question}</p>
+          {/* accent that draws across the rule when the chapter arrives */}
+          <motion.span
+            aria-hidden
+            className={`absolute -bottom-[2px] left-0 h-[2px] w-full origin-left ${dark ? 'bg-sun' : 'bg-blue'}`}
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true, margin: '0px 0px -10% 0px' }}
+            transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
+          />
+        </div>
       </Reveal>
-      <div className="md:col-span-9">
-        <Reveal>
-          <p className={`font-serif text-[1.25rem] italic leading-snug ${dark ? 'text-sun' : 'text-blue'}`}>{sectionById[id].question}</p>
-          <h2 className={`mt-2 max-w-[26ch] text-[clamp(1.65rem,2.8vw,2.4rem)] font-semibold leading-[1.15] tracking-[-0.02em] ${dark ? 'text-white' : 'text-ink'}`}>{title}</h2>
-        </Reveal>
-        {intro && (
-          <Reveal delay={0.08}>
-            <p className={`mt-5 max-w-[62ch] text-[17px] leading-relaxed ${dark ? 'text-white/75' : 'text-muted'}`}>{intro}</p>
+      <div className="mt-8 grid md:mt-10 md:grid-cols-12">
+        <div className="md:col-span-9 md:col-start-4">
+          <Reveal>
+            <p className={`font-serif text-[1.15rem] italic leading-snug md:hidden ${dark ? 'text-sun' : 'text-blue'}`}>{s.question}</p>
+            <h2 id={titleId} className={`mt-2 max-w-[28ch] text-[clamp(1.65rem,2.8vw,2.4rem)] font-semibold leading-[1.15] tracking-[-0.02em] md:mt-0 ${dark ? 'text-white' : 'text-ink'}`}>
+              {title}
+            </h2>
           </Reveal>
-        )}
+          {intro && (
+            <Reveal delay={0.08}>
+              <p className={`mt-5 max-w-[62ch] text-[17px] leading-relaxed ${dark ? 'text-white/75' : 'text-muted'}`}>{intro}</p>
+            </Reveal>
+          )}
+        </div>
       </div>
     </header>
   )
 }
 
-/** Hand-off at the end of a chapter: what comes next and the question it answers. */
-export function NextChapter({ from, tone = 'light' }: { from: SectionId; tone?: 'light' | 'dark' }) {
-  const n = nextSection(from)
-  if (!n) return null
-  const dark = tone === 'dark'
+/** Standard subsection heading: "N.N · Label" eyebrow, a headline, an optional lead and an optional right-hand slot. */
+export function SubHeader({ num, label, title, lead, aside }: { num: string; label: string; title: ReactNode; lead?: ReactNode; aside?: ReactNode }) {
   return (
-    <Reveal>
-      <a
-        href={`#${n.id}`}
-        className={`group mt-16 grid gap-2 border-t-2 pt-5 sm:grid-cols-[1fr_auto] sm:items-end md:mt-20 ${dark ? 'border-white/30' : 'border-ink'}`}
-      >
-        <span>
-          <span className={`font-mono text-[12px] uppercase tracking-[0.14em] ${dark ? 'text-white/50' : 'text-faint'}`}>
-            Next{n.num && ` · ${n.num}`} · {n.label}
-          </span>
-          <span className={`mt-1 block font-display text-[clamp(1.2rem,2vw,1.5rem)] font-semibold transition-colors ${dark ? 'text-white group-hover:text-sun' : 'text-ink group-hover:text-blue'}`}>
-            {n.question}
-          </span>
-        </span>
-        <span className={`inline-flex items-center gap-2 font-mono text-[12px] uppercase tracking-[0.14em] ${dark ? 'text-sun' : 'text-blue'}`}>
-          Continue <ArrowDown size={14} aria-hidden className="transition-transform duration-200 group-hover:translate-y-0.5" />
-        </span>
-      </a>
+    <Reveal className="mb-8 flex flex-wrap items-end justify-between gap-x-10 gap-y-5">
+      <div className="max-w-[62ch]">
+        <p className="eyebrow text-blue">
+          {num} · {label}
+        </p>
+        <h3 className="mt-2 text-[clamp(1.4rem,2.2vw,1.85rem)] font-semibold leading-[1.2]">{title}</h3>
+        {lead && <p className="mt-3 text-[15px] text-muted">{lead}</p>}
+      </div>
+      {aside}
     </Reveal>
   )
 }

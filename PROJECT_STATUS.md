@@ -27,15 +27,15 @@ Reading order (set in `src/content/sections.ts`): front matter → Part I · Res
 | 03 | Challenges (4 themes) | I | Done — sub-findings, 7 translated quotes, scenarios, implications | Field report Findings |
 | 04 | HMW | II | Done | Research question |
 | 05 | Design Concept (5.1) | II | Done — finding → opportunity → feature map | Field report Conclusion, A0 poster |
-| 06 | Iteration (6.1–6.2) | II | Done — driver licence journey traced Low-fi → Wireframe → Initial hi-fi; fidelity explorer with all 2 sketch sheets, 16 wireframes, 22 initial hi-fi screens | Team design archives |
-| 07 | Evaluation (7.1–7.5) | II | Done — method, 8 problems (2 High · 6 Medium), 6 before/after refinements, final design, embedded live prototype | Usability Evaluation Report; Evaluation Comparison archive |
+| 06 | Iteration (6.1) | II | Done — opening panel traces the driver licence journey Low-fi → Wireframe → Initial hi-fi; 6.1 fidelity explorer (2 sketch sheets, 16 wireframes, 22 initial hi-fi screens); each initial hi-fi feature names the interview challenge (T1–T4) it was designed for | Team design archives |
+| 07 | Evaluation (7.1–7.4) | II | Done — method, 8 problems (2 High · 6 Medium), 6 before/after refinements, embedded live prototype | Usability Evaluation Report; Evaluation Comparison archive |
 | 08 | Conclusions | II | Done | Field report Discussion & Conclusion |
 | — | References | Back | Done — 12 APA entries with DOIs | Field report References |
 | — | Appendices | Back | Interview questions, poster, research-data link (placeholder), acknowledgements (placeholder) | Field report Appendix |
 
 ## Interactions
 
-- Story line: every chapter opens with a guiding question (e.g. "How did we listen?") above a measured headline, and Literature, Study Design, Design Concept, Iteration and Evaluation end with a "Next" hand-off naming the next chapter's question; part openers list each chapter's question
+- Story line: every chapter opens with a prominent header — large chapter number, part and name on a rule that draws itself in, the guiding question, then a measured headline; part openers list each chapter's question. Subsections share one heading pattern ("N.N · Label" + headline + lead)
 - Wayfinding: header breadcrumb (part / chapter) plus a segmented chapter-progress bar (one segment per section, grouped by part; the current one fills as you read, hover for its name); Contents sheet available on every screen size, highlighting the current chapter
 - Type scale: display headings reduced (section titles max 2.4rem, sub-headings ~1.85rem, hero wordmark 7rem) so headlines no longer dominate the reading flow
 - Readability: 12px minimum for labels, faint grey darkened to ≥4.5:1 contrast, abstract set in the body face
@@ -48,11 +48,13 @@ Reading order (set in `src/content/sections.ts`): front matter → Part I · Res
 - Micro-interactions: consistent button press feedback, card lift, growing link underline, phone-frame hover
 - Design Concept: hover a row to trace finding → opportunity → feature
 - Iteration: the three fidelities of one journey arrive in sequence as a connector line draws; fidelity explorer tabs (arrow-key navigable) with feature chips, screens dealt from a pile into a row, and a full-screen viewer (← → Esc)
-- Evaluation: severity bar fills on view; selecting a problem expands its evidence, draws an n/6 participant ring and moves a highlight box onto the relevant region of the tested screen; before/after slider sweeps once on first view, then drag, ← → or Before/After buttons; problem and solution columns brighten with the slider; final design toggles between refined designs and the live build
-- Try Day One (7.5): the deployed prototype runs inside a phone frame, loaded on demand; tabs pick a feature and the prototype's `?demo=` mode (`demo-mode.js` in the day-one-mobile repo) keeps the visitor inside it; the right column explains the feature, what to try and which evaluation problem it answers
+- Evaluation: severity bar fills on view; selecting a problem expands its evidence, draws an n/6 participant ring and moves a highlight box onto the relevant region of the tested screen; before/after slider sweeps once on first view, then drag, ← → or Before/After buttons; the frame ring, divider and labels shift from red (tested) to green (refined), and the problem/solution columns brighten with the slider
+- Try Day One (7.4): the deployed prototype runs inside a phone frame, loaded on demand; tabs pick a feature and the prototype's `?demo=` mode (`demo-mode.js` in the day-one-mobile repo) keeps the visitor inside it; the right column explains the feature, what to try and which evaluation problem it answers
 - Feature order is the same everywhere: Home → Short Trip → Journey Tree → AR Lens → Ask This Place
 - Reduced motion respected throughout
 
 ## Open items
 
 See `CONTENT_CHECKLIST.md` for the items the team still needs to supply or confirm.
+
+- Horizontal scrollers replaced by wrapping grids and tab rows; only the sticky theme index in 03 Challenges still swipes, with its scrollbar hidden

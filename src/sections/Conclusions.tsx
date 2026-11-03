@@ -1,6 +1,5 @@
 import { conclusions } from '../content/conclusions'
-import { ChapterLabel, Reveal } from '../components/ui'
-import { sectionById } from '../content/sections'
+import { Reveal, SectionHeader } from '../components/ui'
 
 export function Conclusions() {
   const cols = [
@@ -11,19 +10,9 @@ export function Conclusions() {
   return (
     <section id="conclusions" aria-labelledby="conclusions-title" className="bg-ink py-24 text-white md:py-32">
       <div className="container-x">
-        <div className="grid gap-5 md:grid-cols-12">
-          <Reveal className="md:col-span-3 md:pt-1">
-            <ChapterLabel id="conclusions" tone="dark" />
-          </Reveal>
-          <Reveal className="md:col-span-9">
-            <p className="font-serif text-[1.25rem] italic leading-snug text-sun">{sectionById.conclusions.question}</p>
-            <h2 id="conclusions-title" className="mt-2 max-w-[34ch] text-[clamp(1.5rem,2.5vw,2.1rem)] font-semibold leading-[1.2] tracking-[-0.02em]">
-              {conclusions.lead}
-            </h2>
-          </Reveal>
-        </div>
+        <SectionHeader id="conclusions" tone="dark" titleId="conclusions-title" title={conclusions.lead} />
 
-        <ol className="mt-20 grid gap-px bg-white/10 md:grid-cols-3">
+        <ol className="grid gap-px bg-white/10 md:grid-cols-3">
           {conclusions.insights.map((x, i) => (
             <Reveal as="li" key={x.title} delay={i * 0.06} className="bg-ink p-6 md:p-8">
               <span className="font-mono text-[12px] text-sun">0{i + 1}</span>

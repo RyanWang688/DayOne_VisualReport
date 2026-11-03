@@ -8,7 +8,7 @@ export function Outcome() {
   return (
     <section id="outcome" className="border-t border-line py-24 md:py-32">
       <div className="container-x">
-        <SectionHeader id="outcome" title="From findings to features." intro={outcomeSummary} />
+        <SectionHeader id="outcome" intro={outcomeSummary} />
 
         {/* Finding → Opportunity → Feature */}
         <SubHeader num="5.1" label="Findings to features" title="Each finding, answered by a feature." />

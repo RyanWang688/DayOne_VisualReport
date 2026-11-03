@@ -27,7 +27,7 @@ export function Reveal({ children, delay = 0, className, as = 'div' }: { childre
  * Section opener: a large chapter number and name on a rule that draws itself in,
  * then the guiding question and the answer as a measured headline.
  */
-export function SectionHeader({ id, title, intro, tone = 'light', titleId }: { id: SectionId; title: ReactNode; intro?: ReactNode; tone?: 'light' | 'dark'; titleId?: string }) {
+export function SectionHeader({ id, title, intro, tone = 'light', titleId }: { id: SectionId; title?: ReactNode; intro?: ReactNode; tone?: 'light' | 'dark'; titleId?: string }) {
   const s = sectionById[id]
   const dark = tone === 'dark'
   return (
@@ -57,21 +57,36 @@ export function SectionHeader({ id, title, intro, tone = 'light', titleId }: { i
           />
         </div>
       </Reveal>
-      <div className="mt-8 grid md:mt-10 md:grid-cols-12">
-        <div className="md:col-span-9 md:col-start-4">
-          <Reveal>
-            <p className={`font-serif text-[1.15rem] italic leading-snug md:hidden ${dark ? 'text-sun' : 'text-blue'}`}>{s.question}</p>
-            <h2 id={titleId} className={`mt-2 max-w-[28ch] text-[clamp(1.65rem,2.8vw,2.4rem)] font-semibold leading-[1.15] tracking-[-0.02em] md:mt-0 ${dark ? 'text-white' : 'text-ink'}`}>
-              {title}
-            </h2>
-          </Reveal>
+      {title ? (
+        <div className="mt-8 grid md:mt-10 md:grid-cols-12">
+          <div className="md:col-span-9 md:col-start-4">
+            <Reveal>
+              <p className={`font-serif text-[1.15rem] italic leading-snug md:hidden ${dark ? 'text-sun' : 'text-blue'}`}>{s.question}</p>
+              <h2 id={titleId} className={`mt-2 max-w-[28ch] text-[clamp(1.65rem,2.8vw,2.4rem)] font-semibold leading-[1.15] tracking-[-0.02em] md:mt-0 ${dark ? 'text-white' : 'text-ink'}`}>
+                {title}
+              </h2>
+            </Reveal>
+            {intro && (
+              <Reveal delay={0.08}>
+                <p className={`mt-5 max-w-[62ch] text-[17px] leading-relaxed ${dark ? 'text-white/75' : 'text-muted'}`}>{intro}</p>
+              </Reveal>
+            )}
+          </div>
+        </div>
+      ) : (
+        // No headline: the chapter rule above names the section; the intro reads as the lead.
+        <>
+          <h2 id={titleId} className="sr-only">
+            {s.label}
+          </h2>
+          <p className={`mt-6 font-serif text-[1.15rem] italic leading-snug md:hidden ${dark ? 'text-sun' : 'text-blue'}`}>{s.question}</p>
           {intro && (
-            <Reveal delay={0.08}>
-              <p className={`mt-5 max-w-[62ch] text-[17px] leading-relaxed ${dark ? 'text-white/75' : 'text-muted'}`}>{intro}</p>
+            <Reveal delay={0.05}>
+              <p className={`mt-4 max-w-[68ch] text-[clamp(1.05rem,1.35vw,1.2rem)] leading-relaxed md:mt-8 ${dark ? 'text-white/80' : 'text-ink-2'}`}>{intro}</p>
             </Reveal>
           )}
-        </div>
-      </div>
+        </>
+      )}
     </header>
   )
 }

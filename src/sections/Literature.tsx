@@ -9,7 +9,6 @@ export function Literature() {
       <div className="container-x">
         <SectionHeader
           id="literature"
-          title="What earlier research told us to look for."
           intro={
             <>
               {litFraming.text} <Cite refs={litFraming.refs} />

@@ -17,7 +17,6 @@ export function ResearchProcess() {
       <div className="container-x">
         <SectionHeader
           id="project-overview"
-          title="A user-centred process, from listening to testing."
           intro="Each stage produced something the next one depended on: interviews became codes, codes became themes, themes became features, and features were tested with students."
         />
 

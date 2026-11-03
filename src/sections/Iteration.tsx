@@ -17,7 +17,6 @@ export function Iteration() {
       <div className="container-x">
         <SectionHeader
           id="iteration"
-          title="From sketches to a testable prototype."
           intro="The concept was built up in three rounds. Sketches explored ideas quickly, wireframes fixed the flows, and the initial high-fidelity prototype was detailed enough to test with students."
         />
 

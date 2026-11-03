@@ -11,7 +11,6 @@ export function Challenges() {
       <div className="container-x">
         <SectionHeader
           id="challenges"
-          title="Four themes from the interviews."
           intro="Thematic analysis of the ten clusters produced four themes. Each traces a different part of the gap between having information and acting on it."
         />
 

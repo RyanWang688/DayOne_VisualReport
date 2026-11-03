@@ -11,7 +11,7 @@ export function Evaluation() {
   return (
     <section id="evaluation" className="border-t border-line py-24 md:py-32">
       <div className="container-x">
-        <SectionHeader id="evaluation" title="What testing showed, and what we changed." intro={evalMethod.overall} />
+        <SectionHeader id="evaluation" intro={evalMethod.overall} />
         <Method />
         <Problems />
         <Refinements />

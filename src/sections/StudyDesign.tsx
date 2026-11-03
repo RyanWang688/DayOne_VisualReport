@@ -8,7 +8,7 @@ export function StudyDesign() {
   return (
     <section id="study-design" className="border-t border-line py-24 md:py-32">
       <div className="container-x">
-        <SectionHeader id="study-design" title="Eight conversations, coded note by note." intro={study.approach} />
+        <SectionHeader id="study-design" intro={study.approach} />
 
         <SubHeader num="2.1" label="Participants and method" title="Eight students, one interview each." />
         <div className="grid gap-12 md:grid-cols-12">

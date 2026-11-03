@@ -28,7 +28,7 @@ Reading order (set in `src/content/sections.ts`): front matter → Part I · Res
 | 04 | HMW | II | Done | Research question |
 | 05 | Design Concept (5.1) | II | Done — finding → opportunity → feature map | Field report Conclusion, A0 poster |
 | 06 | Iteration (6.1–6.2) | II | Done — driver licence journey traced Low-fi → Wireframe → Initial hi-fi; fidelity explorer with all 2 sketch sheets, 16 wireframes, 22 initial hi-fi screens | Team design archives |
-| 07 | Evaluation (7.1–7.4) | II | Done — method, 8 problems (2 High · 6 Medium), 6 before/after refinements, final design + live build | Usability Evaluation Report; Evaluation Comparison archive |
+| 07 | Evaluation (7.1–7.5) | II | Done — method, 8 problems (2 High · 6 Medium), 6 before/after refinements, final design, embedded live prototype | Usability Evaluation Report; Evaluation Comparison archive |
 | 08 | Conclusions | II | Done | Field report Discussion & Conclusion |
 | — | References | Back | Done — 12 APA entries with DOIs | Field report References |
 | — | Appendices | Back | Interview questions, poster, research-data link (placeholder), acknowledgements (placeholder) | Field report Appendix |
@@ -49,6 +49,8 @@ Reading order (set in `src/content/sections.ts`): front matter → Part I · Res
 - Design Concept: hover a row to trace finding → opportunity → feature
 - Iteration: the three fidelities of one journey arrive in sequence as a connector line draws; fidelity explorer tabs (arrow-key navigable) with feature chips, screens dealt from a pile into a row, and a full-screen viewer (← → Esc)
 - Evaluation: severity bar fills on view; selecting a problem expands its evidence, draws an n/6 participant ring and moves a highlight box onto the relevant region of the tested screen; before/after slider sweeps once on first view, then drag, ← → or Before/After buttons; problem and solution columns brighten with the slider; final design toggles between refined designs and the live build
+- Try Day One (7.5): the deployed prototype runs inside a phone frame, loaded on demand; tabs pick a feature and the prototype's `?demo=` mode (`demo-mode.js` in the day-one-mobile repo) keeps the visitor inside it; the right column explains the feature, what to try and which evaluation problem it answers
+- Feature order is the same everywhere: Home → Short Trip → Journey Tree → AR Lens → Ask This Place
 - Reduced motion respected throughout
 
 ## Open items

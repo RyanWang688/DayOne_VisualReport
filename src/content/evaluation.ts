@@ -30,6 +30,9 @@ export const evalMethod = {
 }
 
 export type Severity = 'High' | 'Medium'
+
+/** Feature order used everywhere in the report: Home → Short Trip → Journey Tree → AR Lens → Ask This Place. */
+export const featureOrder = ['Home & integration', 'Short Trip', 'Journey Tree', 'AR Lens', 'Ask This Place']
 export type UsabilityProblem = {
   id: string
   feature: string
@@ -130,7 +133,7 @@ export const problems: UsabilityProblem[] = [
   },
   {
     id: '4.8',
-    feature: 'Across features',
+    feature: 'Home & integration',
     title: 'Fragmented feature integration',
     severity: 'Medium',
     heuristic: 'Flexibility and efficiency of use',
@@ -152,15 +155,16 @@ export type Refinement = {
   solutions: string[]
 }
 
+/** Feature order used everywhere in the report: Home → Short Trip → Journey Tree → AR Lens → Ask This Place. */
 export const refinements: Refinement[] = [
   {
-    key: 'journey',
-    name: 'Journey Tree',
-    recs: ['5.5'],
-    before: it('compare/journey-tree-before.jpg'),
-    after: it('compare/journey-tree-after.jpg'),
-    problems: ['High information density makes content difficult to scan.', 'Linear navigation limits access to specific steps.'],
-    solutions: ['Card-based overview with clear step summaries.', 'Flexible navigation with direct access to individual steps.'],
+    key: 'home',
+    name: 'Homepage',
+    recs: ['5.8'],
+    before: it('compare/home-before.jpg'),
+    after: it('compare/home-after.jpg'),
+    problems: ['Scenario Simulation is difficult to access directly.', 'Key features are separated across different sections.'],
+    solutions: ['Direct access to Scenario Simulation.', 'Integrated shortcuts to essential tools.'],
   },
   {
     key: 'plan',
@@ -181,6 +185,15 @@ export const refinements: Refinement[] = [
     solutions: ['Simplified information layout and prominent primary actions.', 'Removal of XP, Level, and badges.'],
   },
   {
+    key: 'journey',
+    name: 'Journey Tree',
+    recs: ['5.5'],
+    before: it('compare/journey-tree-before.jpg'),
+    after: it('compare/journey-tree-after.jpg'),
+    problems: ['High information density makes content difficult to scan.', 'Linear navigation limits access to specific steps.'],
+    solutions: ['Card-based overview with clear step summaries.', 'Flexible navigation with direct access to individual steps.'],
+  },
+  {
     key: 'ar',
     name: 'AR Lens',
     recs: ['5.6'],
@@ -198,14 +211,53 @@ export const refinements: Refinement[] = [
     problems: ['Location-based recommendations may not match users’ actual needs.'],
     solutions: ['User-controlled location selection for more relevant recommendations.'],
   },
+]
+
+/**
+ * Live demo: the deployed prototype embedded with ?demo=<key>, which opens one feature and keeps the visitor inside it.
+ * Feature descriptions follow the prototype README; "responds to" links each feature to the evaluation.
+ */
+export type DemoFeature = { key: string; name: string; summary: string; tryThis: string[]; respondsTo: string; note?: string }
+
+export const demoFeatures: DemoFeature[] = [
   {
     key: 'home',
-    name: 'Homepage',
-    recs: ['5.8'],
-    before: it('compare/home-before.jpg'),
-    after: it('compare/home-after.jpg'),
-    problems: ['Scenario Simulation is difficult to access directly.', 'Key features are separated across different sections.'],
-    solutions: ['Direct access to Scenario Simulation.', 'Integrated shortcuts to essential tools.'],
+    name: 'Home',
+    summary: 'One place to start: the everyday tools, a suggested Short Trip and small local discoveries — with scenario practice one tap away.',
+    tryThis: ['Look at the tools along the top of Home.', 'Open Simulate Scenario and practise a conversation, such as a GP visit.', 'Save the tip cards you want to keep.'],
+    respondsTo: '4.8 Fragmented feature integration → 5.8',
+    note: 'People, prices and situations in the simulations are examples.',
+  },
+  {
+    key: 'explore',
+    name: 'Short Trip',
+    summary: 'Plan a short trip from where you are to where you need to be, with a few places worth discovering on the way.',
+    tryThis: ['Choose how you travel and how much time you have.', 'Find routes, then build your own by adding or removing stops.', 'Open a place to see why it is worth a visit.'],
+    respondsTo: '4.1–4.4 Route control, purpose, clarity, gamification → 5.1–5.4',
+    note: 'Routes and times are a planning simulation, not live navigation.',
+  },
+  {
+    key: 'journey',
+    name: 'Journey Tree',
+    summary: 'Step-by-step guides for everyday procedures: healthcare, transport, driving, campus, housing and daily life.',
+    tryThis: ['Open the Healthcare journey and read the step summaries.', 'Jump straight to any step instead of reading in order.', 'Switch tracks with the tabs along the top.'],
+    respondsTo: '4.5 Limited flexibility in information access → 5.5',
+  },
+  {
+    key: 'ar',
+    name: 'AR Lens',
+    summary: 'Point the camera at an unfamiliar machine, such as a myki reader, and get practical instructions straight away.',
+    tryThis: ['Wait for the sample scan to finish.', 'Read the guidance that appears without an extra Details step.', 'Switch to the parking-machine example from the history.'],
+    respondsTo: '4.6 Inefficient access to time-sensitive information → 5.6',
+    note: 'Uses sample photos; there is no real image recognition.',
+  },
+  {
+    key: 'ask',
+    name: 'Ask This Place',
+    summary: 'Ask questions about the place you are in, and confirm or change the place the app has identified.',
+    tryThis: ['Check the identified place at the top and change it if needed.', 'Pick a suggested question.', 'Open the map or a follow-up card from the answer.'],
+    respondsTo: '4.7 Limited control over location recommendations → 5.7',
+    note: 'Answers are preset dialogue, not live AI.',
   },
 ]
 

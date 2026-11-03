@@ -15,6 +15,8 @@
   --color-blue-ink: #0b1b4d;
   --color-sun: #f4b63f;
   --color-sun-soft: #fdf1d6;
+  --color-problem: #b42318; /* ≥4.5:1 on canvas */
+  --color-solution: #157a3c; /* ≥4.5:1 on canvas */
 
   --font-display: 'Inter Tight', ui-sans-serif, system-ui, sans-serif;
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;

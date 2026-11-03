@@ -34,12 +34,25 @@ export const sketches = [
 
 const s = (stage: 'wireframe' | 'hifi', file: string, alt: string, tall = false): Screen => ({ src: it(`${stage}/${file}.jpg`), alt, tall })
 
+/** Groups follow the report-wide feature order: Home → Short Trip → Journey Tree → AR Lens → Ask This Place. */
 export const wireGroups: ScreenGroup[] = [
   {
     key: 'home',
-    name: 'Home & Journey Tree',
-    intro: 'A home screen and step-by-step journeys introduce unfamiliar everyday procedures.',
-    screens: [s('wireframe', 'home', 'Wireframe: home screen'), s('wireframe', 'journey-tree-1', 'Wireframe: journey tree 1'), s('wireframe', 'journey-tree-2', 'Wireframe: journey tree 2'), s('wireframe', 'journey-tree-3', 'Wireframe: journey tree 3')],
+    name: 'Home',
+    intro: 'A home screen gathers the everyday tools and points to the journeys.',
+    screens: [s('wireframe', 'home', 'Wireframe: home screen')],
+  },
+  {
+    key: 'explore',
+    name: 'Explore',
+    intro: 'Map-based exploration helps users discover nearby places and navigate their surroundings.',
+    screens: [1, 2, 3].map((n) => s('wireframe', `explore-${n}`, `Wireframe: explore ${n}`)),
+  },
+  {
+    key: 'journey',
+    name: 'Journey Tree',
+    intro: 'Step-by-step journeys introduce unfamiliar everyday procedures.',
+    screens: [1, 2, 3].map((n) => s('wireframe', `journey-tree-${n}`, `Wireframe: journey tree ${n}`)),
   },
   {
     key: 'driver',
@@ -54,12 +67,6 @@ export const wireGroups: ScreenGroup[] = [
     screens: [1, 2, 3].map((n) => s('wireframe', `scenario-${n}`, `Wireframe: scenario simulation ${n}`)),
   },
   {
-    key: 'explore',
-    name: 'Explore',
-    intro: 'Map-based exploration helps users discover nearby places and navigate their surroundings.',
-    screens: [1, 2, 3].map((n) => s('wireframe', `explore-${n}`, `Wireframe: explore ${n}`)),
-  },
-  {
     key: 'ar',
     name: 'AR scan',
     intro: 'Scanning a sign or object connects the surrounding environment with contextual guidance.',
@@ -68,6 +75,19 @@ export const wireGroups: ScreenGroup[] = [
 ]
 
 export const hifiGroups: ScreenGroup[] = [
+  {
+    key: 'tools',
+    name: 'Tools',
+    note: 'the hub before Home',
+    intro: 'In the initial version a separate Tools page held AR Lens and Ask This Place; after evaluation these moved onto Home.',
+    screens: [s('hifi', 'tools', 'Initial hi-fi: Tools page')],
+  },
+  {
+    key: 'explore',
+    name: 'Explore · Short Trip',
+    intro: 'Plan a short walking trip through recommended checkpoints near you.',
+    screens: [1, 2, 3, 4, 5].map((n) => s('hifi', `explore-${n}`, `Initial hi-fi: Explore / Short Trip ${n}`)).concat(s('hifi', 'explore-7', 'Initial hi-fi: Explore / Short Trip 6', true)),
+  },
   {
     key: 'journey',
     name: 'Journey Tree',
@@ -91,13 +111,6 @@ export const hifiGroups: ScreenGroup[] = [
     intro: 'Practice at the end of a journey: choose what to do and see the consequence.',
     screens: [s('hifi', 'scenario-1', 'Initial hi-fi: scenario simulation 1'), s('hifi', 'scenario-2', 'Initial hi-fi: scenario simulation 2')],
   },
-  {
-    key: 'explore',
-    name: 'Explore · Short Trip',
-    intro: 'Plan a short walking trip through recommended checkpoints near you.',
-    screens: [1, 2, 3, 4, 5].map((n) => s('hifi', `explore-${n}`, `Initial hi-fi: Explore / Short Trip ${n}`)).concat(s('hifi', 'explore-7', 'Initial hi-fi: Explore / Short Trip 6', true)),
-  },
-  { key: 'tools', name: 'Tools', intro: 'A separate Tools page holds AR Lens and Ask This Place.', screens: [s('hifi', 'tools', 'Initial hi-fi: Tools page')] },
   {
     key: 'ar',
     name: 'AR Lens',

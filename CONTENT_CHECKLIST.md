@@ -8,7 +8,7 @@ Use this list to finish and verify the report. Edit values in `src/content/` (se
 - [x] **Supervisor** — Arzoo Atiq — `meta.ts → supervisor`
 - [x] **Submission date** — 5 November 2026 — `meta.ts → date`
 - [x] **Video** — https://www.youtube.com/watch?v=EtDkfVKqdao, one "Watch the video" button in the hero plays it in-page; the title block lists the link — `meta.ts → videoUrl`
-- [ ] **Prototype URL** — now set to `https://ryanwang688.github.io/day-one-mobile/?v=14` (taken from the team's Low-to-High report; confirm this is the version to share) — `meta.ts → prototypeUrl`
+- [ ] **Prototype URL** — now set to `https://ryanwang688.github.io/day-one-mobile/?v=14` (taken from the team's Low-to-High report; confirm this is the version to share). It is embedded live in 7.5 Try Day One via `?demo=home|explore|journey|ar|ask` — `meta.ts → prototypeUrl`
 - [ ] **Research Data and Code link** (consent templates, transcripts) — `meta.ts → researchDataUrl`
 - [ ] **Approve the ~100-word abstract** (currently 96 words, condensed from the 148-word field report abstract) — then set `abstract.ts → status: 'approved'`
 - [ ] **Acknowledgements** (optional) — `appendix.ts → acknowledgements`

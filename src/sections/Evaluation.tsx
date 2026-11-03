@@ -1,11 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, animate, motion, useInView, useMotionValue, useMotionValueEvent, useReducedMotion, useTransform } from 'motion/react'
-import { ArrowUpRight, ChevronsLeftRight, Quote as QuoteIcon } from 'lucide-react'
-import { evalMethod, evalSource, problems, refinementNote, refinements, type UsabilityProblem } from '../content/evaluation'
+import { ChevronsLeftRight, Quote as QuoteIcon } from 'lucide-react'
+import { evalMethod, evalSource, featureOrder, problems, refinementNote, refinements, type UsabilityProblem } from '../content/evaluation'
 import { prototypeScreens } from '../content/outcome'
-import { meta } from '../content/meta'
-import { isPlaceholder } from '../content/types'
 import { Lightbox, type LightboxItem } from '../components/Lightbox'
+import { LiveDemo } from '../components/LiveDemo'
 import { Expandable, NextChapter, PhoneFrame, Reveal, SectionHeader, SourceTag, asset } from '../components/ui'
 
 const ease = [0.22, 1, 0.36, 1] as const
@@ -20,6 +19,7 @@ export function Evaluation() {
         <Problems />
         <Refinements />
         <FinalDesign />
+        <LiveDemo />
         <NextChapter from="evaluation" />
       </div>
     </section>
@@ -77,10 +77,10 @@ function Method() {
 /* 7.2 ─────────────────────────────────────────────────────────────── */
 
 function Problems() {
-  const [sel, setSel] = useState(0)
+  const features = featureOrder.filter((f) => problems.some((x) => x.feature === f))
+  const [sel, setSel] = useState(() => problems.findIndex((x) => x.feature === features[0]))
   const p = problems[sel]
   const high = problems.filter((x) => x.severity === 'High').length
-  const features = [...new Set(problems.map((x) => x.feature))]
 
   return (
     <div className="mt-24">
@@ -343,13 +343,13 @@ function Compare({ r }: { r: (typeof refinements)[number] }) {
   }
 
   return (
-    <div className="grid items-start gap-10 md:grid-cols-12">
+    <div className="grid items-center gap-10 md:grid-cols-12">
       <motion.div className="md:col-span-4" style={{ opacity: problemO }}>
-        <p className="font-mono text-[12px] uppercase tracking-[0.14em] text-muted">Problem</p>
+        <p className="font-mono text-[12px] font-medium uppercase tracking-[0.14em] text-problem">Problem</p>
         <ul className="mt-3 space-y-3">
           {r.problems.map((t) => (
             <li key={t} className="flex gap-3 text-[16px] text-ink-2">
-              <span aria-hidden className="mt-[11px] h-px w-4 shrink-0 bg-ink/40" />
+              <span aria-hidden className="mt-[11px] h-px w-4 shrink-0 bg-problem/50" />
               {t}
             </li>
           ))}
@@ -414,11 +414,11 @@ function Compare({ r }: { r: (typeof refinements)[number] }) {
       </div>
 
       <motion.div className="md:col-span-4" style={{ opacity: solutionO }}>
-        <p className="font-mono text-[12px] uppercase tracking-[0.14em] text-blue">Solution</p>
+        <p className="font-mono text-[12px] font-medium uppercase tracking-[0.14em] text-solution">Solution</p>
         <ul className="mt-3 space-y-3">
           {r.solutions.map((t) => (
             <li key={t} className="flex gap-3 text-[16px] font-medium text-ink">
-              <span aria-hidden className="mt-[11px] h-px w-4 shrink-0 bg-blue" />
+              <span aria-hidden className="mt-[11px] h-px w-4 shrink-0 bg-solution" />
               {t}
             </li>
           ))}
@@ -433,10 +433,9 @@ function Compare({ r }: { r: (typeof refinements)[number] }) {
 function FinalDesign() {
   const [view, setView] = useState<'refined' | 'live'>('refined')
   const [box, setBox] = useState<number | null>(null)
-  const refined: LightboxItem[] = [refinements[5], ...refinements.slice(0, 5)].map((r) => ({ src: r.after, alt: `${r.name}: refined design`, caption: `${r.name} · refined after evaluation` }))
+  const refined: LightboxItem[] = refinements.map((r) => ({ src: r.after, alt: `${r.name}: refined design`, caption: `${r.name} · refined after evaluation` }))
   const live: LightboxItem[] = prototypeScreens.map((s) => ({ src: s.src, alt: `Day One prototype: ${s.title}`, caption: `${s.title} — ${s.caption}` }))
   const items = view === 'refined' ? refined : live
-  const hasLink = !isPlaceholder(meta.prototypeUrl)
 
   return (
     <div className="mt-24 border-t-2 border-ink pt-10">
@@ -490,13 +489,7 @@ function FinalDesign() {
 
       <div className="flex flex-wrap items-center justify-between gap-4">
         <SourceTag>{view === 'refined' ? 'Evaluation Comparison archive — refined screens' : 'Screens captured from the current prototype build, 2 Nov 2026'}</SourceTag>
-        {hasLink && (
-          <a href={meta.prototypeUrl as string} target="_blank" rel="noopener noreferrer" className="group inline-flex items-center gap-2 rounded-full bg-blue px-5 py-2.5 text-[15px] font-semibold text-white transition-colors hover:bg-blue-deep">
-            Try the prototype
-            <ArrowUpRight size={18} aria-hidden className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-          </a>
-        )}
-      </div>
+     </div>
       <Lightbox items={items} index={box} onClose={() => setBox(null)} onIndex={setBox} />
     </div>
   )

@@ -3,6 +3,7 @@ import { AnimatePresence, motion, useScroll, useSpring } from 'motion/react'
 import { processStages, type ProcessStage } from '../content/process'
 import { clusters } from '../content/affinity'
 import { useActiveIndex } from '../hooks/useActiveSection'
+import { IterationLoop, CompareLoop } from '../components/ProcessLoops'
 import { Expandable, Reveal, SectionHeader, asset } from '../components/ui'
 
 export function ResearchProcess() {
@@ -142,6 +143,7 @@ function Evidence({ stage }: { stage: ProcessStage }) {
 
 function StageVisual({ stage }: { stage: ProcessStage }) {
   const v = stage.visual
+  if (v.kind === 'loop') return v.name === 'iteration' ? <IterationLoop /> : <CompareLoop />
   if (v.kind === 'image')
     return (
       <figure>

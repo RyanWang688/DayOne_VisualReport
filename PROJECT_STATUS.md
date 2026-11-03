@@ -62,3 +62,4 @@ See `CONTENT_CHECKLIST.md` for the items the team still needs to supply or confi
 - 7.2 starts collapsed; each problem row has a chevron (the first nudges until the reader clicks), and report section numbers (4.x / 5.x) are no longer shown on the page
 - 7.3 uses numbered feature tabs (Short Trip groups Planning / Route) with a sliding underline and direction-aware transitions
 - 7.4 is framed as the final prototype (after evaluation)
+- Project Overview: the Prototype stage auto-plays Low-fi → Wireframe → Initial hi-fi for three features; the Evaluate stage auto-wipes each tested screen into its refined version and rotates through all six pairs (both pause on hover, dots to pick)

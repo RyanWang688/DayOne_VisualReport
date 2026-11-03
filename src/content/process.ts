@@ -10,7 +10,7 @@ export type ProcessStage = {
   /** Optional real quote or finding line that anchors the stage. */
   anchor?: { text: string; by: string }
   /** Image under public/assets, or a diagram key rendered in code. */
-  visual: { kind: 'image'; src: string; alt: string; caption: string } | { kind: 'diagram'; name: 'interviews' | 'affinity' | 'features' }
+  visual: { kind: 'image'; src: string; alt: string; caption: string } | { kind: 'diagram'; name: 'interviews' | 'affinity' | 'features' } | { kind: 'loop'; name: 'iteration' | 'compare' }
   source: string
 }
 
@@ -78,7 +78,7 @@ export const processStages: ProcessStage[] = [
       'The prototype has no back end. AR Lens and Ask This Place use sample photos and preset dialogue.',
       'Screens in this report are captured from the current prototype build.',
     ],
-    visual: { kind: 'image', src: 'assets/poster/poster-screens.jpg', alt: 'Five Day One prototype screens: Journey Tree, a hook-turn scenario, the Explore neighbourhood map, AR Lens on a myki reader, and the Tools hub', caption: 'Prototype screens as presented on the A0 poster.' },
+    visual: { kind: 'loop', name: 'iteration' },
     source: 'A0 poster; prototype README',
     evidence: [
       { value: '4', label: 'key features' },
@@ -96,7 +96,7 @@ export const processStages: ProcessStage[] = [
       'Usability testing, guided walkthroughs and feature demonstrations on the high-fidelity Figma prototype, with semi-structured interviews; three sessions online, three in person.',
       'Transcripts were analysed thematically; problems were identified with Nielsen’s heuristics and rated with Nielsen’s severity ratings.',
     ],
-    visual: { kind: 'image', src: 'assets/iteration/compare/journey-tree-after.jpg', alt: 'Refined Journey Tree screen with a card-based overview of steps', caption: 'Journey Tree, refined after evaluation into a card-based overview.' },
+    visual: { kind: 'loop', name: 'compare' },
     source: 'Usability Evaluation Report (25 Oct 2026)',
     evidence: [
       { value: '6', label: 'participants' },

@@ -26,7 +26,7 @@ export const sections = [
   { id: 'evaluation', num: '07', label: 'Evaluation', part: 'design', question: 'Did it work, and what changed?', takeaway: 'Six students tested it; eight problems led to the final prototype.' },
   { id: 'conclusions', num: '08', label: 'Conclusions', part: 'design', question: 'What did we learn?', takeaway: 'Information is the first step; practice, help and time do the rest.' },
   { id: 'references', num: '', label: 'References', part: 'back', question: 'Which sources informed us?', takeaway: 'Twelve academic sources, APA 7.' },
-  { id: 'appendix', num: '', label: 'Appendix', part: 'back', question: 'Where are the materials?', takeaway: 'Interview questions and the A0 poster.' },
+  { id: 'appendix', num: '', label: 'Appendix', part: 'back', question: 'Where are the materials?', takeaway: 'Interview questions, evaluation questions and the A0 poster.' },
 ] as const satisfies readonly { id: string; num: string; label: string; part: PartKey; question: string; takeaway: string }[]
 
 export type SectionId = (typeof sections)[number]['id']

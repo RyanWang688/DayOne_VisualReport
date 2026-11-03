@@ -284,13 +284,13 @@ function Context() {
             ))}
           </ol>
           <Reveal>
-            <dl className="mt-6 grid grid-cols-2 border-t-2 border-ink sm:grid-cols-4">
+            <dl className="mt-6 grid grid-cols-2 gap-x-6 border-t-2 border-ink sm:grid-cols-4">
               {facts.map(([n, l]) => (
                 <div key={l} className="py-5">
                   <dt className="sr-only">{l}</dt>
                   <dd>
-                    <span className="block font-display text-4xl font-bold text-blue">{n}</span>
-                    <span className="font-mono text-[12px] uppercase tracking-[0.12em] text-muted">{l}</span>
+                    <span className="block font-display text-4xl font-bold leading-none text-blue">{n}</span>
+                    <span className="mt-3 block max-w-[12ch] font-mono text-[12px] uppercase leading-snug tracking-[0.08em] text-muted">{l}</span>
                   </dd>
                 </div>
               ))}

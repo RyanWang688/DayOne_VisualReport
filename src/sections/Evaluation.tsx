@@ -76,6 +76,13 @@ function Problems() {
   const [open, setOpen] = useState<number | null>(null)
   const [shown, setShown] = useState(first) // last problem opened; drives the annotated screen
   const [touched, setTouched] = useState(false) // stop the hint once the reader has clicked
+  // Open the first problem when the list first scrolls into view (unless the reader got there first).
+  const listRef = useRef<HTMLDivElement>(null)
+  const listSeen = useInView(listRef, { once: true, margin: '0px 0px -30% 0px' })
+  useEffect(() => {
+    if (listSeen && !touched) setOpen(first)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [listSeen])
   const p = problems[shown]
   const high = problems.filter((x) => x.severity === 'High').length
   const toggle = (i: number) => {
@@ -93,7 +100,7 @@ function Problems() {
         aside={<SeverityBar high={high} medium={problems.length - high} />}
       />
 
-      <div className="grid gap-10 lg:grid-cols-12">
+      <div ref={listRef} className="grid gap-10 lg:grid-cols-12">
         <div className="lg:col-span-7">
           {features.map((f) => (
             <div key={f} className="mb-6">
@@ -110,7 +117,7 @@ function Problems() {
                       >
                         <span className="flex-1 font-display text-[17px] font-semibold tracking-tight">{x.title}</span>
                         <SeverityTag s={x.severity} />
-                        <Chevron open={open === i} hint={!touched && i === first} />
+                        <Chevron open={open === i} hint={!touched && open === null && i === first} />
                       </button>
                       <AnimatePresence initial={false}>
                         {open === i && (

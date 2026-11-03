@@ -249,27 +249,35 @@ function Groups({ groups, stage, onOpen }: { groups: ScreenGroup[]; stage: Fidel
 
       <AnimatePresence mode="wait" initial={false}>
         {g.addresses && (
-          <motion.div key={g.key} className="mx-auto mt-8 max-w-[880px] border border-line bg-canvas p-4 sm:p-5" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.3, ease }}>
-            <p className="eyebrow">Designed to address · interview challenges</p>
-            <ul className="mt-3 grid gap-3 md:grid-cols-2">
-              {g.addresses.map((a, i) => (
-                <motion.li key={a.finding} className="flex gap-3" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35, ease, delay: 0.1 + i * 0.08 }}>
+          <motion.ul key={g.key} className={`mx-auto mt-8 grid max-w-[1000px] gap-4 ${g.addresses.length > 1 ? 'lg:grid-cols-2' : ''}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }}>
+            {g.addresses.map((a, i) => (
+              <motion.li
+                key={a.finding}
+                className="rounded-[14px] border border-line bg-paper p-5 shadow-[0_18px_36px_-30px_rgba(14,20,34,0.4)] sm:p-6"
+                initial={{ opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, ease, delay: 0.08 + i * 0.1 }}
+              >
+                <p className="flex items-center gap-3">
                   <a
                     href={`#challenge-${a.theme - 1}`}
-                    className="h-fit shrink-0 rounded-[3px] bg-blue px-1.5 py-0.5 font-mono text-[12px] text-white transition-colors hover:bg-blue-deep"
+                    className="grid h-7 min-w-9 place-items-center rounded-[6px] bg-blue px-2 font-mono text-[13px] text-white transition-colors hover:bg-blue-deep"
                     aria-label={`Theme ${a.theme}: ${challenges[a.theme - 1].short}`}
                   >
                     T{a.theme}
                   </a>
-                  <span className="text-[14px] leading-snug">
-                    <span className="font-semibold text-ink">{challenges[a.theme - 1].short}</span>
-                    <span className="text-faint"> · {a.finding}</span>
-                    <span className="mt-0.5 block text-muted">{a.how}</span>
-                  </span>
-                </motion.li>
-              ))}
-            </ul>
-          </motion.div>
+                  <span className="font-mono text-[12px] uppercase tracking-[0.1em] text-muted">Research finding · {challenges[a.theme - 1].short}</span>
+                </p>
+                <p className="mt-4 font-mono text-[12px] uppercase tracking-[0.1em] text-faint">User problem</p>
+                <p className="mt-1 font-display text-[clamp(1.25rem,2vw,1.6rem)] font-semibold leading-[1.2] tracking-tight text-ink">{a.problem}</p>
+                <p className="mt-2 text-[15px] leading-relaxed text-muted">{a.detail}</p>
+                <div className="mt-5 border-t border-line pt-4">
+                  <p className="font-mono text-[12px] uppercase tracking-[0.1em] text-blue">Design response · {g.name}</p>
+                  <p className="mt-1 text-[15px] text-ink">{a.how}</p>
+                </div>
+              </motion.li>
+            ))}
+          </motion.ul>
         )}
       </AnimatePresence>
     </div>

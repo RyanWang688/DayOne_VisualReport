@@ -5,6 +5,7 @@ import { demoFeatures } from '../content/evaluation'
 import { meta } from '../content/meta'
 import { isPlaceholder } from '../content/types'
 import { SubHeader } from './ui'
+import { FullPrototypeButton } from './FullPrototype'
 
 const ease = [0.22, 1, 0.36, 1] as const
 
@@ -41,6 +42,7 @@ export function LiveDemo() {
           </>
         }
         lead="The version built after evaluation, with the refinements above. Choose a feature and try it on the phone."
+        aside={<FullPrototypeButton />}
       />
 
       {/* Feature tabs */}

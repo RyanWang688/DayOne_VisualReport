@@ -1,6 +1,6 @@
 import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion, useAnimationFrame, useInView, useMotionValue, useReducedMotion, useSpring, useTransform } from 'motion/react'
-import { ArrowRight, ChevronLeft, ChevronRight, Expand } from 'lucide-react'
+import { ArrowRight, ChevronLeft, ChevronRight, Expand, Lightbulb } from 'lucide-react'
 import { evolutionTrace, fidelityStages, hifiGroups, sketches, wireGroups, type FidelityStage, type Screen, type ScreenGroup } from '../content/iteration'
 import { challenges } from '../content/challenges'
 import { Lightbox, type LightboxItem } from '../components/Lightbox'
@@ -39,6 +39,20 @@ function Trace({ onOpen }: { onOpen: (items: LightboxItem[], i: number) => void 
   const view = { once: true, margin: '0px 0px -15% 0px' } as const
   return (
     <figure className="border border-line bg-canvas" aria-label="Iteration flow: low-fi, wireframe, initial hi-fi">
+      <motion.p
+        className="mx-3 mt-3 inline-flex items-center gap-2 rounded-full bg-blue-soft py-1 pl-1.5 pr-3.5 text-[13px] text-blue-ink sm:mx-8 sm:mt-6"
+        initial={{ opacity: 0, y: -6 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.4, ease }}
+      >
+        <span className="grid h-5 w-5 place-items-center rounded-full bg-blue text-white">
+          <Lightbulb size={12} aria-hidden />
+        </span>
+        <span>
+          <span className="font-semibold">Example of our iteration process</span> · the driver licence journey at each stage
+        </span>
+      </motion.p>
       <ol className="grid grid-cols-3 gap-2 p-3 sm:gap-0 sm:p-0 md:grid-cols-[1fr_auto_1fr_auto_1fr]">
         {evolutionTrace.steps.flatMap((s, i) => {
           const card = (

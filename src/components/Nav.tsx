@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { AnimatePresence, motion, useMotionValue, type MotionValue } from 'motion/react'
+import { AnimatePresence, motion, useMotionValue } from 'motion/react'
 import { List, X } from 'lucide-react'
 import { partByKey, parts, sections, type PartKey } from '../content/sections'
 import { asset } from './ui'
@@ -10,7 +10,6 @@ const landmarks: { id: string; part: PartKey; label: string }[] = [
   { id: 'part-research', part: 'research', label: 'Part I · Research' },
   { id: 'part-design', part: 'design', label: 'Part II · Design' },
 ]
-const chapterCount = sections.filter((s) => s.num && s.num !== '00').length
 const LINE = 96 // px from the top of the viewport that counts as "reading here"
 
 type Place = { id: string; part: PartKey; num: string; label: string; seg: number }
@@ -87,18 +86,17 @@ export function Nav() {
             <span className={`hidden font-mono text-[12px] uppercase tracking-[0.14em] lg:inline ${dark ? 'text-white/50' : 'text-faint'}`}>Visual Report</span>
           </a>
 
-          {/* Position: a ring that fills as you read this chapter, the chapter itself, and where it sits in the report */}
-          <button
-            type="button"
-            onClick={() => setOpen(true)}
-            aria-expanded={open}
-            aria-controls="section-menu"
-            aria-label={`You are reading ${place.num ? place.num + ' ' : ''}${place.label}, ${partByKey[place.part].label}. Open contents`}
-            className={`group flex h-11 min-w-0 shrink items-center gap-3 rounded-full border py-1 pl-1 pr-4 text-left transition-colors ${dark ? 'border-white/20 bg-white/5 hover:bg-white/10' : 'border-line bg-paper hover:border-ink/30'}`}
-          >
-            <ChapterRing num={place.num} progress={segProgress} dark={dark} />
-            <span className="min-w-0" aria-hidden>
-              <span className={`block truncate font-mono text-[10px] uppercase leading-none tracking-[0.14em] ${dark ? 'text-white/55' : 'text-faint'}`}>{partByKey[place.part].label}</span>
+          {/* Breadcrumb: part › chapter */}
+          <div className="flex min-w-0 items-center gap-3">
+            {/* Three levels: part (quiet) › chapter number (accent) › chapter name (strongest) */}
+            <p className="flex min-w-0 items-center gap-2.5" aria-live="polite">
+              <span className="sr-only">You are reading: </span>
+              {partByKey[place.part].label !== place.label && (
+                <>
+                  <span className={`hidden shrink-0 font-mono text-[11px] uppercase tracking-[0.14em] md:inline ${dark ? 'text-white/45' : 'text-faint'}`}>{partByKey[place.part].label}</span>
+                  <span aria-hidden className={`hidden h-4 w-px md:inline-block ${dark ? 'bg-white/25' : 'bg-line'}`} />
+                </>
+              )}
               <AnimatePresence mode="wait" initial={false}>
                 <motion.span
                   key={place.id}
@@ -106,19 +104,27 @@ export function Nav() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -6 }}
                   transition={{ duration: 0.2 }}
-                  className="mt-1 block max-w-[46vw] truncate text-[14px] font-semibold leading-none sm:max-w-[260px]"
+                  className="flex min-w-0 items-center gap-2"
                 >
-                  {place.label}
+                  {place.num && (
+                    <span className={`grid h-6 min-w-7 shrink-0 place-items-center rounded-[6px] px-1.5 font-mono text-[12px] font-semibold ${dark ? 'bg-sun/15 text-sun' : 'bg-blue-soft text-blue'}`}>{place.num}</span>
+                  )}
+                  <span className={`truncate font-display text-[16px] font-semibold tracking-tight ${dark ? 'text-white' : 'text-ink'}`}>{place.label}</span>
                 </motion.span>
               </AnimatePresence>
-            </span>
-            {place.num && (
-              <span aria-hidden className={`hidden shrink-0 border-l pl-3 font-mono text-[12px] sm:inline ${dark ? 'border-white/20 text-white/60' : 'border-line text-faint'}`}>
-                of {String(chapterCount).padStart(2, '0')}
-              </span>
-            )}
-            <List size={16} aria-hidden className={`shrink-0 transition-transform group-hover:scale-110 ${dark ? 'text-white/70' : 'text-ink-2'}`} />
-          </button>
+            </p>
+            <button
+              type="button"
+              onClick={() => setOpen(true)}
+              aria-expanded={open}
+              aria-controls="section-menu"
+              className={`flex h-9 shrink-0 items-center gap-2 rounded-full border px-3 text-[13px] font-medium transition-colors ${dark ? 'border-white/20 hover:bg-white/10' : 'border-line bg-paper hover:border-ink/30'}`}
+            >
+              <List size={16} aria-hidden />
+              <span className="hidden sm:inline">Contents</span>
+              <span className="sr-only sm:hidden">Contents</span>
+            </button>
+          </div>
         </div>
 
         {/* Chapter progress: one segment per section, grouped by part; the current one fills as you read */}
@@ -212,18 +218,5 @@ export function Nav() {
         )}
       </AnimatePresence>
     </>
-  )
-}
-
-/** Small progress ring: fills as the reader moves through the current chapter, chapter number in the middle. */
-function ChapterRing({ num, progress, dark }: { num: string; progress: MotionValue<number>; dark: boolean }) {
-  return (
-    <span className="relative grid h-9 w-9 shrink-0 place-items-center">
-      <svg viewBox="0 0 36 36" className="absolute inset-0 h-full w-full -rotate-90" aria-hidden>
-        <circle cx="18" cy="18" r="15.5" fill="none" strokeWidth="3" className={dark ? 'stroke-white/15' : 'stroke-ink/10'} />
-        <motion.circle cx="18" cy="18" r="15.5" fill="none" strokeWidth="3" strokeLinecap="round" className={dark ? 'stroke-sun' : 'stroke-blue'} style={{ pathLength: progress }} />
-      </svg>
-      <span className={`font-mono text-[11px] font-medium ${dark ? 'text-sun' : 'text-blue'}`}>{num || '•'}</span>
-    </span>
   )
 }

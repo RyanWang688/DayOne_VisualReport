@@ -1,7 +1,7 @@
-import { useId, useState } from 'react'
-import { AnimatePresence, motion } from 'motion/react'
+import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
+import { AnimatePresence, motion, useAnimationFrame, useInView, useMotionValue, useReducedMotion } from 'motion/react'
 import { ArrowRight, Expand } from 'lucide-react'
-import { evolutionTrace, fidelityStages, hifiGroups, sketches, wireGroups, type FidelityStage, type ScreenGroup } from '../content/iteration'
+import { evolutionTrace, fidelityStages, hifiGroups, sketches, wireGroups, type FidelityStage, type Screen, type ScreenGroup } from '../content/iteration'
 import { challenges } from '../content/challenges'
 import { Lightbox, type LightboxItem } from '../components/Lightbox'
 import { SectionHeader, SourceTag, SubHeader, asset } from '../components/ui'
@@ -186,7 +186,6 @@ function Groups({ groups, stage, onOpen }: { groups: ScreenGroup[]; stage: Fidel
   const [key, setKey] = useState(groups[0].key)
   const g = groups.find((x) => x.key === key) ?? groups[0]
   const items = g.screens.map((s) => ({ src: s.src, alt: s.alt, caption: `${stage.label} · ${g.name}` }))
-  const mid = (g.screens.length - 1) / 2
 
   return (
     <div className="mt-6">
@@ -241,23 +240,109 @@ function Groups({ groups, stage, onOpen }: { groups: ScreenGroup[]; stage: Fidel
               <p className="mt-3 font-mono text-[11px] text-faint">Mapping follows 5.1 (field-report findings → poster features).</p>
             </div>
           )}
-          {/* screens are "dealt" from a small pile into a wrapping grid — no horizontal scrolling */}
-          <ol className="mt-6 grid grid-cols-3 gap-3 sm:grid-cols-4 sm:gap-4 lg:grid-cols-6" aria-label={`${g.name} screens`}>
-            {g.screens.map((s, i) => (
-              <motion.li
-                key={s.src}
-                className="min-w-0"
-                initial={{ opacity: 0, x: (mid - i) * 24, y: 26, rotate: (i - mid) * 4 }}
-                animate={{ opacity: 1, x: 0, y: 0, rotate: 0 }}
-                transition={{ duration: 0.55, ease, delay: i * 0.05 }}
-              >
-                <button
+          <ScreenCarousel screens={g.screens} label={g.name} onOpen={(i) => onOpen(items, i)} />
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  )
+}
+
+const SPEED = 38 // px per second
+const GAP = 16
+
+/** Jelly hover: a quick squash-and-stretch that settles slightly lifted; springs back on leave. */
+const jelly = {
+  rest: { scaleX: 1, scaleY: 1, y: 0, transition: { type: 'spring' as const, stiffness: 320, damping: 14 } },
+  jelly: {
+    scaleX: [1, 1.09, 0.95, 1.03, 1.05],
+    scaleY: [1, 0.92, 1.06, 0.99, 1.05],
+    y: -10,
+    transition: { duration: 0.6, ease: 'easeOut' as const },
+  },
+}
+
+/**
+ * One-row screen carousel that drifts on its own, pauses while the pointer or focus is on it,
+ * can be dragged, and falls back to a static row when everything fits or motion is reduced.
+ */
+function ScreenCarousel({ screens, label, onOpen }: { screens: Screen[]; label: string; onOpen: (i: number) => void }) {
+  const reduce = useReducedMotion()
+  const wrap = useRef<HTMLDivElement>(null)
+  const firstSet = useRef<HTMLDivElement>(null)
+  const x = useMotionValue(0)
+  const [setW, setSetW] = useState(0)
+  const [wrapW, setWrapW] = useState(0)
+  const [hover, setHover] = useState<number | null>(null)
+  const [held, setHeld] = useState(false) // pointer/focus inside, or dragging
+  const inView = useInView(wrap, { margin: '100px' })
+  const loop = !reduce && setW > 0 && setW > wrapW + 1
+
+  useLayoutEffect(() => {
+    const measure = () => {
+      setSetW(firstSet.current?.offsetWidth ?? 0)
+      setWrapW(wrap.current?.offsetWidth ?? 0)
+    }
+    measure()
+    const ro = new ResizeObserver(measure)
+    if (wrap.current) ro.observe(wrap.current)
+    if (firstSet.current) ro.observe(firstSet.current)
+    return () => ro.disconnect()
+  }, [screens])
+
+  useEffect(() => x.set(0), [screens, x])
+
+  const wrapX = (v: number) => (setW ? (((v % setW) + setW) % setW) - setW : v)
+
+  useAnimationFrame((_, dt) => {
+    if (!loop || held || !inView || document.hidden) return
+    x.set(wrapX(x.get() - (SPEED * Math.min(dt, 64)) / 1000))
+  })
+
+  const copies = loop ? 2 : 1
+  return (
+    <div className="mt-2">
+      <div
+        ref={wrap}
+        className={`relative overflow-hidden pb-5 pt-10 ${loop ? '[mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)]' : ''}`}
+        onMouseEnter={() => setHeld(true)}
+        onMouseLeave={() => {
+          setHeld(false)
+          setHover(null)
+        }}
+        onFocus={() => setHeld(true)}
+        onBlur={(e) => !e.currentTarget.contains(e.relatedTarget as Node) && setHeld(false)}
+      >
+        <motion.div
+          className={`flex touch-pan-y ${reduce ? 'w-full' : 'w-max'}`}
+          style={{ x }}
+          onPanStart={() => setHeld(true)}
+          onPan={(_, info) => loop && x.set(wrapX(x.get() + info.delta.x))}
+          onPanEnd={(e) => (e as PointerEvent).pointerType !== 'mouse' && setHeld(false)}
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45, ease }}
+        >
+          {Array.from({ length: copies }, (_, c) => (
+            <div key={c} ref={c === 0 ? firstSet : undefined} className={`flex ${reduce ? 'flex-wrap' : 'shrink-0'}`} style={{ gap: GAP, paddingRight: loop ? GAP : 0 }} aria-hidden={c > 0 || undefined}>
+              {screens.map((s, i) => (
+                <motion.button
+                  key={s.src}
                   type="button"
-                  onClick={() => onOpen(items, i)}
+                  tabIndex={c > 0 ? -1 : undefined}
+                  onClick={() => onOpen(i)}
+                  onHoverStart={() => setHover(i)}
+                  onHoverEnd={() => setHover((h) => (h === i ? null : h))}
                   aria-label={`Enlarge: ${s.alt}`}
-                  className="group relative block w-full overflow-hidden rounded-[12px] border-[3px] border-ink bg-white sm:rounded-[16px] sm:border-[4px] shadow-[0_22px_36px_-28px_rgba(14,20,34,0.6)] transition-transform duration-300 hover:-translate-y-1.5"
+                  variants={jelly}
+                  initial="rest"
+                  animate="rest"
+                  whileHover={reduce ? undefined : 'jelly'}
+                  whileFocus={reduce ? undefined : 'jelly'}
+                  className={`group relative block w-[132px] shrink-0 origin-bottom overflow-hidden rounded-[14px] border-[3px] border-ink bg-white shadow-[0_22px_36px_-28px_rgba(14,20,34,0.6)] transition-opacity duration-300 sm:w-[168px] sm:rounded-[16px] sm:border-[4px] ${
+                    hover !== null && hover !== i ? 'opacity-55' : ''
+                  }`}
                 >
-                  <img src={asset(s.src)} alt={s.alt} loading="lazy" decoding="async" className="block aspect-[402/874] w-full rounded-[9px] object-cover object-top sm:rounded-[12px]" />
+                  <img src={asset(s.src)} alt={c > 0 ? '' : s.alt} loading="lazy" decoding="async" draggable={false} className="block aspect-[402/874] w-full rounded-[10px] object-cover object-top sm:rounded-[12px]" />
                   {s.tall && (
                     <span className="pointer-events-none absolute inset-x-0 bottom-0 flex h-14 items-end justify-center bg-gradient-to-t from-white via-white/80 to-transparent pb-2 font-mono text-[10px] uppercase tracking-[0.1em] text-muted">
                       Long screen
@@ -266,12 +351,17 @@ function Groups({ groups, stage, onOpen }: { groups: ScreenGroup[]; stage: Fidel
                   <span className="absolute right-2 top-2 grid h-7 w-7 place-items-center rounded-full bg-ink/70 text-white opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
                     <Expand size={14} aria-hidden />
                   </span>
-                </button>
-              </motion.li>
-            ))}
-          </ol>
+                </motion.button>
+              ))}
+            </div>
+          ))}
         </motion.div>
-      </AnimatePresence>
+      </div>
+      <p className="mt-1 flex items-center gap-2 font-mono text-[12px] text-faint" aria-hidden>
+        <span className={`inline-block h-1.5 w-1.5 rounded-full transition-colors ${loop && !held ? 'animate-pulse bg-blue' : 'bg-faint'}`} />
+        {loop ? (held ? 'Paused · click a screen to enlarge' : 'Auto-playing · hover to pause') : 'Click a screen to enlarge'}
+        <span className="sr-only">{label}</span>
+      </p>
     </div>
   )
 }

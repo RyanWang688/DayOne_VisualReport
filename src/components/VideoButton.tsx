@@ -12,6 +12,7 @@ export function youtubeId(url: string) {
 export function VideoButton({ url, label = 'Watch the video', variant = 'primary' }: { url: string; label?: string; variant?: 'primary' | 'inline' }) {
   const [open, setOpen] = useState(false)
   const trigger = useRef<HTMLButtonElement>(null)
+  const viaKeyboard = useRef(false) // only hand focus back (with its ring) to keyboard users
   const id = youtubeId(url)
 
   useEffect(() => {
@@ -23,7 +24,7 @@ export function VideoButton({ url, label = 'Watch the video', variant = 'primary
     return () => {
       document.body.style.overflow = prev
       window.removeEventListener('keydown', onKey)
-      trigger.current?.focus()
+      if (viaKeyboard.current) trigger.current?.focus()
     }
   }, [open])
 
@@ -39,11 +40,14 @@ export function VideoButton({ url, label = 'Watch the video', variant = 'primary
       <button
         ref={trigger}
         type="button"
-        onClick={() => setOpen(true)}
+        onClick={(e) => {
+          viaKeyboard.current = e.detail === 0
+          setOpen(true)
+        }}
         aria-haspopup="dialog"
         className={
           variant === 'primary'
-            ? 'group inline-flex h-12 items-center gap-3 rounded-full bg-blue pl-2 pr-5 text-[15px] font-semibold text-white shadow-[0_10px_24px_-12px_rgba(0,100,240,0.7)] hover:bg-blue-deep'
+            ? 'group inline-flex h-12 items-center gap-3 rounded-full bg-blue pl-2 pr-5 text-[15px] font-semibold text-white shadow-[0_10px_24px_-12px_rgba(0,100,240,0.7)] outline-none hover:bg-blue-deep focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 focus-visible:ring-offset-canvas'
             : 'group inline-flex h-9 items-center gap-2 rounded-full border border-blue/30 bg-blue-soft pl-1 pr-3.5 text-[14px] font-semibold text-blue hover:border-blue'
         }
       >

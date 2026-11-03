@@ -114,7 +114,7 @@ export function HeroShowcase({ lead, more }: { lead: ReactNode; more: ReactNode 
                   animate={{ opacity: 1, height: 'auto' }}
                   exit={{ opacity: 0, height: 0 }}
                   transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                  className="overflow-hidden"
+                  className="-mx-4 -mb-8 overflow-hidden px-4 pb-8" // room so the button shadow and focus ring are not clipped
                 >
                   {more}
                 </motion.div>

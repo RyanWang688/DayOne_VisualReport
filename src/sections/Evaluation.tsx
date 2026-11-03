@@ -82,7 +82,6 @@ function Problems() {
         num="7.2"
         label="Key usability problems"
         title="Eight problems, mapped to the screens where they appeared."
-        lead="Select a problem to see the evidence, the heuristic it breaks and the screen region involved."
         aside={<SeverityBar high={high} medium={problems.length - high} />}
       />
 
@@ -274,7 +273,7 @@ function Refinements() {
   const r = refinements[k]
   return (
     <div className="mt-24">
-      <SubHeader num="7.3" label="From problem to refinement" title="Before and after, feature by feature." lead="Drag the handle (or use ← →) to compare the tested screen with its refined version." />
+      <SubHeader num="7.3" label="From problem to refinement" title="Before and after, feature by feature." />
 
       <div className="flex flex-wrap gap-2" role="tablist" aria-label="Refined feature">
         {refinements.map((x, i) => (

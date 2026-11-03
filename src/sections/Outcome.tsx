@@ -11,7 +11,7 @@ export function Outcome() {
         <SectionHeader id="outcome" title="From findings to features." intro={outcomeSummary} />
 
         {/* Finding → Opportunity → Feature */}
-        <SubHeader num="5.1" label="Findings to features" title="Each finding, answered by a feature." lead="Hover a row to trace a research finding through a design opportunity to the features that respond to it." />
+        <SubHeader num="5.1" label="Findings to features" title="Each finding, answered by a feature." />
         <Reveal>
           <div className="hidden grid-cols-[1fr_32px_1fr_32px_1.2fr] gap-0 border-b-2 border-ink pb-3 font-mono text-[12px] uppercase tracking-[0.12em] text-faint md:grid">
             <span>Research finding</span>

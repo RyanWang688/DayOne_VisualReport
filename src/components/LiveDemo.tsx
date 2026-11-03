@@ -36,7 +36,6 @@ export function LiveDemo() {
         num="7.4"
         label="Try Day One"
         title="The live prototype, one feature at a time."
-        lead="Pick a feature and use it on the phone. Each demo stays inside that feature, so you can explore freely without getting lost."
       />
 
       {/* Feature tabs */}

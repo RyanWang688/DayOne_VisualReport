@@ -24,7 +24,7 @@ export function Iteration() {
         <Trace onOpen={openBox} />
 
         <div className="mt-24">
-          <SubHeader num="6.1" label="Fidelity explorer" title="Every screen, at every stage." lead="Switch stage, pick a feature, and open any screen to look closer." />
+          <SubHeader num="6.1" label="Fidelity explorer" title="Every screen, at every stage." />
           <Explorer onOpen={openBox} />
         </div>
       </div>
@@ -384,11 +384,6 @@ function ScreenCarousel({ screens, label, onOpen }: { screens: Screen[]; label: 
           ))}
         </motion.div>
       </div>
-      <p className="mt-1 flex items-center gap-2 font-mono text-[12px] text-faint" aria-hidden>
-        <span className={`inline-block h-1.5 w-1.5 rounded-full transition-colors ${loop && !held ? 'animate-pulse bg-blue' : 'bg-faint'}`} />
-        {loop ? (held ? 'Paused · click a screen to enlarge' : 'Auto-playing · hover to pause') : 'Click a screen to enlarge'}
-        <span className="sr-only">{label}</span>
-      </p>
     </div>
   )
 }

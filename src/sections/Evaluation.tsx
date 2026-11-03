@@ -129,7 +129,7 @@ function Problems() {
 
         {/* Sticky annotated screen (desktop) */}
         <div className="hidden lg:col-span-4 lg:col-start-9 lg:block">
-          <div className="sticky top-28">
+          <div className="sticky top-24">
             <AnnotatedScreen p={p} />
           </div>
         </div>
@@ -196,7 +196,7 @@ function ProblemDetail({ p }: { p: UsabilityProblem }) {
 function AnnotatedScreen({ p }: { p: UsabilityProblem }) {
   const [x, y, w, h] = p.screen.box
   return (
-    <figure>
+    <figure className="mx-auto" style={{ maxWidth: 'min(100%, calc((100svh - 190px) * 402 / 874))' }}>
       <div className="relative overflow-hidden rounded-[26px] border-[6px] border-ink bg-white shadow-[0_30px_60px_-30px_rgba(14,20,34,0.45)]">
         <AnimatePresence mode="popLayout" initial={false}>
           <motion.img

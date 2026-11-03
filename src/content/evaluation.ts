@@ -58,7 +58,7 @@ export const problems: UsabilityProblem[] = [
     who: '4 of 6 participants',
     evidence: 'Participants wanted to choose or change checkpoints to suit their interests, available time and destination, instead of only following the recommended route.',
     quote: { text: 'I want to see nearby places on the map, such as Queen Victoria Market, cafes, and dessert shops. Then I can choose where I want to go.', by: 'P4' },
-    screen: { src: it('compare/short-trip-plan-before.jpg'), alt: 'Initial Short Trip route-planning screen', region: 'Route-planning entry', box: [5, 79, 90, 14] },
+    screen: { src: it('hifi/explore-3.jpg'), alt: 'Initial Route Preview showing a fixed curated route with set stops', region: 'Fixed curated route — stops cannot be changed', box: [13, 15.5, 63, 40] },
     recommendation: { id: '5.1', priority: 'High', text: 'Let users add, remove or replace checkpoints on the map; keep recommended places as optional stops.' },
   },
   {
@@ -70,7 +70,7 @@ export const problems: UsabilityProblem[] = [
     who: 'Several participants',
     evidence: 'Some participants first read Short Trip as ordinary wayfinding or shop recommendations. Once its purpose was explained, they became more positive.',
     quote: { text: 'This is very useful for new students. It can help them learn more about their local community.', by: 'P3' },
-    screen: { src: it('hifi/explore-1.jpg'), alt: 'Initial Explore screen with the Short Trip entry', region: 'Short Trip entry', box: [5, 79, 90, 14] },
+    screen: { src: it('hifi/explore-1.jpg'), alt: 'Initial Explore screen with the Short Trip entry', region: 'Short Trip entry', box: [3.5, 80.5, 93, 8.5] },
     recommendation: { id: '5.2', priority: 'High', text: 'Explain the exploration purpose at the entry (“Explore new places on your way”) and give each recommended place a short introduction.' },
   },
   {
@@ -81,7 +81,7 @@ export const problems: UsabilityProblem[] = [
     heuristic: 'Recognition rather than recall',
     who: 'P5',
     evidence: 'Map markers and the place cards below repeated the same information, and P5 needed the researcher’s help to find Start Journey.',
-    screen: { src: it('hifi/explore-4.jpg'), alt: 'Initial route preview with place cards', region: 'Route preview and primary action', box: [4, 85, 92, 8] },
+    screen: { src: it('hifi/explore-4.jpg'), alt: 'Initial route preview with place cards', region: 'Start Journey, at the very bottom', box: [4, 92.5, 92, 6.2] },
     recommendation: { id: '5.3', priority: 'Medium', text: 'Show short place details from map markers, place Start Journey where it is easy to find, and hint that panels can be swiped.' },
   },
   {
@@ -93,7 +93,7 @@ export const problems: UsabilityProblem[] = [
     count: 2,
     who: '2 of 6 participants',
     evidence: 'P2 and P5 did not understand what XP and Level meant, and interest in rewards differed between participants.',
-    screen: { src: it('hifi/explore-1.jpg'), alt: 'Initial Explore screen with XP and level indicators', region: 'XP and level indicators', box: [58, 4, 39, 8] },
+    screen: { src: it('hifi/explore-1.jpg'), alt: 'Initial Explore screen with XP and level indicators', region: 'XP and level indicators', box: [52.5, 7, 30.5, 4.8] },
     recommendation: { id: '5.4', priority: 'Low', text: 'Remove XP, Level and badges so Short Trip focuses on exploring.' },
   },
   {
@@ -105,7 +105,7 @@ export const problems: UsabilityProblem[] = [
     count: 5,
     who: '5 of 6 participants',
     evidence: 'Steps were dense with text and had to be followed in order. P2 wanted to jump to a specific step; P4 and P6 wanted an overview before the details.',
-    screen: { src: it('hifi/journey-tree-2.jpg'), alt: 'Initial Journey Tree step with long text', region: 'Text-heavy journey content', box: [5, 25, 90, 61] },
+    screen: { src: it('hifi/journey-tree-2.jpg'), alt: 'Initial Journey Tree step with long text', region: 'Text-heavy step content', box: [19.5, 40, 77, 42] },
     recommendation: { id: '5.5', text: 'Redesign Journey Tree around a card-based overview with step summaries, free access to any step and a shortcut to Scenario Simulation.' },
   },
   {
@@ -116,7 +116,7 @@ export const problems: UsabilityProblem[] = [
     heuristic: 'Match between system and the real world',
     who: 'P1, P2, P4, P6',
     evidence: 'Reaching instructions took too many steps (Tools → AR Lens → scan → Details) for moments like boarding a tram. P2 and P4 wanted practical instructions straight after scanning.',
-    screen: { src: it('hifi/ar-scan-1.jpg'), alt: 'Initial AR Lens scan result', region: 'Scan result and Details action', box: [4, 72, 92, 10] },
+    screen: { src: it('hifi/ar-scan-1.jpg'), alt: 'Initial AR Lens scan result', region: 'Scan result and Details action', box: [3.5, 73.3, 93, 8.5] },
     recommendation: { id: '5.6', text: 'Open AR Lens from Home and show practical guidance automatically after a scan, without an extra Details tap.' },
   },
   {
@@ -128,7 +128,7 @@ export const problems: UsabilityProblem[] = [
     count: 2,
     who: '2 of 6 participants',
     evidence: 'Being somewhere does not mean needing its services — a user may only be passing by. Nearby or overlapping places can also produce the wrong suggestions.',
-    screen: { src: it('compare/ask-this-place-before.jpg'), alt: 'Initial Ask This Place screen', region: 'Automatically identified location', box: [5, 5, 90, 10] },
+    screen: { src: it('compare/ask-this-place-before.jpg'), alt: 'Initial Ask This Place screen', region: 'Automatically identified location', box: [3.5, 14, 93, 12.5] },
     recommendation: { id: '5.7', text: 'Show the identified place by name and image, and let users choose a different location.' },
   },
   {
@@ -140,7 +140,7 @@ export const problems: UsabilityProblem[] = [
     count: 2,
     who: '2 of 6 participants',
     evidence: 'Explore, Journey Tree and Tools worked separately, so getting related help meant leaving the current flow and starting again.',
-    screen: { src: it('hifi/tools.jpg'), alt: 'Initial Tools page with separate entry points', region: 'Separate feature entry points', box: [4, 17, 92, 53] },
+    screen: { src: it('hifi/tools.jpg'), alt: 'Initial Tools page with separate entry points', region: 'Separate feature entry points', box: [3.5, 18.8, 93, 42.5] },
     recommendation: { id: '5.8', text: 'Bring AR Lens, Ask This Place and Scenario Simulation onto Home, and let Ask This Place work inside a Short Trip.' },
   },
 ]

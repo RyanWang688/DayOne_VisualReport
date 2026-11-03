@@ -41,15 +41,6 @@ export function LiveDemo() {
           </>
         }
         lead="The version built after evaluation, with the refinements above. Choose a feature and try it on the phone."
-        aside={
-          <span className="inline-flex items-center gap-2.5 border-l-[3px] border-solution bg-[#eef7f1] py-2 pl-3 pr-4 font-mono text-[12px] uppercase tracking-[0.12em] text-solution">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-solution opacity-60 motion-reduce:animate-none" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-solution" />
-            </span>
-            Final version · live
-          </span>
-        }
       />
 
       {/* Feature tabs */}

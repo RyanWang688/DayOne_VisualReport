@@ -35,15 +35,10 @@ export function Iteration() {
 
 /** One topic traced across the three fidelities: three equal stage cards that arrive in sequence, joined by arrows. */
 function Trace({ onOpen }: { onOpen: (items: LightboxItem[], i: number) => void }) {
-  const items = evolutionTrace.steps.map((s) => ({ src: s.src, alt: s.alt, caption: `${s.stage} · ${evolutionTrace.topic}` }))
+  const items = evolutionTrace.steps.map((s) => ({ src: s.src, alt: s.alt, caption: s.stage }))
   const view = { once: true, margin: '0px 0px -15% 0px' } as const
   return (
-    <figure className="border border-line bg-canvas">
-      <figcaption className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 border-b border-line px-5 py-4 sm:px-8">
-        <span className="font-display text-lg font-semibold tracking-tight">{evolutionTrace.topic}</span>
-        <span className="font-mono text-[12px] text-faint">One journey · three fidelities</span>
-      </figcaption>
-
+    <figure className="border border-line bg-canvas" aria-label="Iteration flow: low-fi, wireframe, initial hi-fi">
       <ol className="grid grid-cols-3 gap-2 p-3 sm:gap-0 sm:p-0 md:grid-cols-[1fr_auto_1fr_auto_1fr]">
         {evolutionTrace.steps.flatMap((s, i) => {
           const card = (
@@ -101,7 +96,6 @@ function Trace({ onOpen }: { onOpen: (items: LightboxItem[], i: number) => void 
           ]
         })}
       </ol>
-      <p className="border-t border-line px-5 py-3 text-[13px] text-faint sm:px-8">{evolutionTrace.note}</p>
     </figure>
   )
 }

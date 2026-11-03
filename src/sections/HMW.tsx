@@ -1,5 +1,5 @@
-import { useRef } from 'react'
-import { motion, useReducedMotion, useScroll, useSpring, useTransform, type MotionValue } from 'motion/react'
+import { useEffect, useRef, useState } from 'react'
+import { AnimatePresence, motion, useInView, useMotionValueEvent, useReducedMotion, useScroll, useSpring, useTransform, type MotionValue } from 'motion/react'
 import { hmwBridge, hmwQuestion, hmwText } from '../content/hmw'
 import { sectionById } from '../content/sections'
 
@@ -44,9 +44,35 @@ function ScrollHMW() {
   const outro = useTransform(p, [OUTRO, OUTRO + 0.06], [0, 1])
   const outroY = useTransform(p, [OUTRO, OUTRO + 0.06], [16, 0])
 
+  // Jumping straight here (a tab, the contents menu, a link) lands on an empty frame: show a scroll hint until the reader scrolls.
+  const [jumped, setJumped] = useState(false)
+  useEffect(() => {
+    const onClick = (e: MouseEvent) => {
+      const a = (e.target as Element | null)?.closest?.('a[href="#hmw"]')
+      if (a) setJumped(true)
+    }
+    const onHash = () => location.hash === '#hmw' && setJumped(true)
+    if (location.hash === '#hmw') setJumped(true)
+    document.addEventListener('click', onClick, true)
+    window.addEventListener('hashchange', onHash)
+    return () => {
+      document.removeEventListener('click', onClick, true)
+      window.removeEventListener('hashchange', onHash)
+    }
+  }, [])
+  useMotionValueEvent(scrollYProgress, 'change', (v) => {
+    // hide once the scene starts
+    if (v > 0.02) setJumped(false)
+  })
+  const inView = useInView(ref)
+  useEffect(() => {
+    if (!inView) setJumped(false) // reader left the section
+  }, [inView])
+
   return (
-    <motion.section ref={ref} id="hmw" aria-labelledby="hmw-title" className="relative h-[400vh]" style={{ backgroundColor: bg }}>
+    <motion.section ref={ref} id="hmw" aria-labelledby="hmw-title" className="relative h-[400vh]" style={{ backgroundColor: bg, scrollMarginTop: -80 }}>
       <div className="sticky top-0 flex h-[100svh] flex-col justify-center overflow-hidden pt-[68px]">
+        <AnimatePresence>{jumped && <JumpHint />}</AnimatePresence>
         <motion.div className="container-x" style={{ opacity: sceneIn }}>
           <Eyebrow />
           <h2 id="hmw-title" className="mt-6 max-w-[22ch] text-[clamp(1.75rem,3.6vw,3.25rem)] font-bold leading-[1.05] tracking-[-0.04em] sm:mt-8">
@@ -78,6 +104,36 @@ function ScrollHMW() {
         </motion.div>
       </div>
     </motion.section>
+  )
+}
+
+/** Shown only when the reader jumps straight to HMW: says what this space is and that scrolling reveals it. */
+function JumpHint() {
+  const nudge = () => window.scrollBy({ top: window.innerHeight * 0.9, behavior: 'smooth' })
+  return (
+    <motion.div
+      className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center pt-[68px]"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0, transition: { duration: 0.25 } }}
+      transition={{ duration: 0.5, delay: 0.5 }}
+    >
+      <motion.button
+        type="button"
+        onClick={nudge}
+        className="pointer-events-auto flex flex-col items-center gap-4 rounded-[16px] px-8 py-6 text-center text-ink transition-colors hover:bg-ink/[0.04]"
+        initial={{ y: 12 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.5, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      >
+        <span className="font-mono text-[12px] uppercase tracking-[0.14em] text-blue">{sectionById.hmw.num} · How might we</span>
+        <span className="max-w-[24ch] font-display text-[clamp(1.4rem,2.4vw,2rem)] font-semibold leading-tight">Scroll to reveal the design question</span>
+        <span className="max-w-[40ch] text-[15px] text-muted">Each interview theme lights up its part of the question as you scroll.</span>
+        <span className="relative mt-1 block h-10 w-6 rounded-full border-2 border-ink/40" aria-hidden>
+          <motion.span className="absolute left-1/2 top-1.5 -ml-[2px] block h-2.5 w-1 rounded-full bg-blue" animate={{ y: [0, 12, 0], opacity: [1, 0.2, 1] }} transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }} />
+        </span>
+      </motion.button>
+    </motion.div>
   )
 }
 

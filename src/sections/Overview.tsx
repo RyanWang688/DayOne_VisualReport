@@ -69,7 +69,7 @@ function Hero() {
 }
 function TitleBlock() {
   const rows: [string, React.ReactNode][] = [
-    ['Report', meta.reportTitle],
+    ['Thesis title', meta.title],
     ['University', meta.university],
     ['Faculty', meta.faculty],
     ['Discipline', <Ph value={meta.discipline} />],
@@ -109,14 +109,14 @@ function TitleBlock() {
             {rows.map(([k, v], i) => (
               <motion.div
                 key={k}
-                className={`bg-canvas px-5 py-4 transition-colors hover:bg-paper ${k === 'Report' ? 'sm:col-span-2' : ''} ${k === 'Video' ? 'lg:col-span-3' : ''}`}
+                className={`bg-canvas px-5 py-4 transition-colors hover:bg-paper ${k === 'Thesis title' ? 'sm:col-span-2' : ''} ${k === 'Video' ? 'lg:col-span-3' : ''}`}
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '0px 0px -10% 0px' }}
                 transition={{ duration: 0.4, delay: i * 0.04, ease: [0.22, 1, 0.36, 1] }}
               >
                 <dt className="font-mono text-[12px] uppercase tracking-[0.12em] text-faint">{k}</dt>
-                <dd className={`mt-1.5 text-ink-2 ${k === 'Report' ? 'font-display text-[17px] font-semibold text-ink' : 'text-[15px]'}`}>{v}</dd>
+                <dd className={`mt-1.5 text-ink-2 ${k === 'Thesis title' ? 'font-display text-[17px] font-semibold text-ink' : 'text-[15px]'}`}>{v}</dd>
               </motion.div>
             ))}
           </dl>

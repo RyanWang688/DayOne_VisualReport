@@ -348,6 +348,8 @@ function ScreenCarousel({ screens, label, onOpen }: { screens: Screen[]; label: 
     <div className="mt-2">
       <div
         ref={wrap}
+        role="region"
+        aria-label={`${label} screens`}
         className={`relative overflow-hidden pb-5 pt-10 ${loop ? '[mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)]' : ''}`}
         onMouseEnter={() => setHeld(true)}
         onMouseLeave={() => {

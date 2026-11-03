@@ -37,7 +37,7 @@ All academic content lives in `src/content/` — no component code needs to chan
 
 | File | What it controls |
 | --- | --- |
-| `sections.ts` | Report structure: section order, numbering, parts and one-line takeaways |
+| `sections.ts` | Report structure: section order, numbering, parts, each chapter's guiding question and one-line takeaway |
 | `meta.ts` | Title block: degree, faculty, supervisor, authors, date, video link, prototype link |
 | `process.ts` | Project Overview process timeline stages (front matter, before Part I) |
 | `literature.ts` | 01 Literature Review insights and citations |

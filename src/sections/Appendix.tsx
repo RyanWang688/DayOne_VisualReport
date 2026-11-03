@@ -9,10 +9,8 @@ export function Appendix() {
     <section id="appendix" aria-labelledby="appendix-title" className="border-t border-line bg-paper py-24 md:py-28">
       <div className="container-x grid gap-10 md:grid-cols-12">
         <Reveal className="md:col-span-3">
-          <p className="eyebrow">
-            <span className="text-blue">A</span> — Appendices
-          </p>
-          <h2 id="appendix-title" className="mt-4 text-4xl font-bold">
+          <p className="eyebrow">Sources</p>
+          <h2 id="appendix-title" className="mt-3 text-3xl font-semibold">
             Appendices
           </h2>
         </Reveal>

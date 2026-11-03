@@ -1,8 +1,9 @@
 import { useId, useState, type ReactNode } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
-import { ChevronDown, CircleDashed } from 'lucide-react'
+import { ArrowDown, ChevronDown, CircleDashed } from 'lucide-react'
 import { isPlaceholder, type Editable, type ParticipantId, type RefKey } from '../content/types'
 import { refByKey } from '../content/references'
+import { nextSection, partByKey, sectionById, type SectionId } from '../content/sections'
 
 export const asset = (path: string) => `${import.meta.env.BASE_URL}${path}`
 
@@ -22,32 +23,73 @@ export function Reveal({ children, delay = 0, className, as = 'div' }: { childre
   )
 }
 
-export function SectionHeader({ num, label, title, intro, tone = 'light' }: { num: string; label: string; title: ReactNode; intro?: ReactNode; tone?: 'light' | 'dark' }) {
+/** Chapter label: number, name and the part it belongs to. */
+export function ChapterLabel({ id, tone = 'light' }: { id: SectionId; tone?: 'light' | 'dark' }) {
+  const s = sectionById[id]
   const dark = tone === 'dark'
   return (
-    <header className="mb-12 grid gap-6 md:mb-16 md:grid-cols-12">
-      <Reveal className="md:col-span-3">
-        <div className={`flex items-center gap-3 font-mono text-[12px] uppercase tracking-[0.14em] ${dark ? 'text-white/60' : 'text-muted'}`}>
-          {num && (
-            <>
-              <span className={dark ? 'text-white' : 'text-blue'}>{num}</span>
-              <span className={`h-px w-8 ${dark ? 'bg-white/30' : 'bg-line'}`} />
-            </>
-          )}
-          <span>{label}</span>
-        </div>
+    <div className={`font-mono text-[12px] uppercase tracking-[0.14em] ${dark ? 'text-white/60' : 'text-muted'}`}>
+      <p className="flex items-center gap-3">
+        {s.num && (
+          <>
+            <span className={dark ? 'text-sun' : 'text-blue'}>{s.num}</span>
+            <span className={`h-px w-6 ${dark ? 'bg-white/30' : 'bg-line'}`} />
+          </>
+        )}
+        <span className={dark ? 'text-white' : 'text-ink'}>{s.label}</span>
+      </p>
+      <p className={`mt-1.5 tracking-[0.1em] ${dark ? 'text-white/45' : 'text-faint'}`}>{partByKey[s.part].label}</p>
+    </div>
+  )
+}
+
+/** Section opener: chapter label, the guiding question, then the answer as a measured headline. */
+export function SectionHeader({ id, title, intro, tone = 'light' }: { id: SectionId; title: ReactNode; intro?: ReactNode; tone?: 'light' | 'dark' }) {
+  const dark = tone === 'dark'
+  return (
+    <header className="mb-12 grid gap-5 md:mb-14 md:grid-cols-12">
+      <Reveal className="md:col-span-3 md:pt-1">
+        <ChapterLabel id={id} tone={tone} />
       </Reveal>
       <div className="md:col-span-9">
         <Reveal>
-          <h2 className={`text-[clamp(2.1rem,5vw,4.2rem)] font-bold ${dark ? 'text-white' : 'text-ink'}`}>{title}</h2>
+          <p className={`font-serif text-[1.25rem] italic leading-snug ${dark ? 'text-sun' : 'text-blue'}`}>{sectionById[id].question}</p>
+          <h2 className={`mt-2 max-w-[26ch] text-[clamp(1.65rem,2.8vw,2.4rem)] font-semibold leading-[1.15] tracking-[-0.02em] ${dark ? 'text-white' : 'text-ink'}`}>{title}</h2>
         </Reveal>
         {intro && (
           <Reveal delay={0.08}>
-            <p className={`mt-6 max-w-[62ch] text-lg leading-relaxed ${dark ? 'text-white/75' : 'text-muted'}`}>{intro}</p>
+            <p className={`mt-5 max-w-[62ch] text-[17px] leading-relaxed ${dark ? 'text-white/75' : 'text-muted'}`}>{intro}</p>
           </Reveal>
         )}
       </div>
     </header>
+  )
+}
+
+/** Hand-off at the end of a chapter: what comes next and the question it answers. */
+export function NextChapter({ from, tone = 'light' }: { from: SectionId; tone?: 'light' | 'dark' }) {
+  const n = nextSection(from)
+  if (!n) return null
+  const dark = tone === 'dark'
+  return (
+    <Reveal>
+      <a
+        href={`#${n.id}`}
+        className={`group mt-16 grid gap-2 border-t-2 pt-5 sm:grid-cols-[1fr_auto] sm:items-end md:mt-20 ${dark ? 'border-white/30' : 'border-ink'}`}
+      >
+        <span>
+          <span className={`font-mono text-[12px] uppercase tracking-[0.14em] ${dark ? 'text-white/50' : 'text-faint'}`}>
+            Next{n.num && ` · ${n.num}`} · {n.label}
+          </span>
+          <span className={`mt-1 block font-display text-[clamp(1.2rem,2vw,1.5rem)] font-semibold transition-colors ${dark ? 'text-white group-hover:text-sun' : 'text-ink group-hover:text-blue'}`}>
+            {n.question}
+          </span>
+        </span>
+        <span className={`inline-flex items-center gap-2 font-mono text-[12px] uppercase tracking-[0.14em] ${dark ? 'text-sun' : 'text-blue'}`}>
+          Continue <ArrowDown size={14} aria-hidden className="transition-transform duration-200 group-hover:translate-y-0.5" />
+        </span>
+      </a>
+    </Reveal>
   )
 }
 

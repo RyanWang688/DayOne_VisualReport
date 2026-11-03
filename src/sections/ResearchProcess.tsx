@@ -2,7 +2,6 @@ import { useRef } from 'react'
 import { AnimatePresence, motion, useScroll, useSpring } from 'motion/react'
 import { processStages, type ProcessStage } from '../content/process'
 import { clusters } from '../content/affinity'
-import { sectionById } from '../content/sections'
 import { useActiveIndex } from '../hooks/useActiveSection'
 import { Expandable, Reveal, SectionHeader, SourceTag, asset } from '../components/ui'
 
@@ -16,8 +15,7 @@ export function ResearchProcess() {
     <section id="project-overview" className="border-t border-line py-24 md:py-32">
       <div className="container-x">
         <SectionHeader
-          num={sectionById['project-overview'].num}
-          label={sectionById['project-overview'].label}
+          id="project-overview"
           title="A user-centred process, from listening to testing."
           intro="Each stage produced something the next one depended on: interviews became codes, codes became themes, themes became features, and features were tested with students."
         />
@@ -45,7 +43,7 @@ export function ResearchProcess() {
                         }`}
                       />
                       <span className="font-mono text-[12px]">0{i + 1}</span>
-                      <span className={`font-display font-bold tracking-tight lg:text-[clamp(1.3rem,1.7vw,1.65rem)] ${active === i ? 'text-ink' : ''}`}>{s.title}</span>
+                      <span className={`font-display font-semibold tracking-tight lg:text-[1.2rem] ${active === i ? 'text-ink' : ''}`}>{s.title}</span>
                     </a>
                   </li>
                 ))}

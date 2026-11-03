@@ -10,7 +10,7 @@ const titleWords = meta.title.split(' ')
 
 export function Overview() {
   return (
-    <section id="overview" aria-labelledby="overview-title" className="relative overflow-hidden pt-14">
+    <section id="overview" aria-labelledby="overview-title" className="relative overflow-hidden pt-[68px]">
       <Hero />
       <TitleBlock />
     </section>
@@ -38,7 +38,7 @@ function Hero() {
   }
 
   return (
-    <div className="container-x relative grid min-h-[calc(100svh-56px)] items-center gap-12 py-12 lg:grid-cols-12 lg:py-16">
+    <div className="container-x relative grid min-h-[calc(100svh-68px)] items-center gap-12 py-12 lg:grid-cols-12 lg:py-16">
       <div className="lg:col-span-7">
         <motion.p
           className="eyebrow mb-8 flex flex-wrap gap-x-3 gap-y-1"
@@ -58,14 +58,14 @@ function Hero() {
         </h1>
         <motion.p
           aria-hidden
-          className="font-display text-[clamp(4.5rem,15vw,11rem)] font-extrabold leading-[0.82] tracking-[-0.055em] text-blue"
+          className="font-display text-[clamp(3.5rem,10vw,7rem)] font-extrabold leading-[0.85] tracking-[-0.05em] text-blue"
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         >
           Day One
         </motion.p>
-        <p aria-hidden className="mt-6 max-w-[18ch] font-display text-[clamp(1.75rem,3.6vw,3rem)] font-bold leading-[1.04] tracking-[-0.03em]">
+        <p aria-hidden className="mt-6 max-w-[22ch] font-display text-[clamp(1.5rem,2.8vw,2.25rem)] font-semibold leading-[1.12] tracking-[-0.02em]">
           {titleWords.map((w, i) => (
             <motion.span
               key={i}
@@ -216,16 +216,18 @@ export function ReportMap() {
       <div className="container-x pb-20 md:pb-28">
         <Reveal>
           <div className="flex flex-wrap items-baseline justify-between gap-3 border-t-2 border-ink pt-5">
-            <h2 id="map-title" className="text-2xl font-bold">
+            <h2 id="map-title" className="text-2xl font-semibold">
               How this report reads
             </h2>
-            <p className="font-mono text-[12px] text-muted">Each part can be read on its own</p>
+            <p className="font-mono text-[12px] text-muted">Each chapter answers one question</p>
           </div>
         </Reveal>
         <div className="mt-6 grid gap-8 md:grid-cols-2 md:gap-12">
           {mainParts.map((p, k) => (
             <Reveal key={p.key} delay={k * 0.06}>
-              <p className="eyebrow text-blue">{p.label}</p>
+              <p className="eyebrow text-blue">
+                {p.label} · {p.story}
+              </p>
               <p className="mt-1 text-[15px] text-muted">{p.summary}</p>
               <ol className="mt-4 border-t border-line">
                 {sections
@@ -234,7 +236,10 @@ export function ReportMap() {
                     <li key={s.id}>
                       <a href={`#${s.id}`} className="group grid grid-cols-[36px_1fr] items-baseline gap-3 border-b border-line py-2.5">
                         <span className="font-mono text-[12px] text-blue">{s.num}</span>
-                        <span className="font-display font-semibold tracking-tight transition-colors group-hover:text-blue">{s.label}</span>
+                        <span>
+                          <span className="font-display font-semibold tracking-tight transition-colors group-hover:text-blue">{s.label}</span>
+                          <span className="block font-serif text-[16px] italic leading-snug text-muted">{s.question}</span>
+                        </span>
                       </a>
                     </li>
                   ))}
@@ -243,7 +248,8 @@ export function ReportMap() {
           ))}
         </div>
         <p className="mt-6 text-[14px] text-muted">
-          Also: <a href="#abstract" className="link-grow text-ink">Abstract</a> · <a href="#references" className="link-grow text-ink">References</a> ·{' '}
+          Start with <a href="#project-overview" className="link-grow text-ink">Project Overview</a> for the whole journey at a glance. Also:{' '}
+          <a href="#abstract" className="link-grow text-ink">Abstract</a> · <a href="#references" className="link-grow text-ink">References</a> ·{' '}
           <a href="#appendix" className="link-grow text-ink">Appendix</a>
         </p>
       </div>
@@ -268,7 +274,7 @@ function Context() {
       <div className="container-x grid gap-12 md:grid-cols-12">
         <Reveal className="md:col-span-5">
           <p className="eyebrow">Project context</p>
-          <p className="mt-4 font-display text-[clamp(1.6rem,3vw,2.4rem)] font-semibold leading-[1.15]">{meta.introLead}</p>
+          <p className="mt-4 font-display text-[clamp(1.4rem,2.3vw,1.9rem)] font-semibold leading-[1.2]">{meta.introLead}</p>
           <p className="mt-6 text-muted">{meta.intro}</p>
         </Reveal>
         <div className="md:col-span-6 md:col-start-7">

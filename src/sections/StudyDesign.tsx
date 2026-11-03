@@ -1,7 +1,6 @@
 import { study } from '../content/study'
 import { totalNotes, clusters } from '../content/affinity'
-import { sectionById } from '../content/sections'
-import { Reveal, SectionHeader, asset } from '../components/ui'
+import { NextChapter, Reveal, SectionHeader, asset } from '../components/ui'
 import { AffinityBoard } from '../components/AffinityBoard'
 import { ShieldCheck } from 'lucide-react'
 
@@ -9,7 +8,7 @@ export function StudyDesign() {
   return (
     <section id="study-design" className="border-t border-line py-24 md:py-32">
       <div className="container-x">
-        <SectionHeader num={sectionById['study-design'].num} label="Study Design" title="Eight conversations, coded note by note." intro={study.approach} />
+        <SectionHeader id="study-design" title="Eight conversations, coded note by note." intro={study.approach} />
 
         <div className="grid gap-12 md:grid-cols-12">
           <Reveal className="md:col-span-5">
@@ -19,7 +18,7 @@ export function StudyDesign() {
                 <div key={f.label} className={`py-5 ${i ? 'border-l border-line pl-4 sm:pl-5' : 'pr-4'}`}>
                   <dt className="sr-only">{f.label}</dt>
                   <dd>
-                    <span className="block font-display text-[clamp(1.8rem,3.4vw,2.4rem)] font-bold leading-none">{f.value}</span>
+                    <span className="block font-display text-[clamp(1.6rem,2.6vw,2rem)] font-bold leading-none">{f.value}</span>
                     <span className="mt-2 block text-[13px] text-muted">{f.label}</span>
                   </dd>
                 </div>
@@ -83,7 +82,7 @@ export function StudyDesign() {
             <div className="mb-8 flex flex-wrap items-end justify-between gap-6">
               <div>
                 <p className="eyebrow text-blue">2.2 · Interactive affinity map</p>
-                <h3 className="mt-2 max-w-[22ch] text-[clamp(1.8rem,3.4vw,2.6rem)] font-bold">
+                <h3 className="mt-2 max-w-[26ch] text-[clamp(1.4rem,2.2vw,1.85rem)] font-semibold leading-[1.2]">
                   {totalNotes} coded observations in {clusters.length} clusters.
                 </h3>
               </div>
@@ -94,6 +93,8 @@ export function StudyDesign() {
           </Reveal>
           <AffinityBoard />
         </div>
+
+        <NextChapter from="study-design" />
       </div>
     </section>
   )

@@ -214,7 +214,7 @@ export function AffinityBoard() {
         </div>
 
         {/* Panel: theme selection + participant evidence */}
-        <aside aria-label="Affinity map explorer" className="flex flex-col lg:sticky lg:top-14 lg:max-h-[calc(100svh-56px)] lg:self-start">
+        <aside aria-label="Affinity map explorer" className="flex flex-col lg:sticky lg:top-[72px] lg:max-h-[calc(100svh-76px)] lg:self-start">
           <div className="shrink-0 border-b border-line p-4 sm:p-5">
             <p id="ab-person" className="mb-2 font-mono text-[12px] uppercase tracking-[0.12em] text-faint">
               Participant

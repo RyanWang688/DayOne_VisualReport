@@ -46,10 +46,10 @@ function ScrollHMW() {
 
   return (
     <motion.section ref={ref} id="hmw" aria-labelledby="hmw-title" className="relative h-[400vh]" style={{ backgroundColor: bg }}>
-      <div className="sticky top-0 flex h-[100svh] flex-col justify-center overflow-hidden pt-14">
+      <div className="sticky top-0 flex h-[100svh] flex-col justify-center overflow-hidden pt-[68px]">
         <motion.div className="container-x" style={{ opacity: sceneIn }}>
           <Eyebrow />
-          <h2 id="hmw-title" className="mt-6 max-w-[22ch] text-[clamp(1.9rem,4.5vw,4.2rem)] font-extrabold leading-[1.05] tracking-[-0.04em] sm:mt-8">
+          <h2 id="hmw-title" className="mt-6 max-w-[22ch] text-[clamp(1.75rem,3.6vw,3.25rem)] font-bold leading-[1.05] tracking-[-0.04em] sm:mt-8">
             <span className="sr-only">{hmwText}</span>
             <span aria-hidden>
               {words.map((t, i) => (
@@ -143,7 +143,7 @@ function StaticHMW() {
     <section id="hmw" aria-labelledby="hmw-title" className="bg-blue-ink py-24 text-white md:py-32">
       <div className="container-x">
         <Eyebrow />
-        <h2 id="hmw-title" className="mt-8 max-w-[22ch] text-[clamp(1.9rem,4.5vw,4.2rem)] font-extrabold leading-[1.05] tracking-[-0.04em]">
+        <h2 id="hmw-title" className="mt-8 max-w-[22ch] text-[clamp(1.75rem,3.6vw,3.25rem)] font-bold leading-[1.05] tracking-[-0.04em]">
           {hmwQuestion.map((s, i) =>
             s.step !== undefined ? (
               <span key={i} className="text-sun underline decoration-[0.055em] underline-offset-[0.12em]">

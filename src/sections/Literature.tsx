@@ -1,16 +1,14 @@
 import { motion } from 'motion/react'
 import { litContext, litFraming, litInsights, type LitInsight } from '../content/literature'
 import { refByKey } from '../content/references'
-import { sectionById } from '../content/sections'
-import { Cite, Expandable, Reveal, SectionHeader } from '../components/ui'
+import { Cite, Expandable, NextChapter, Reveal, SectionHeader } from '../components/ui'
 
 export function Literature() {
   return (
     <section id="literature" className="border-t border-line bg-paper py-24 md:py-32">
       <div className="container-x">
         <SectionHeader
-          num={sectionById.literature.num}
-          label="Literature Review"
+          id="literature"
           title="What earlier research told us to look for."
           intro={
             <>
@@ -30,7 +28,7 @@ export function Literature() {
             <Reveal key={c.title} delay={i * 0.06}>
               <div className="border-t-2 border-ink pt-5">
                 <p className="eyebrow">Further context</p>
-                <h3 className="mt-2 text-2xl font-bold">{c.title}</h3>
+                <h3 className="mt-2 text-xl font-semibold">{c.title}</h3>
                 <ul className="mt-4 space-y-3 text-[15px] text-ink-2">
                   {c.points.map((p) => (
                     <li key={p.text}>
@@ -42,6 +40,8 @@ export function Literature() {
             </Reveal>
           ))}
         </div>
+
+        <NextChapter from="literature" />
       </div>
     </section>
   )
@@ -51,12 +51,12 @@ function InsightBlock({ ins }: { ins: LitInsight }) {
   const sources = [...new Set(ins.points.flatMap((p) => p.refs))]
   return (
     <article className="grid gap-8 border-t border-line py-14 md:grid-cols-12 md:py-20" aria-labelledby={`lit-${ins.num}`}>
-      <Reveal className="md:col-span-1">
-        <span className="font-display text-5xl font-extrabold text-blue md:text-6xl">{ins.num}</span>
+      <Reveal className="-mb-5 md:col-span-1 md:mb-0 md:pt-2">
+        <span className="font-mono text-[13px] text-blue">{ins.num}</span>
       </Reveal>
       <div className="md:col-span-6">
         <Reveal>
-          <h3 id={`lit-${ins.num}`} className="text-[clamp(1.8rem,3.4vw,2.8rem)] font-bold">
+          <h3 id={`lit-${ins.num}`} className="text-[clamp(1.4rem,2.2vw,1.85rem)] font-semibold leading-[1.2]">
             {ins.title}
           </h3>
         </Reveal>

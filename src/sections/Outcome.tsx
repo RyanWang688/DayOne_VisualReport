@@ -1,15 +1,14 @@
 import { useState } from 'react'
 import { ArrowRight } from 'lucide-react'
 import { evaluation, outcomeMap, outcomeSummary, prototypeScreens } from '../content/outcome'
-import { Expandable, PhoneFrame, Reveal, SectionHeader, SourceTag } from '../components/ui'
-import { sectionById } from '../content/sections'
+import { Expandable, NextChapter, PhoneFrame, Reveal, SectionHeader, SourceTag } from '../components/ui'
 
 export function Outcome() {
   const [hover, setHover] = useState<number | null>(null)
   return (
     <section id="outcome" className="border-t border-line py-24 md:py-32">
       <div className="container-x">
-        <SectionHeader num={sectionById.outcome.num} label="Outcome" title="From findings to features." intro={outcomeSummary} />
+        <SectionHeader id="outcome" title="From findings to features." intro={outcomeSummary} />
 
         {/* Finding → Opportunity → Feature */}
         <Reveal>
@@ -64,7 +63,7 @@ export function Outcome() {
         <div className="mt-24">
           <Reveal>
             <p className="eyebrow text-blue">5.2 · The prototype</p>
-            <h3 className="mt-2 text-[clamp(1.8rem,3.4vw,2.6rem)] font-bold">Day One, as built.</h3>
+            <h3 className="mt-2 text-[clamp(1.4rem,2.2vw,1.85rem)] font-semibold">Day One, as built.</h3>
           </Reveal>
           <div className="-mx-4 mt-10 flex snap-x snap-mandatory gap-6 overflow-x-auto px-4 pb-6 sm:-mx-8 sm:px-8 lg:-mx-12 lg:px-12" tabIndex={0} aria-label="Prototype screens, scroll horizontally">
             {prototypeScreens.map((s, i) => (
@@ -87,7 +86,7 @@ export function Outcome() {
           <div className="grid gap-10 md:grid-cols-12">
             <Reveal className="md:col-span-4">
               <p className="eyebrow text-blue">5.3 · {evaluation.label}</p>
-              <h3 className="mt-2 text-3xl font-bold">What testing told us.</h3>
+              <h3 className="mt-2 text-[clamp(1.4rem,2.2vw,1.85rem)] font-semibold">What testing told us.</h3>
               <p className="mt-4 text-[15px] text-muted">{evaluation.method}</p>
               <ul className="mt-6 space-y-3 text-[14px]">
                 {evaluation.questions.map((q) => (
@@ -104,7 +103,7 @@ export function Outcome() {
               <ul className="grid gap-px border border-line bg-line sm:grid-cols-2">
                 {evaluation.findings.map((f, i) => (
                   <Reveal as="li" key={f.title} delay={i * 0.05} className="lift relative bg-paper p-5 hover:z-10">
-                    <p className="font-display text-4xl font-bold text-blue">{f.fraction}</p>
+                    <p className="font-display text-3xl font-bold text-blue">{f.fraction}</p>
                     <p className="mt-2 font-semibold leading-snug">{f.title}</p>
                     <p className="mt-1 text-[14px] text-muted">{f.text}</p>
                   </Reveal>
@@ -162,6 +161,8 @@ export function Outcome() {
             </div>
           </div>
         </div>
+
+        <NextChapter from="outcome" />
       </div>
     </section>
   )

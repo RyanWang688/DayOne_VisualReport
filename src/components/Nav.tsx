@@ -1,25 +1,67 @@
 import { useEffect, useState } from 'react'
-import { AnimatePresence, motion, useScroll, useSpring } from 'motion/react'
-import { Menu, X } from 'lucide-react'
-import { parts, sections } from '../content/sections'
-import { useActiveSection } from '../hooks/useActiveSection'
+import { AnimatePresence, motion, useMotionValue } from 'motion/react'
+import { List, X } from 'lucide-react'
+import { partByKey, parts, sections, type PartKey } from '../content/sections'
 import { asset } from './ui'
 
-/** Blocks between sections that should also update the "Now reading" indicator. */
-const landmarks = [
-  { id: 'contents', num: '', label: 'Contents' },
-  { id: 'part-research', num: '', label: 'Part I · Research' },
-  { id: 'part-design', num: '', label: 'Part II · Design' },
+/** Blocks between sections that should also update the breadcrumb. */
+const landmarks: { id: string; part: PartKey; label: string }[] = [
+  { id: 'contents', part: 'front', label: 'Contents' },
+  { id: 'part-research', part: 'research', label: 'Part I · Research' },
+  { id: 'part-design', part: 'design', label: 'Part II · Design' },
 ]
-const ids = [...sections.map((s) => s.id), ...landmarks.map((l) => l.id)]
+const LINE = 96 // px from the top of the viewport that counts as "reading here"
+
+type Place = { id: string; part: PartKey; num: string; label: string; seg: number }
+
+/** Works out which block is under the reading line and how far through its chapter the reader is. */
+function useReadingPlace() {
+  const [place, setPlace] = useState<Place>({ ...sections[0], seg: 0 })
+  const segProgress = useMotionValue(0)
+
+  useEffect(() => {
+    const blocks = [
+      ...sections.map((s, i) => ({ id: s.id, part: s.part as PartKey, num: s.num as string, label: s.label as string, seg: i, landmark: false })),
+      ...landmarks.map((l) => ({ ...l, num: '', seg: -1, landmark: true })),
+    ]
+    let raf = 0
+    const update = () => {
+      raf = 0
+      const tops = blocks.map((b) => ({ b, el: document.getElementById(b.id) })).filter((x) => x.el).map((x) => ({ ...x, top: x.el!.getBoundingClientRect().top }))
+      tops.sort((a, c) => a.top - c.top)
+      const current = [...tops].reverse().find((x) => x.top <= LINE) ?? tops[0]
+      // Chapter progress: from this section's top to the next section's top.
+      const secs = tops.filter((x) => !x.b.landmark)
+      let k = 0
+      secs.forEach((x, i) => {
+        if (x.top <= LINE) k = i
+      })
+      const here = secs[k]
+      const end = secs[k + 1]?.top ?? here.top + here.el!.offsetHeight - innerHeight + LINE
+      segProgress.set(Math.min(1, Math.max(0, (LINE - here.top) / Math.max(1, end - here.top))))
+      const seg = here.b.seg
+      setPlace((prev) => (prev.id === current.b.id && prev.seg === seg ? prev : { id: current.b.id, part: current.b.part, num: current.b.num, label: current.b.label, seg }))
+    }
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update)
+    }
+    update()
+    addEventListener('scroll', onScroll, { passive: true })
+    addEventListener('resize', onScroll)
+    return () => {
+      removeEventListener('scroll', onScroll)
+      removeEventListener('resize', onScroll)
+      cancelAnimationFrame(raf)
+    }
+  }, [segProgress])
+
+  return { place, segProgress }
+}
 
 export function Nav() {
-  const active = useActiveSection(ids)
-  const { scrollYProgress } = useScroll()
-  const progress = useSpring(scrollYProgress, { stiffness: 220, damping: 40, restDelta: 0.001 })
+  const { place, segProgress } = useReadingPlace()
   const [open, setOpen] = useState(false)
-  const current: { id: string; num: string; label: string } = sections.find((s) => s.id === active) ?? landmarks.find((l) => l.id === active) ?? sections[0]
-  const dark = active === 'hmw' || active === 'conclusions'
+  const dark = place.id === 'hmw' || place.id === 'conclusions'
 
   useEffect(() => {
     if (!open) return
@@ -35,129 +77,135 @@ export function Nav() {
       </a>
 
       <header
-        className={`fixed inset-x-0 top-0 z-50 border-b backdrop-blur-md transition-colors duration-500 ${dark ? 'border-white/10 bg-blue-ink/80 text-white' : 'border-line/70 bg-canvas/85 text-ink'}`}
+        className={`fixed inset-x-0 top-0 z-50 backdrop-blur-md transition-colors duration-500 ${dark ? 'bg-blue-ink/85 text-white' : 'bg-canvas/90 text-ink'}`}
       >
         <div className="container-x flex h-14 items-center justify-between gap-4">
-          <a href="#overview" className="flex items-center gap-3" aria-label="Day One — back to top">
+          <a href="#overview" className="flex shrink-0 items-center gap-3" aria-label="Day One — back to top">
             {/* Wordmark; turns white over the dark sections */}
-            <img
-              src={asset('assets/brand/dayone-logo.png')}
-              alt=""
-              className={`h-9 w-auto transition-[filter] duration-500 ${dark ? 'brightness-0 invert' : ''}`}
-            />
-            <span className={`hidden font-mono text-[12px] uppercase tracking-[0.14em] sm:inline ${dark ? 'text-white/50' : 'text-faint'}`}>Visual Report</span>
+            <img src={asset('assets/brand/dayone-logo.png')} alt="" className={`h-9 w-auto transition-[filter] duration-500 ${dark ? 'brightness-0 invert' : ''}`} />
+            <span className={`hidden font-mono text-[12px] uppercase tracking-[0.14em] lg:inline ${dark ? 'text-white/50' : 'text-faint'}`}>Visual Report</span>
           </a>
 
-          {/* Active section indicator */}
-          <div className="flex min-w-0 items-center gap-3" aria-live="polite">
-            <span className={`hidden font-mono text-[12px] md:inline ${dark ? 'text-white/50' : 'text-faint'}`}>Now reading</span>
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.span
-                key={current.id}
-                initial={{ opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -6 }}
-                transition={{ duration: 0.2 }}
-                className="truncate font-mono text-[12px] uppercase tracking-[0.12em]"
-              >
-                {current.num && <span className={dark ? 'text-sun' : 'text-blue'}>{current.num} </span>}
-                {current.label}
-              </motion.span>
-            </AnimatePresence>
+          {/* Breadcrumb: part › chapter */}
+          <div className="flex min-w-0 items-center gap-3">
+            <p className="flex min-w-0 items-baseline gap-2 font-mono text-[12px] uppercase tracking-[0.1em]" aria-live="polite">
+              <span className="sr-only">You are reading: </span>
+              {partByKey[place.part].label !== place.label && (
+                <>
+                  <span className={`hidden shrink-0 md:inline ${dark ? 'text-white/50' : 'text-faint'}`}>{partByKey[place.part].label}</span>
+                  <span aria-hidden className={`hidden md:inline ${dark ? 'text-white/30' : 'text-line'}`}>/</span>
+                </>
+              )}
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.span
+                  key={place.id}
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -6 }}
+                  transition={{ duration: 0.2 }}
+                  className="truncate"
+                >
+                  {place.num && <span className={dark ? 'text-sun' : 'text-blue'}>{place.num} </span>}
+                  {place.label}
+                </motion.span>
+              </AnimatePresence>
+            </p>
             <button
               type="button"
               onClick={() => setOpen(true)}
-              aria-label="Open section menu"
               aria-expanded={open}
               aria-controls="section-menu"
-              className={`ml-1 grid h-9 w-9 place-items-center rounded-full border transition-colors xl:hidden ${dark ? 'border-white/20 hover:bg-white/10' : 'border-line hover:bg-paper'}`}
+              className={`flex h-9 shrink-0 items-center gap-2 rounded-full border px-3 text-[13px] font-medium transition-colors ${dark ? 'border-white/20 hover:bg-white/10' : 'border-line bg-paper hover:border-ink/30'}`}
             >
-              <Menu size={18} aria-hidden />
+              <List size={16} aria-hidden />
+              <span className="hidden sm:inline">Contents</span>
+              <span className="sr-only sm:hidden">Contents</span>
             </button>
           </div>
         </div>
-        <motion.div aria-hidden className="h-[2px] origin-left bg-blue" style={{ scaleX: progress }} />
-      </header>
 
-      {/* Desktop side rail */}
-      <nav aria-label="Sections" className="fixed right-5 top-1/2 z-40 hidden -translate-y-1/2 xl:block">
-        <ol className="flex flex-col gap-1">
-          {sections.map((s, i) => {
-            const isActive = s.id === active
-            const newPart = i > 0 && sections[i - 1].part !== s.part
-            return (
-              <li key={s.id} className={newPart ? 'mt-3' : ''}>
-                <a
-                  href={`#${s.id}`}
-                  aria-current={isActive ? 'true' : undefined}
-                  className="group flex items-center justify-end gap-3 py-1"
-                >
-                  <span
-                    className={`rounded-[3px] px-1.5 py-0.5 font-mono text-[12px] uppercase tracking-[0.1em] transition-all duration-300 ${
-                      'translate-x-1 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100 ' +
-                      (dark ? 'bg-blue-ink text-white' : 'bg-paper shadow-sm ' + (isActive ? 'text-ink' : 'text-muted'))
-                    }`}
+        {/* Chapter progress: one segment per section, grouped by part; the current one fills as you read */}
+        <nav aria-label="Chapter progress" className="container-x">
+          <ol className="flex h-3 items-end gap-[3px] pb-[3px]">
+            {sections.map((s, i) => {
+              const newPart = i > 0 && sections[i - 1].part !== s.part
+              const state = i < place.seg ? 1 : i === place.seg ? segProgress : 0
+              return (
+                <li key={s.id} className={`group relative h-full flex-1 ${newPart ? 'ml-2' : ''}`}>
+                  <a
+                    href={`#${s.id}`}
+                    aria-label={`${s.num ? s.num + ' ' : ''}${s.label}`}
+                    aria-current={i === place.seg ? 'true' : undefined}
+                    className="flex h-full items-end"
                   >
+                    <span className={`relative block h-[3px] w-full overflow-hidden rounded-full transition-[height] group-hover:h-[5px] ${dark ? 'bg-white/15' : 'bg-ink/10'}`}>
+                      <motion.span className={`absolute inset-0 origin-left ${dark ? 'bg-sun' : 'bg-blue'}`} style={{ scaleX: state }} />
+                    </span>
+                  </a>
+                  <span
+                    aria-hidden
+                    className="pointer-events-none absolute left-1/2 top-4 hidden -translate-x-1/2 whitespace-nowrap rounded-[3px] bg-ink px-2 py-1 font-mono text-[11px] uppercase tracking-[0.1em] text-white opacity-0 shadow-sm transition-opacity group-hover:opacity-100 md:block"
+                  >
+                    {s.num && `${s.num} · `}
                     {s.label}
                   </span>
-                  <span
-                    className={`block h-[2px] transition-all duration-300 ${isActive ? 'w-7 ' + (dark ? 'bg-sun' : 'bg-blue') : 'w-3 ' + (dark ? 'bg-white/30' : 'bg-ink/20') + ' group-hover:w-5'}`}
-                  />
-                </a>
-              </li>
-            )
-          })}
-        </ol>
-      </nav>
+                </li>
+              )
+            })}
+          </ol>
+        </nav>
+      </header>
 
-      {/* Mobile / tablet sheet */}
+      {/* Contents sheet (all screen sizes) */}
       <AnimatePresence>
         {open && (
-          <motion.div
-            className="fixed inset-0 z-[70] bg-ink/40 xl:hidden"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setOpen(false)}
-          >
+          <motion.div className="fixed inset-0 z-[70] bg-ink/40" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setOpen(false)}>
             <motion.nav
               id="section-menu"
-              aria-label="Sections"
+              aria-label="Contents"
               role="dialog"
               aria-modal="true"
-              className="absolute right-0 top-0 flex h-full w-[min(360px,88vw)] flex-col bg-canvas p-6"
+              className="absolute right-0 top-0 flex h-full w-[min(400px,90vw)] flex-col bg-canvas p-6"
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="mb-8 flex items-center justify-between">
+              <div className="mb-6 flex items-center justify-between">
                 <span className="eyebrow">Contents</span>
-                <button type="button" autoFocus onClick={() => setOpen(false)} aria-label="Close menu" className="grid h-9 w-9 place-items-center rounded-full border border-line">
+                <button type="button" autoFocus onClick={() => setOpen(false)} aria-label="Close contents" className="grid h-9 w-9 place-items-center rounded-full border border-line">
                   <X size={18} aria-hidden />
                 </button>
               </div>
               <div className="-mx-6 flex-1 overflow-y-auto px-6">
                 {parts.map((p) => (
-                  <div key={p.key} className="mb-5">
-                    <p className="mb-1 font-mono text-[12px] uppercase tracking-[0.14em] text-faint">{p.label}</p>
+                  <div key={p.key} className="mb-6">
+                    <p className={`font-mono text-[12px] uppercase tracking-[0.12em] ${p.key === place.part ? 'text-blue' : 'text-faint'}`}>{p.label}</p>
+                    <p className="mb-2 font-serif text-[14px] italic text-muted">{p.story}</p>
                     <ol className="flex flex-col">
                       {sections
                         .filter((s) => s.part === p.key)
-                        .map((s) => (
-                          <li key={s.id} className="border-t border-line">
-                            <a
-                              href={`#${s.id}`}
-                              onClick={() => setOpen(false)}
-                              aria-current={s.id === active ? 'true' : undefined}
-                              className={`flex items-baseline gap-4 py-2.5 font-display text-lg font-semibold ${s.id === active ? 'text-blue' : 'text-ink'}`}
-                            >
-                              <span className="w-6 font-mono text-[12px] font-normal text-faint">{s.num}</span>
-                              <span className="flex-1">{s.label}</span>
-                            </a>
-                          </li>
-                        ))}
+                        .map((s) => {
+                          const current = sections[place.seg]?.id === s.id
+                          return (
+                            <li key={s.id} className="border-t border-line">
+                              <a
+                                href={`#${s.id}`}
+                                onClick={() => setOpen(false)}
+                                aria-current={current ? 'true' : undefined}
+                                className={`relative grid grid-cols-[28px_1fr] items-baseline gap-2 py-2.5 ${current ? 'text-blue' : 'text-ink hover:text-blue'}`}
+                              >
+                                {current && <span aria-hidden className="absolute -left-3 top-3 bottom-3 w-[3px] rounded-full bg-blue" />}
+                                <span className="font-mono text-[12px] text-faint">{s.num}</span>
+                                <span>
+                                  <span className="font-display text-[17px] font-semibold">{s.label}</span>
+                                  <span className="block font-serif text-[15px] italic leading-snug text-muted">{s.question}</span>
+                                </span>
+                              </a>
+                            </li>
+                          )
+                        })}
                     </ol>
                   </div>
                 ))}

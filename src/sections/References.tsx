@@ -6,10 +6,8 @@ export function References() {
     <section id="references" aria-labelledby="references-title" className="py-24 md:py-28">
       <div className="container-x grid gap-10 md:grid-cols-12">
         <Reveal className="md:col-span-3">
-          <p className="eyebrow">
-            <span className="text-blue">R</span> — References
-          </p>
-          <h2 id="references-title" className="mt-4 text-4xl font-bold">
+          <p className="eyebrow">Sources</p>
+          <h2 id="references-title" className="mt-3 text-3xl font-semibold">
             References
           </h2>
           <p className="mt-3 text-[14px] text-muted">APA 7th edition. {references.length} sources.</p>

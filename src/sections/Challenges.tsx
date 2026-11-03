@@ -11,8 +11,7 @@ export function Challenges() {
     <section id="challenges" className="border-t border-line bg-paper py-24 md:py-32">
       <div className="container-x">
         <SectionHeader
-          num={sectionById.challenges.num}
-          label="Challenges"
+          id="challenges"
           title="Four themes from the interviews."
           intro="Thematic analysis of the ten clusters produced four themes. Each traces a different part of the gap between having information and acting on it."
         />
@@ -20,7 +19,7 @@ export function Challenges() {
         <JourneyStrip />
 
         {/* Chapter index */}
-        <nav aria-label="Themes" className="sticky top-14 z-30 -mx-4 mb-4 border-b border-line bg-paper/90 px-4 backdrop-blur sm:-mx-8 sm:px-8 lg:-mx-12 lg:px-12">
+        <nav aria-label="Themes" className="sticky top-[68px] z-30 -mx-4 mb-4 border-b border-line bg-paper/90 px-4 backdrop-blur sm:-mx-8 sm:px-8 lg:-mx-12 lg:px-12">
           <ol className="flex gap-1 overflow-x-auto py-3">
             {challenges.map((c, i) => (
               <li key={c.num} className="shrink-0">
@@ -42,13 +41,16 @@ export function Challenges() {
         ))}
 
         <Reveal>
-          <a href="#hmw" className="group flex flex-wrap items-baseline justify-between gap-4 border-t-2 border-ink pt-6">
-            <span className="font-display text-[clamp(1.4rem,2.6vw,2rem)] font-bold">
-              Four themes. <span className="text-blue">One design question.</span>
+          <a href="#hmw" className="group grid gap-2 border-t-2 border-ink pt-5 sm:grid-cols-[1fr_auto] sm:items-end">
+            <span>
+              <span className="font-mono text-[12px] uppercase tracking-[0.14em] text-faint">
+                Next · {sectionById.hmw.num} · {sectionById.hmw.label} · opens Part II
+              </span>
+              <span className="mt-1 block font-display text-[clamp(1.2rem,2vw,1.5rem)] font-semibold">
+                Four themes. <span className="text-blue">One design question.</span>
+              </span>
             </span>
-            <span className="font-mono text-[12px] uppercase tracking-[0.14em] text-muted transition-colors group-hover:text-blue">
-              Continue ↓
-            </span>
+            <span className="font-mono text-[12px] uppercase tracking-[0.14em] text-blue">Continue ↓</span>
           </a>
         </Reveal>
       </div>
@@ -84,16 +86,16 @@ function Chapter({ c, index, active }: { c: Challenge; index: number; active: bo
     <article id={`challenge-${index}`} data-index={index} className="scroll-mt-32 border-t border-line py-16 md:py-24" aria-labelledby={`ch-title-${index}`}>
       <div className="grid gap-10 lg:grid-cols-12">
         <div className="lg:col-span-5">
-          <div className="lg:sticky lg:top-36">
+          <div className="lg:sticky lg:top-40">
             <Reveal>
               <p
-                className={`font-display text-[clamp(5rem,10vw,8.5rem)] font-extrabold leading-[0.8] tracking-[-0.06em] transition-colors duration-500 ${active ? 'text-blue' : 'text-blue-soft'}`}
+                className={`font-display text-[clamp(2.25rem,3.6vw,3rem)] font-bold leading-[0.85] tracking-[-0.04em] transition-colors duration-500 ${active ? 'text-blue' : 'text-blue-soft'}`}
                 aria-hidden
               >
                 {c.num}
               </p>
               <p className="eyebrow mt-4 text-blue">Theme {index + 1}</p>
-              <h3 id={`ch-title-${index}`} className="mt-2 text-[clamp(1.8rem,3vw,2.6rem)] font-bold">
+              <h3 id={`ch-title-${index}`} className="mt-2 text-[clamp(1.4rem,2.2vw,1.85rem)] font-semibold leading-[1.2]">
                 {c.title}
               </h3>
               <p className="mt-5 text-muted">{c.explanation}</p>
@@ -108,7 +110,7 @@ function Chapter({ c, index, active }: { c: Challenge; index: number; active: bo
               <p className="flex items-center gap-2 font-mono text-[12px] uppercase tracking-[0.14em] text-sun">
                 <MapPin size={14} aria-hidden /> {c.scenario.label}
               </p>
-              <p className="mt-4 font-display text-[clamp(1.25rem,2.2vw,1.6rem)] font-semibold leading-snug">{c.scenario.text}</p>
+              <p className="mt-4 font-display text-[clamp(1.15rem,1.8vw,1.35rem)] font-medium leading-snug">{c.scenario.text}</p>
               <p className="mt-4 font-mono text-[12px] text-white/50">Based on the experience of {c.scenario.participants.join(', ')}</p>
             </div>
           </Reveal>

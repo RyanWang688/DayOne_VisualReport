@@ -33,7 +33,9 @@ Reading order (set in `src/content/sections.ts`): front matter → Part I · Res
 
 ## Interactions
 
-- Scroll progress bar, active-section indicator (header + desktop side rail grouped by part), mobile section menu grouped by part
+- Story line: every chapter opens with a guiding question (e.g. "How did we listen?") above a measured headline, and Literature, Study Design and Outcome end with a "Next" hand-off naming the next chapter's question; part openers list each chapter's question
+- Wayfinding: header breadcrumb (part / chapter) plus a segmented chapter-progress bar (one segment per section, grouped by part; the current one fills as you read, hover for its name); Contents sheet available on every screen size, highlighting the current chapter
+- Type scale: display headings reduced (section titles max 2.4rem, sub-headings ~1.85rem, hero wordmark 7rem) so headlines no longer dominate the reading flow
 - Readability: 12px minimum for labels, faint grey darkened to ≥4.5:1 contrast, abstract set in the body face
 - Hero composition: pointer parallax and a gentle scroll drift
 - Project Overview: sticky stage index, scroll-filled progress line, active stage highlight; a sticky evidence panel (key numbers + quote) changes with the active stage; inactive stage cards recede

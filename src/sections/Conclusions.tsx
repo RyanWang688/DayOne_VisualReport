@@ -1,5 +1,5 @@
 import { conclusions } from '../content/conclusions'
-import { Reveal } from '../components/ui'
+import { ChapterLabel, Reveal } from '../components/ui'
 import { sectionById } from '../content/sections'
 
 export function Conclusions() {
@@ -11,24 +11,23 @@ export function Conclusions() {
   return (
     <section id="conclusions" aria-labelledby="conclusions-title" className="bg-ink py-24 text-white md:py-32">
       <div className="container-x">
-        <Reveal>
-          <div className="flex items-center gap-3 font-mono text-[12px] uppercase tracking-[0.14em] text-white/60">
-            <span className="text-sun">{sectionById.conclusions.num}</span>
-            <span className="h-px w-8 bg-white/30" />
-            <span>Conclusions & key findings</span>
-          </div>
-        </Reveal>
-        <Reveal>
-          <h2 id="conclusions-title" className="mt-10 max-w-[20ch] text-[clamp(2.2rem,5.4vw,4.8rem)] font-extrabold leading-[1]">
-            {conclusions.lead}
-          </h2>
-        </Reveal>
+        <div className="grid gap-5 md:grid-cols-12">
+          <Reveal className="md:col-span-3 md:pt-1">
+            <ChapterLabel id="conclusions" tone="dark" />
+          </Reveal>
+          <Reveal className="md:col-span-9">
+            <p className="font-serif text-[1.25rem] italic leading-snug text-sun">{sectionById.conclusions.question}</p>
+            <h2 id="conclusions-title" className="mt-2 max-w-[34ch] text-[clamp(1.5rem,2.5vw,2.1rem)] font-semibold leading-[1.2] tracking-[-0.02em]">
+              {conclusions.lead}
+            </h2>
+          </Reveal>
+        </div>
 
         <ol className="mt-20 grid gap-px bg-white/10 md:grid-cols-3">
           {conclusions.insights.map((x, i) => (
             <Reveal as="li" key={x.title} delay={i * 0.06} className="bg-ink p-6 md:p-8">
               <span className="font-mono text-[12px] text-sun">0{i + 1}</span>
-              <h3 className="mt-4 text-2xl font-bold">{x.title}</h3>
+              <h3 className="mt-4 text-xl font-semibold">{x.title}</h3>
               <p className="mt-3 text-white/70">{x.text}</p>
             </Reveal>
           ))}
@@ -37,7 +36,7 @@ export function Conclusions() {
         <Reveal>
           <div className="mt-20 grid gap-6 border-y border-white/15 py-10 md:grid-cols-12">
             <p className="font-mono text-[12px] uppercase tracking-[0.14em] text-sun md:col-span-3">The importance of practical experience</p>
-            <p className="font-serif text-[clamp(1.3rem,2.4vw,1.9rem)] italic leading-snug md:col-span-9">{conclusions.practicalExperience}</p>
+            <p className="font-serif text-[clamp(1.2rem,2vw,1.55rem)] italic leading-snug md:col-span-9">{conclusions.practicalExperience}</p>
           </div>
         </Reveal>
 

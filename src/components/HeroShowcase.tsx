@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef, useState, type ReactNode } from 'react'
-import { AnimatePresence, motion, useMotionValueEvent, useReducedMotion, useScroll, useSpring, useTransform, type MotionValue } from 'motion/react'
+import { AnimatePresence, motion, useAnimationFrame, useInView, useMotionValue, useMotionValueEvent, useReducedMotion, useScroll, useSpring, useTransform, type MotionValue } from 'motion/react'
 import { Expand } from 'lucide-react'
 import { Lightbox } from './Lightbox'
 import { asset } from './ui'
@@ -152,6 +152,43 @@ function ScrollCue({ p }: { p: MotionValue<number> }) {
   )
 }
 
+/**
+ * Idle motion for the wall: each column drifts gently along its own axis (out of phase with its neighbours),
+ * plus a light pointer parallax. Both fade to zero as soon as the scroll story starts, so the lift-out is unchanged.
+ */
+function useAmbient(p: MotionValue<number>) {
+  const time = useMotionValue(0)
+  const mx = useMotionValue(0)
+  const my = useMotionValue(0)
+  const sx = useSpring(mx, { stiffness: 60, damping: 18 })
+  const sy = useSpring(my, { stiffness: 60, damping: 18 })
+  const idle = useTransform(p, [0, 0.06], [1, 0])
+  const running = useRef(true)
+  useAnimationFrame((t) => {
+    if (running.current && !document.hidden) time.set(t / 1000)
+  })
+  const th = (TILT * Math.PI) / 180
+  /** offset for one column: drift along the tilted column axis + parallax, scaled by idle */
+  const column = (c: number) => {
+    const o = () => 26 * Math.sin(time.get() * 0.32 + c * 1.35) * idle.get()
+    return {
+      x: () => -Math.sin(th) * o() + sx.get() * -22 * idle.get(),
+      y: () => Math.cos(th) * o() + sy.get() * -16 * idle.get(),
+    }
+  }
+  const track = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.pointerType !== 'mouse') return
+    const r = e.currentTarget.getBoundingClientRect()
+    mx.set((e.clientX - r.left) / r.width - 0.5)
+    my.set((e.clientY - r.top) / r.height - 0.5)
+  }
+  const reset = () => {
+    mx.set(0)
+    my.set(0)
+  }
+  return { column, track, reset, running }
+}
+
 function Stage({ p, onOpen }: { p: MotionValue<number>; onOpen: (i: number) => void }) {
   const [ref, size] = useSize<HTMLDivElement>()
   const L = size.w ? layout(size) : null
@@ -160,9 +197,20 @@ function Stage({ p, onOpen }: { p: MotionValue<number>; onOpen: (i: number) => v
   const wallY = useTransform(p, [0, 1], [0, -60])
   const mapO = useTransform(p, [0.2, 0.6], [0, 0.35])
   const capO = useTransform(p, [0.72, 0.88], [0, 1])
+  const ambient = useAmbient(p)
+  const stageRef = useRef<HTMLDivElement>(null)
+  const inView = useInView(stageRef)
+  ambient.running.current = inView
 
   return (
-    <div className="relative min-w-0 flex-1 overflow-hidden" role="group" aria-label="Screens from the final Day One prototype">
+    <div
+      ref={stageRef}
+      className="relative min-w-0 flex-1 overflow-hidden"
+      role="group"
+      aria-label="Screens from the final Day One prototype"
+      onPointerMove={ambient.track}
+      onPointerLeave={ambient.reset}
+    >
       <motion.img aria-hidden src={asset('assets/hero/melbourne-map.jpg')} alt="" className="pointer-events-none absolute inset-0 h-full w-full object-cover" style={{ opacity: mapO }} />
       {/* soft edge so the wall never runs under the intro */}
       <div aria-hidden className="pointer-events-none absolute inset-y-0 left-0 z-[3] w-24 bg-gradient-to-r from-canvas to-transparent" />
@@ -171,28 +219,32 @@ function Stage({ p, onOpen }: { p: MotionValue<number>; onOpen: (i: number) => v
       {L && (
         <>
           <motion.div aria-hidden className="absolute inset-0" style={{ opacity: wallO, y: wallY }}>
-            {Array.from({ length: COLS * ROWS }, (_, k) => {
-              const c = k % COLS
-              const r = Math.floor(k / COLS)
-              if (taken.has(`${c},${r}`)) return null
-              const { x, y } = L.pos(c, r)
-              return (
-                <motion.img
-                  key={k}
-                  src={asset(shot(pool[(c * 3 + r * 5) % pool.length]))}
-                  alt=""
-                  decoding="async"
-                  className="absolute max-w-none rounded-[18px] border border-line bg-white shadow-[0_10px_24px_-16px_rgba(14,20,34,0.45)]"
-                  style={{ left: x, top: y, width: L.cw, x: '-50%', y: '-50%', rotate: TILT }}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.7, delay: 0.15 + ((c + r) % 6) * 0.06, ease: [0.22, 1, 0.36, 1] }}
-                />
-              )
-            })}
+            {Array.from({ length: COLS }, (_, c) => (
+              <DriftColumn key={c} offset={ambient.column(c)}>
+                {Array.from({ length: ROWS }, (_, r) => {
+                  if (taken.has(`${c},${r}`)) return null
+                  const { x, y } = L.pos(c, r)
+                  return (
+                    <motion.img
+                      key={r}
+                      src={asset(shot(pool[(c * 3 + r * 5) % pool.length]))}
+                      alt=""
+                      decoding="async"
+                      className="absolute max-w-none rounded-[18px] border border-line bg-white shadow-[0_10px_24px_-16px_rgba(14,20,34,0.45)]"
+                      style={{ left: x, top: y, width: L.cw, x: '-50%', y: '-50%', rotate: TILT }}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.7, delay: 0.15 + ((c + r) % 6) * 0.06, ease: [0.22, 1, 0.36, 1] }}
+                    />
+                  )
+                })}
+              </DriftColumn>
+            ))}
           </motion.div>
           {featured.map((f, i) => (
-            <FeaturedCard key={f.key} f={f} i={i} p={p} L={L} onOpen={() => onOpen(i)} />
+            <DriftColumn key={f.key} offset={ambient.column(f.slot[0])} interactive>
+              <FeaturedCard f={f} i={i} p={p} L={L} onOpen={() => onOpen(i)} />
+            </DriftColumn>
           ))}
           <motion.p
             className="pointer-events-none absolute left-0 right-0 z-[4] text-center font-mono text-[12px] uppercase tracking-[0.14em] text-ink-2"
@@ -207,6 +259,16 @@ function Stage({ p, onOpen }: { p: MotionValue<number>; onOpen: (i: number) => v
   )
 }
 
+/** A full-size layer that moves one column's cards together. */
+function DriftColumn({ offset, interactive, children }: { offset: { x: () => number; y: () => number }; interactive?: boolean; children: ReactNode }) {
+  const x = useTransform(offset.x)
+  const y = useTransform(offset.y)
+  return (
+    <motion.div className={`absolute inset-0 ${interactive ? 'pointer-events-none z-[5] [&>*]:pointer-events-auto' : ''}`} style={{ x, y }}>
+      {children}
+    </motion.div>
+  )
+}
 function FeaturedCard({ f, i, p, L, onOpen }: { f: (typeof featured)[number]; i: number; p: MotionValue<number>; L: ReturnType<typeof layout>; onOpen: () => void }) {
   const start = L.pos(f.slot[0], f.slot[1])
   const end = L.end[i]

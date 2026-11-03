@@ -32,7 +32,7 @@ export const evalMethod = {
 export type Severity = 'High' | 'Medium'
 
 /** Feature order used everywhere in the report: Home → Short Trip → Journey Tree → AR Lens → Ask This Place. */
-export const featureOrder = ['Home & integration', 'Short Trip', 'Journey Tree', 'AR Lens', 'Ask This Place']
+export const featureOrder = ['Home & integration', 'Explore · Short Trip', 'Journey Tree', 'AR Lens', 'Ask This Place']
 export type UsabilityProblem = {
   id: string
   feature: string
@@ -50,7 +50,7 @@ export type UsabilityProblem = {
 export const problems: UsabilityProblem[] = [
   {
     id: '4.1',
-    feature: 'Short Trip',
+    feature: 'Explore · Short Trip',
     title: 'Limited route customisation',
     severity: 'High',
     heuristic: 'User control and freedom',
@@ -63,7 +63,7 @@ export const problems: UsabilityProblem[] = [
   },
   {
     id: '4.2',
-    feature: 'Short Trip',
+    feature: 'Explore · Short Trip',
     title: 'Unclear exploration purpose',
     severity: 'High',
     heuristic: 'Match between system and the real world',
@@ -75,7 +75,7 @@ export const problems: UsabilityProblem[] = [
   },
   {
     id: '4.3',
-    feature: 'Short Trip',
+    feature: 'Explore · Short Trip',
     title: 'Interface clarity and discoverability',
     severity: 'Medium',
     heuristic: 'Recognition rather than recall',
@@ -86,7 +86,7 @@ export const problems: UsabilityProblem[] = [
   },
   {
     id: '4.4',
-    feature: 'Short Trip',
+    feature: 'Explore · Short Trip',
     title: 'Unclear gamification feedback',
     severity: 'Medium',
     heuristic: 'Visibility of system status',

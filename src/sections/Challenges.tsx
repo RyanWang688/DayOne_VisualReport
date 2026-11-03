@@ -2,7 +2,7 @@ import { Lightbulb, MapPin, Quote as QuoteIcon } from 'lucide-react'
 import { challenges, quoteNote, type Challenge } from '../content/challenges'
 import { journeyMap } from '../content/appendix'
 import { useActiveIndex } from '../hooks/useActiveSection'
-import { Expandable, PBadge, Reveal, SectionHeader, SourceTag } from '../components/ui'
+import { Expandable, PBadge, Reveal, SectionHeader } from '../components/ui'
 
 export function Challenges() {
   const active = useActiveIndex(challenges.length, 'challenge')
@@ -58,9 +58,6 @@ function JourneyStrip() {
             </div>
           ))}
         </div>
-        <figcaption className="border-t border-line bg-paper px-4 py-3 font-mono text-[12px] text-faint">
-          Customer journey map from our A0 poster. Statements are journey-map voice summarising the stage, not participant quotes.
-        </figcaption>
       </figure>
     </Reveal>
   )
@@ -143,9 +140,6 @@ function Chapter({ c, index, active }: { c: Challenge; index: number; active: bo
                   </p>
                 </Expandable>
               ))}
-              <div className="border-t border-line pt-3">
-                <SourceTag>Field report — Findings, Theme {index + 1}</SourceTag>
-              </div>
             </div>
           </Reveal>
 

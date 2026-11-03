@@ -4,7 +4,7 @@ import { ArrowRight, Expand } from 'lucide-react'
 import { evolutionTrace, fidelityStages, hifiGroups, sketches, wireGroups, type FidelityStage, type Screen, type ScreenGroup } from '../content/iteration'
 import { challenges } from '../content/challenges'
 import { Lightbox, type LightboxItem } from '../components/Lightbox'
-import { SectionHeader, SourceTag, SubHeader, asset } from '../components/ui'
+import { SectionHeader, SubHeader, asset } from '../components/ui'
 
 const ease = [0.22, 1, 0.36, 1] as const
 
@@ -148,9 +148,6 @@ function Explorer({ onOpen }: { onOpen: (items: LightboxItem[], i: number) => vo
           </motion.div>
         </AnimatePresence>
       </div>
-      <div className="mt-6">
-        <SourceTag>Team design files — Low-fi, Wireframe and Initial High archives</SourceTag>
-      </div>
     </div>
   )
 }
@@ -231,7 +228,6 @@ function Groups({ groups, stage, onOpen }: { groups: ScreenGroup[]; stage: Fidel
                   </motion.li>
                 ))}
               </ul>
-              <p className="mt-3 font-mono text-[11px] text-faint">Mapping follows 5.1 (field-report findings → poster features).</p>
             </div>
           )}
           <ScreenCarousel screens={g.screens} label={g.name} onOpen={(i) => onOpen(items, i)} />

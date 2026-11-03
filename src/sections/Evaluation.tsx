@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, animate, motion, useInView, useMotionValue, useMotionValueEvent, useReducedMotion, useTransform } from 'motion/react'
 import { ChevronsLeftRight, Quote as QuoteIcon } from 'lucide-react'
-import { evalMethod, evalSource, featureOrder, problems, refinementNote, refinements, type UsabilityProblem } from '../content/evaluation'
+import { evalMethod, featureOrder, problems, refinementNote, refinements, type UsabilityProblem } from '../content/evaluation'
 import { LiveDemo } from '../components/LiveDemo'
-import { Expandable, Reveal, SectionHeader, SourceTag, SubHeader, asset } from '../components/ui'
+import { Expandable, Reveal, SectionHeader, SubHeader, asset } from '../components/ui'
 
 const ease = [0.22, 1, 0.36, 1] as const
 
@@ -62,9 +62,6 @@ function Method() {
             ))}
           </ul>
         </Expandable>
-        <div className="border-t border-line pt-3">
-          <SourceTag>{evalSource} — §2 Method</SourceTag>
-        </div>
       </div>
     </div>
     </div>
@@ -121,7 +118,6 @@ function Problems() {
               </ul>
             </div>
           ))}
-          <SourceTag>{evalSource} — §§3–5. Highlights mark the screen region discussed; they are not gaze or click data.</SourceTag>
         </div>
 
         {/* Sticky annotated screen (desktop) */}

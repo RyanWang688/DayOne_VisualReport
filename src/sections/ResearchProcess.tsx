@@ -3,7 +3,7 @@ import { AnimatePresence, motion, useScroll, useSpring } from 'motion/react'
 import { processStages, type ProcessStage } from '../content/process'
 import { clusters } from '../content/affinity'
 import { useActiveIndex } from '../hooks/useActiveSection'
-import { Expandable, Reveal, SectionHeader, SourceTag, asset } from '../components/ui'
+import { Expandable, Reveal, SectionHeader, asset } from '../components/ui'
 
 export function ResearchProcess() {
   const ref = useRef<HTMLDivElement>(null)
@@ -108,9 +108,6 @@ function StagePanel({ stage, index, active }: { stage: ProcessStage; index: numb
                     </li>
                   ))}
                 </ul>
-                <div className="mt-4">
-                  <SourceTag>{stage.source}</SourceTag>
-                </div>
               </Expandable>
             </div>
           </div>

@@ -4,7 +4,7 @@ import { ArrowUpRight, Loader2 } from 'lucide-react'
 import { demoFeatures } from '../content/evaluation'
 import { meta } from '../content/meta'
 import { isPlaceholder } from '../content/types'
-import { SourceTag, SubHeader } from './ui'
+import { SubHeader } from './ui'
 
 const ease = [0.22, 1, 0.36, 1] as const
 
@@ -141,9 +141,6 @@ export function LiveDemo() {
             </motion.div>
           </AnimatePresence>
         </div>
-      </div>
-      <div className="mt-8">
-        <SourceTag>Live Day One prototype (GitHub Pages) — loaded on demand</SourceTag>
       </div>
     </div>
   )

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { ArrowRight } from 'lucide-react'
 import { outcomeMap, outcomeSummary } from '../content/outcome'
-import { Reveal, SectionHeader, SourceTag, SubHeader } from '../components/ui'
+import { Reveal, SectionHeader, SubHeader } from '../components/ui'
 
 export function Outcome() {
   const [hover, setHover] = useState<number | null>(null)
@@ -55,9 +55,6 @@ export function Outcome() {
             </Reveal>
           ))}
         </ol>
-        <div className="mt-4">
-          <SourceTag>Findings — field report · Features — A0 poster · Opportunities — team design interpretation</SourceTag>
-        </div>
       </div>
     </section>
   )

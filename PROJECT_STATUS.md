@@ -58,3 +58,4 @@ Reading order (set in `src/content/sections.ts`): front matter → Part I · Res
 See `CONTENT_CHECKLIST.md` for the items the team still needs to supply or confirm.
 
 - Horizontal scrollers replaced by wrapping grids and tab rows; only the sticky theme index in 03 Challenges still swipes, with its scrollbar hidden
+- In-page source notes and caveats that cited the team's own materials (field report, poster, evaluation report, design files, coding table) were removed at the team's request; provenance stays in this file and CONTENT_CHECKLIST.md

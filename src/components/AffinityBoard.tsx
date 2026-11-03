@@ -263,10 +263,6 @@ export function AffinityBoard() {
         </aside>
       </div>
 
-      <p className="border-t border-line px-4 py-3 font-mono text-[12px] text-faint sm:px-6">
-        Source · team coding table (P1–P4 coded by Yue, P5–P8 by Yao). Codes are reproduced verbatim.
-      </p>
-
       <ClusterViewer index={viewer} onClose={() => setViewer(null)} onNavigate={setViewer} />
     </div>
   )

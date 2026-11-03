@@ -1,5 +1,5 @@
 import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
-import { AnimatePresence, motion, useAnimationFrame, useInView, useMotionValue, useReducedMotion } from 'motion/react'
+import { AnimatePresence, motion, useAnimationFrame, useInView, useMotionValue, useReducedMotion, useSpring, useTransform } from 'motion/react'
 import { ArrowRight, Expand } from 'lucide-react'
 import { evolutionTrace, fidelityStages, hifiGroups, sketches, wireGroups, type FidelityStage, type Screen, type ScreenGroup } from '../content/iteration'
 import { challenges } from '../content/challenges'
@@ -244,17 +244,72 @@ function Groups({ groups, stage, onOpen }: { groups: ScreenGroup[]; stage: Fidel
 const SPEED = 38 // px per second
 const GAP = 16
 
-/** Jelly hover: a quick squash-and-stretch that settles slightly lifted; springs back on leave. */
-const jelly = {
-  rest: { scaleX: 1, scaleY: 1, y: 0, transition: { type: 'spring' as const, stiffness: 320, damping: 14 } },
-  jelly: {
-    scaleX: [1, 1.09, 0.95, 1.03, 1.05],
-    scaleY: [1, 0.92, 1.06, 0.99, 1.05],
-    y: -10,
-    transition: { duration: 0.6, ease: 'easeOut' as const },
-  },
-}
+const SHADOW_REST = '0 22px 36px -28px rgba(14,20,34,0.6)'
+const SHADOW_LIFT = '0 36px 50px -26px rgba(14,20,34,0.5)'
 
+/**
+ * A screen card that lifts on hover/focus and tilts gently towards the pointer, with a soft light sheen.
+ * Neighbours step back slightly so the focused screen reads first.
+ */
+function ScreenCard({ s, dim, decorative, onOpen, onHover, onLeave }: { s: Screen; dim: boolean; decorative: boolean; onOpen: () => void; onHover: () => void; onLeave: () => void }) {
+  const reduce = useReducedMotion()
+  const rx = useMotionValue(0)
+  const ry = useMotionValue(0)
+  const gx = useMotionValue(50)
+  const gy = useMotionValue(30)
+  const rotateX = useSpring(rx, { stiffness: 220, damping: 22 })
+  const rotateY = useSpring(ry, { stiffness: 220, damping: 22 })
+  const sheen = useTransform([gx, gy], ([x, y]) => `radial-gradient(circle at ${x}% ${y}%, rgba(255,255,255,0.4), transparent 55%)`)
+
+  const track = (e: React.PointerEvent<HTMLButtonElement>) => {
+    if (reduce || e.pointerType !== 'mouse') return
+    const r = e.currentTarget.getBoundingClientRect()
+    const px = (e.clientX - r.left) / r.width
+    const py = (e.clientY - r.top) / r.height
+    ry.set((px - 0.5) * 14)
+    rx.set((0.5 - py) * 10)
+    gx.set(px * 100)
+    gy.set(py * 100)
+  }
+  const reset = () => {
+    rx.set(0)
+    ry.set(0)
+    onLeave()
+  }
+
+  return (
+    <motion.button
+      type="button"
+      tabIndex={decorative ? -1 : undefined}
+      onClick={onOpen}
+      onPointerMove={track}
+      onPointerEnter={onHover}
+      onPointerLeave={reset}
+      onFocus={onHover}
+      onBlur={onLeave}
+      aria-label={`Enlarge: ${s.alt}`}
+      style={{ rotateX, rotateY, transformPerspective: 800 }}
+      initial={false}
+      animate={{ scale: dim ? 0.96 : 1, y: 0, opacity: dim ? 0.55 : 1, boxShadow: SHADOW_REST }}
+      whileHover={reduce ? undefined : { scale: 1.06, y: -12, opacity: 1, boxShadow: SHADOW_LIFT }}
+      whileFocus={reduce ? undefined : { scale: 1.06, y: -12, opacity: 1, boxShadow: SHADOW_LIFT }}
+      transition={{ type: 'spring', stiffness: 260, damping: 24, mass: 0.8 }}
+      className="group relative block w-[132px] shrink-0 overflow-hidden rounded-[14px] border-[3px] border-ink bg-white sm:w-[168px] sm:rounded-[16px] sm:border-[4px]"
+    >
+      <img src={asset(s.src)} alt={decorative ? '' : s.alt} loading="lazy" decoding="async" draggable={false} className="block aspect-[402/874] w-full rounded-[10px] object-cover object-top sm:rounded-[12px]" />
+      {s.tall && (
+        <span className="pointer-events-none absolute inset-x-0 bottom-0 flex h-14 items-end justify-center bg-gradient-to-t from-white via-white/80 to-transparent pb-2 font-mono text-[10px] uppercase tracking-[0.1em] text-muted">
+          Long screen
+        </span>
+      )}
+      {/* soft light that follows the pointer */}
+      <motion.span aria-hidden className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" style={{ background: sheen }} />
+      <span className="absolute right-2 top-2 grid h-7 w-7 place-items-center rounded-full bg-ink/70 text-white opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
+        <Expand size={14} aria-hidden />
+      </span>
+    </motion.button>
+  )
+}
 /**
  * One-row screen carousel that drifts on its own, pauses while the pointer or focus is on it,
  * can be dragged, and falls back to a static row when everything fits or motion is reduced.
@@ -319,33 +374,15 @@ function ScreenCarousel({ screens, label, onOpen }: { screens: Screen[]; label: 
           {Array.from({ length: copies }, (_, c) => (
             <div key={c} ref={c === 0 ? firstSet : undefined} className={`flex ${reduce ? 'flex-wrap' : 'shrink-0'}`} style={{ gap: GAP, paddingRight: loop ? GAP : 0 }} aria-hidden={c > 0 || undefined}>
               {screens.map((s, i) => (
-                <motion.button
+                <ScreenCard
                   key={s.src}
-                  type="button"
-                  tabIndex={c > 0 ? -1 : undefined}
-                  onClick={() => onOpen(i)}
-                  onHoverStart={() => setHover(i)}
-                  onHoverEnd={() => setHover((h) => (h === i ? null : h))}
-                  aria-label={`Enlarge: ${s.alt}`}
-                  variants={jelly}
-                  initial="rest"
-                  animate="rest"
-                  whileHover={reduce ? undefined : 'jelly'}
-                  whileFocus={reduce ? undefined : 'jelly'}
-                  className={`group relative block w-[132px] shrink-0 origin-bottom overflow-hidden rounded-[14px] border-[3px] border-ink bg-white shadow-[0_22px_36px_-28px_rgba(14,20,34,0.6)] transition-opacity duration-300 sm:w-[168px] sm:rounded-[16px] sm:border-[4px] ${
-                    hover !== null && hover !== i ? 'opacity-55' : ''
-                  }`}
-                >
-                  <img src={asset(s.src)} alt={c > 0 ? '' : s.alt} loading="lazy" decoding="async" draggable={false} className="block aspect-[402/874] w-full rounded-[10px] object-cover object-top sm:rounded-[12px]" />
-                  {s.tall && (
-                    <span className="pointer-events-none absolute inset-x-0 bottom-0 flex h-14 items-end justify-center bg-gradient-to-t from-white via-white/80 to-transparent pb-2 font-mono text-[10px] uppercase tracking-[0.1em] text-muted">
-                      Long screen
-                    </span>
-                  )}
-                  <span className="absolute right-2 top-2 grid h-7 w-7 place-items-center rounded-full bg-ink/70 text-white opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
-                    <Expand size={14} aria-hidden />
-                  </span>
-                </motion.button>
+                  s={s}
+                  decorative={c > 0}
+                  dim={hover !== null && hover !== i}
+                  onOpen={() => onOpen(i)}
+                  onHover={() => setHover(i)}
+                  onLeave={() => setHover((h) => (h === i ? null : h))}
+                />
               ))}
             </div>
           ))}

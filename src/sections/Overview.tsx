@@ -102,22 +102,22 @@ function TitleBlock() {
   return (
     <div id="title-block" className="container-x scroll-mt-20 pb-20">
       <Reveal>
-        <div className="grid border-y-2 border-ink md:grid-cols-12">
-          <div className="border-b border-line py-6 md:col-span-4 md:border-b-0 md:border-r md:pr-8">
-            <p className="eyebrow">Title block</p>
-            <p className="mt-3 font-display text-2xl font-bold leading-tight">{meta.reportTitle}</p>
-            <p className="mt-3 text-[15px] text-muted">{meta.title}</p>
-            <a href="#abstract" className="group mt-5 inline-flex items-center gap-1 text-[15px] font-medium text-blue">
-              <span className="link-grow">Read the abstract</span>
-              <ArrowUpRight size={16} aria-hidden className="transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-            </a>
-          </div>
-          <dl className="md:col-span-8 md:pl-8">
+        <div className="border-t-2 border-ink pt-4">
+          <p className="eyebrow">Title block</p>
+          {/* 3 × 3 grid of details; hairlines between cells come from the 1px gap over a line-coloured background */}
+          <dl className="mt-4 grid gap-px overflow-hidden border border-line bg-line sm:grid-cols-2 lg:grid-cols-3">
             {rows.map(([k, v], i) => (
-              <div key={k} className={`grid grid-cols-[110px_1fr] gap-4 py-3 text-[15px] sm:grid-cols-[140px_1fr] ${i ? 'border-t border-line' : ''}`}>
+              <motion.div
+                key={k}
+                className={`bg-canvas px-5 py-4 transition-colors hover:bg-paper ${k === 'Report' ? 'sm:col-span-2' : ''} ${k === 'Video' ? 'lg:col-span-3' : ''}`}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '0px 0px -10% 0px' }}
+                transition={{ duration: 0.4, delay: i * 0.04, ease: [0.22, 1, 0.36, 1] }}
+              >
                 <dt className="font-mono text-[12px] uppercase tracking-[0.12em] text-faint">{k}</dt>
-                <dd className="text-ink-2">{v}</dd>
-              </div>
+                <dd className={`mt-1.5 text-ink-2 ${k === 'Report' ? 'font-display text-[17px] font-semibold text-ink' : 'text-[15px]'}`}>{v}</dd>
+              </motion.div>
             ))}
           </dl>
         </div>

@@ -42,7 +42,7 @@ export function VideoButton({ url, label = 'Watch the video', variant = 'primary
         aria-haspopup="dialog"
         className={
           variant === 'primary'
-            ? 'group inline-flex h-12 items-center gap-3 rounded-full bg-blue pl-2 pr-5 text-[15px] font-semibold text-white shadow-[0_10px_24px_-12px_rgba(31,79,216,0.8)] hover:bg-blue-deep'
+            ? 'group inline-flex h-12 items-center gap-3 rounded-full bg-blue pl-2 pr-5 text-[15px] font-semibold text-white shadow-[0_10px_24px_-12px_rgba(0,100,240,0.7)] hover:bg-blue-deep'
             : 'group inline-flex h-9 items-center gap-2 rounded-full border border-blue/30 bg-blue-soft pl-1 pr-3.5 text-[14px] font-semibold text-blue hover:border-blue'
         }
       >

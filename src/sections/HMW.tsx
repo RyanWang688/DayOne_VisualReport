@@ -37,7 +37,7 @@ function ScrollHMW() {
   // Smooth the raw scroll value so word reveals glide instead of stepping with the wheel.
   const p = useSpring(scrollYProgress, { stiffness: 140, damping: 32, mass: 0.35, restDelta: 0.0005 })
 
-  const bg = useTransform(scrollYProgress, [0, INTRO], ['#f7f6f2', '#0b1b4d'])
+  const bg = useTransform(scrollYProgress, [0, INTRO], ['#f7f6f2', '#06204f'])
   const sceneIn = useTransform(p, [0.01, INTRO], [0, 1])
   const cardsOpacity = useTransform(p, [INTRO - 0.02, INTRO + 0.02, RESOLVE + 0.02, RESOLVE + 0.07], [0, 1, 1, 0])
   const cardsY = useTransform(p, [INTRO - 0.02, INTRO + 0.02, RESOLVE + 0.02, RESOLVE + 0.07], [24, 0, 0, -24])

@@ -61,7 +61,7 @@ export function IterationLoop() {
             return (
               <div key={src + i} className="flex items-center gap-2 sm:gap-4">
                 {i > 0 && (
-                  <motion.span aria-hidden className="grid h-7 w-7 shrink-0 place-items-center rounded-full border border-line bg-paper" animate={{ color: on ? '#1f4fd8' : '#c9cdd6', scale: current ? 1.12 : 1 }} transition={{ duration: 0.3 }}>
+                  <motion.span aria-hidden className="grid h-7 w-7 shrink-0 place-items-center rounded-full border border-line bg-paper" animate={{ color: on ? '#0064f0' : '#c9cdd6', scale: current ? 1.12 : 1 }} transition={{ duration: 0.3 }}>
                     <ArrowRight size={14} />
                   </motion.span>
                 )}

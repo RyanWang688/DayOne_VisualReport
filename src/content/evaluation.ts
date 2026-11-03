@@ -260,5 +260,3 @@ export const demoFeatures: DemoFeature[] = [
     note: 'Answers are preset dialogue, not live AI.',
   },
 ]
-
-export const refinementNote = 'The refined designs respond to the report’s recommendations. They have not yet been re-tested; the team plans to test them again on real mobile devices.'

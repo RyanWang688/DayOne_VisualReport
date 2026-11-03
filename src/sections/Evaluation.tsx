@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, animate, motion, useInView, useMotionValue, useMotionValueEvent, useReducedMotion, useTransform } from 'motion/react'
 import { ChevronsLeftRight, Quote as QuoteIcon } from 'lucide-react'
-import { evalMethod, featureOrder, problems, refinementNote, refinements, type UsabilityProblem } from '../content/evaluation'
+import { evalMethod, featureOrder, problems, refinements, type UsabilityProblem } from '../content/evaluation'
 import { LiveDemo } from '../components/LiveDemo'
 import { Expandable, Reveal, SectionHeader, SubHeader, asset } from '../components/ui'
 
@@ -296,7 +296,6 @@ function Refinements() {
           <Compare r={r} />
         </motion.div>
       </AnimatePresence>
-      <p className="mt-6 max-w-[70ch] font-mono text-[12px] leading-relaxed text-faint">{refinementNote}</p>
     </div>
   )
 }

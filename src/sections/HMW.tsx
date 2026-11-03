@@ -107,36 +107,25 @@ function ScrollHMW() {
   )
 }
 
-/** Shown only when the reader jumps straight to HMW: says what this space is and that scrolling reveals it. */
+/** Shown only when the reader jumps straight to HMW: a plain scroll cue. */
 function JumpHint() {
-  const nudge = () => window.scrollBy({ top: window.innerHeight * 0.9, behavior: 'smooth' })
   return (
-    <motion.div
-      className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center pt-[68px]"
+    <motion.button
+      type="button"
+      onClick={() => window.scrollBy({ top: window.innerHeight * 0.9, behavior: 'smooth' })}
+      className="absolute inset-x-0 top-1/2 z-10 mx-auto flex w-fit -translate-y-1/2 flex-col items-center gap-3 px-6 py-4 font-mono text-[12px] uppercase tracking-[0.16em] text-muted hover:text-ink"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0, transition: { duration: 0.25 } }}
-      transition={{ duration: 0.5, delay: 0.5 }}
+      transition={{ duration: 0.5, delay: 0.4 }}
     >
-      <motion.button
-        type="button"
-        onClick={nudge}
-        className="pointer-events-auto flex flex-col items-center gap-4 rounded-[16px] px-8 py-6 text-center text-ink transition-colors hover:bg-ink/[0.04]"
-        initial={{ y: 12 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.5, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      >
-        <span className="font-mono text-[12px] uppercase tracking-[0.14em] text-blue">{sectionById.hmw.num} · How might we</span>
-        <span className="max-w-[24ch] font-display text-[clamp(1.4rem,2.4vw,2rem)] font-semibold leading-tight">Scroll to reveal the design question</span>
-        <span className="max-w-[40ch] text-[15px] text-muted">Each interview theme lights up its part of the question as you scroll.</span>
-        <span className="relative mt-1 block h-10 w-6 rounded-full border-2 border-ink/40" aria-hidden>
-          <motion.span className="absolute left-1/2 top-1.5 -ml-[2px] block h-2.5 w-1 rounded-full bg-blue" animate={{ y: [0, 12, 0], opacity: [1, 0.2, 1] }} transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }} />
-        </span>
-      </motion.button>
-    </motion.div>
+      <span className="relative block h-10 w-6 rounded-full border-2 border-current" aria-hidden>
+        <motion.span className="absolute left-1/2 top-1.5 -ml-[2px] block h-2.5 w-1 rounded-full bg-blue" animate={{ y: [0, 12, 0], opacity: [1, 0.2, 1] }} transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }} />
+      </span>
+      Scroll down
+    </motion.button>
   )
 }
-
 function Eyebrow() {
   return (
     <p className="flex items-start gap-3 font-mono text-[12px] uppercase tracking-[0.14em] text-white/60">

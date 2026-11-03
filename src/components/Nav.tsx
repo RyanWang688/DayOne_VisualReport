@@ -38,9 +38,13 @@ export function Nav() {
         className={`fixed inset-x-0 top-0 z-50 border-b backdrop-blur-md transition-colors duration-500 ${dark ? 'border-white/10 bg-blue-ink/80 text-white' : 'border-line/70 bg-canvas/85 text-ink'}`}
       >
         <div className="container-x flex h-14 items-center justify-between gap-4">
-          <a href="#overview" className="flex items-center gap-2.5" aria-label="Day One — back to top">
-            <img src={asset('assets/brand/dayone-logo.jpg')} alt="" className="h-8 w-8 rounded-[4px] object-cover" />
-            <span className="font-display text-[15px] font-bold tracking-tight">Day One</span>
+          <a href="#overview" className="flex items-center gap-3" aria-label="Day One — back to top">
+            {/* Wordmark; turns white over the dark sections */}
+            <img
+              src={asset('assets/brand/dayone-logo.png')}
+              alt=""
+              className={`h-9 w-auto transition-[filter] duration-500 ${dark ? 'brightness-0 invert' : ''}`}
+            />
             <span className={`hidden font-mono text-[12px] uppercase tracking-[0.14em] sm:inline ${dark ? 'text-white/50' : 'text-faint'}`}>Visual Report</span>
           </a>
 

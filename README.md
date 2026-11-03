@@ -65,7 +65,7 @@ supervisor: 'Dr Jane Citizen',
 
 ```
 public/assets/
-  brand/       Day One logo (cropped from the A0 poster)
+  brand/       Day One wordmark (transparent PNG) and favicon
   poster/      A0 poster and the poster's prototype-screen montage
   prototype/   Screens captured from the Day One prototype
 src/

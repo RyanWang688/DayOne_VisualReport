@@ -46,3 +46,4 @@ Use this list to finish and verify the report. Edit values in `src/content/` (se
 
 - Appendix A3 (Research Data and Code link) and Acknowledgements were removed from the site at the team's request; the placeholders are no longer shown.
 - [ ] **6.1 initial hi-fi cards** — the 'User problem' headlines are plain-language summaries of the 03 Challenges sub-findings (detail lines paraphrase the field report). Confirm the wording.
+- [x] Abstract replaced with the team's final four-paragraph abstract (2026-11-04); draft label removed.

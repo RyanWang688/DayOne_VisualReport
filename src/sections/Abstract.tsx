@@ -12,9 +12,16 @@ export function Abstract() {
         </Reveal>
         <div className="md:col-span-8">
           <Reveal>
-            <p className="max-w-[62ch] text-[clamp(1.1rem,1.6vw,1.3rem)] leading-[1.7] text-ink first-letter:float-left first-letter:mr-2 first-letter:mt-1 first-letter:font-display first-letter:text-[3.2em] first-letter:font-extrabold first-letter:leading-[0.8] first-letter:text-blue">
-              {abstract.text}
-            </p>
+            <div className="max-w-[66ch] space-y-5">
+              {abstract.paragraphs.map((para, i) => (
+                <p
+                  key={i}
+                  className={i === 0 ? 'font-display text-[clamp(1.2rem,1.8vw,1.4rem)] font-medium leading-[1.55] text-ink' : 'text-[clamp(1.02rem,1.4vw,1.12rem)] leading-[1.75] text-ink-2'}
+                >
+                  {para}
+                </p>
+              ))}
+            </div>
           </Reveal>
         </div>
       </div>

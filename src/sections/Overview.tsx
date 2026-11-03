@@ -1,16 +1,17 @@
-import { motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react'
-import { ArrowDown, ArrowUpRight } from 'lucide-react'
+import { motion } from 'motion/react'
+import { ArrowUpRight } from 'lucide-react'
 import { VideoButton } from '../components/VideoButton'
 import { meta } from '../content/meta'
 import { isPlaceholder } from '../content/types'
 import { parts, sections } from '../content/sections'
-import { PhoneFrame, Ph, Reveal } from '../components/ui'
+import { Ph, Reveal } from '../components/ui'
+import { HeroShowcase } from '../components/HeroShowcase'
 
 const titleWords = meta.title.split(' ')
 
 export function Overview() {
   return (
-    <section id="overview" aria-labelledby="overview-title" className="relative overflow-hidden pt-[68px]">
+    <section id="overview" aria-labelledby="overview-title" className="relative overflow-x-clip pt-[68px]">
       <Hero />
       <TitleBlock />
     </section>
@@ -18,136 +19,69 @@ export function Overview() {
 }
 
 function Hero() {
-  const reduce = useReducedMotion()
-  const mx = useMotionValue(0)
-  const my = useMotionValue(0)
-  const sx = useSpring(mx, { stiffness: 80, damping: 20 })
-  const sy = useSpring(my, { stiffness: 80, damping: 20 })
-  const back = { x: useTransform(sx, (v) => v * -10), y: useTransform(sy, (v) => v * -8) }
-  const front = { x: useTransform(sx, (v) => v * 14), y: useTransform(sy, (v) => v * 10) }
-  // Composition drifts up and fades slightly as the page scrolls past the hero.
-  const { scrollY } = useScroll()
-  const driftY = useTransform(scrollY, [0, 700], [0, reduce ? 0 : -70])
-  const driftO = useTransform(scrollY, [0, 700], [1, reduce ? 1 : 0.4])
+  const ease = [0.22, 1, 0.36, 1] as const
+  const intro = (
+    <div className="py-8">
+      <motion.p className="eyebrow mb-6 flex flex-wrap gap-x-3 gap-y-1" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }}>
+        <span>{meta.university}</span>
+        <span className="text-sun">•</span>
+        <span>INFO90009</span>
+        <span className="text-sun">•</span>
+        <span>{meta.semester}</span>
+      </motion.p>
 
-  const onMove = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (reduce || e.pointerType !== 'mouse') return
-    const r = e.currentTarget.getBoundingClientRect()
-    mx.set((e.clientX - r.left) / r.width - 0.5)
-    my.set((e.clientY - r.top) / r.height - 0.5)
-  }
-
-  return (
-    <div className="container-x relative grid min-h-[calc(100svh-68px)] items-center gap-12 py-12 lg:grid-cols-12 lg:py-16">
-      <div className="lg:col-span-7">
-        <motion.p
-          className="eyebrow mb-8 flex flex-wrap gap-x-3 gap-y-1"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6 }}
-        >
-          <span>{meta.university}</span>
-          <span className="text-sun">•</span>
-          <span>INFO90009</span>
-          <span className="text-sun">•</span>
-          <span>{meta.semester}</span>
-        </motion.p>
-
-        <h1 id="overview-title" className="sr-only">
-          {meta.projectName} — {meta.title}
-        </h1>
-        <motion.p
-          aria-hidden
-          className="font-display text-[clamp(3.5rem,10vw,7rem)] font-extrabold leading-[0.85] tracking-[-0.05em] text-blue"
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        >
-          Day One
-        </motion.p>
-        <p aria-hidden className="mt-6 max-w-[22ch] font-display text-[clamp(1.5rem,2.8vw,2.25rem)] font-semibold leading-[1.12] tracking-[-0.02em]">
-          {titleWords.map((w, i) => (
-            <motion.span
-              key={i}
-              className="mr-[0.25em] inline-block"
-              initial={{ opacity: 0, y: '0.5em' }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.25 + i * 0.05, ease: [0.22, 1, 0.36, 1] }}
-            >
-              {w}
-            </motion.span>
-          ))}
-        </p>
-        <motion.p
-          className="mt-6 max-w-[46ch] text-lg text-muted"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.7 }}
-        >
-          Helping international students move from knowing what to do to <span className="mark-sun text-ink">confidently doing it.</span>
-        </motion.p>
-
-        <motion.a
-          href="#hmw"
-          className="group mt-10 flex max-w-xl items-start gap-4 border-l-2 border-blue bg-paper py-4 pl-5 pr-4 shadow-[0_1px_0_var(--color-line)] transition-colors hover:bg-blue-soft"
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.85 }}
-        >
-          <div>
-            <span className="eyebrow text-blue">Research question</span>
-            <span className="mt-1 block font-display text-[19px] font-semibold leading-snug">{meta.researchQuestion}</span>
-          </div>
-          <ArrowUpRight className="mt-1 shrink-0 text-blue transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" size={20} aria-hidden />
-        </motion.a>
-
-        {!isPlaceholder(meta.videoUrl) && (
-          <motion.div className="mt-6" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 1 }}>
-            <VideoButton url={meta.videoUrl} />
-          </motion.div>
-        )}
-      </div>
-
-      {/* Interactive hero composition — real prototype screens */}
-      <motion.div
-        style={{ y: driftY, opacity: driftO }}
-        className="relative mx-auto h-[440px] w-full max-w-[460px] sm:h-[540px] lg:col-span-5 lg:h-[620px]"
-        onPointerMove={onMove}
-        onPointerLeave={() => {
-          mx.set(0)
-          my.set(0)
-        }}
-        aria-label="Screens from the Day One prototype"
-        role="img"
+      <h1 id="overview-title" className="sr-only">
+        {meta.projectName} — {meta.title}
+      </h1>
+      <motion.p
+        aria-hidden
+        className="font-display text-[clamp(3.25rem,6vw,5.5rem)] font-extrabold leading-[0.85] tracking-[-0.05em] text-blue [@media(max-height:780px)]:lg:text-[4.25rem]"
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease }}
       >
-        <div aria-hidden className="absolute inset-x-6 bottom-6 top-10 rounded-[2px] bg-blue-soft" />
-        <motion.div style={back} className="absolute left-0 top-4 w-[46%] -rotate-[5deg]">
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.4 }}>
-            <PhoneFrame src="assets/prototype/healthcare-journey.jpg" alt="" className="aspect-[1/2]" />
-          </motion.div>
-        </motion.div>
-        <motion.div style={back} className="absolute right-0 top-10 w-[46%] rotate-[5deg]">
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.5 }}>
-            <PhoneFrame src="assets/prototype/explore-stop.jpg" alt="" className="aspect-[1/2]" />
-          </motion.div>
-        </motion.div>
-        <motion.div style={front} className="absolute left-1/2 top-16 w-[52%] -translate-x-1/2">
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.3 }}>
-            <PhoneFrame src="assets/prototype/short-trip-builder.jpg" alt="" className="aspect-[1/2]" />
-          </motion.div>
-        </motion.div>
-        <span className="absolute -bottom-2 left-6 font-mono text-[12px] text-faint">Prototype · Healthcare Journey / Short Trip / Explore</span>
-      </motion.div>
+        Day One
+      </motion.p>
+      <p aria-hidden className="mt-5 max-w-[20ch] font-display text-[clamp(1.35rem,2vw,1.85rem)] font-semibold leading-[1.12] tracking-[-0.02em]">
+        {titleWords.map((w, i) => (
+          <motion.span
+            key={i}
+            className="mr-[0.25em] inline-block"
+            initial={{ opacity: 0, y: '0.5em' }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.25 + i * 0.05, ease }}
+          >
+            {w}
+          </motion.span>
+        ))}
+      </p>
+      <motion.p className="mt-5 max-w-[40ch] text-[17px] text-muted" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.7 }}>
+        Helping international students move from knowing what to do to <span className="mark-sun text-ink">confidently doing it.</span>
+      </motion.p>
 
-      <a href="#title-block" className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-faint hover:text-blue md:flex" aria-label="Scroll to title block">
-        <span className="font-mono text-[12px] uppercase tracking-[0.16em]">Scroll</span>
-        <span className="scroll-cue relative block h-10 w-px overflow-hidden bg-line" />
-        <ArrowDown size={14} aria-hidden className="sr-only" />
-      </a>
+      <motion.a
+        href="#hmw"
+        className="group mt-7 flex max-w-xl items-start gap-4 border-l-2 border-blue bg-paper/90 py-3.5 pl-5 pr-4 shadow-[0_1px_0_var(--color-line)] backdrop-blur transition-colors hover:bg-blue-soft [@media(max-height:780px)]:lg:mt-5"
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.85 }}
+      >
+        <div>
+          <span className="eyebrow text-blue">Research question</span>
+          <span className="mt-1 block font-display text-[16px] font-semibold leading-snug xl:text-[17px]">{meta.researchQuestion}</span>
+        </div>
+        <ArrowUpRight className="mt-1 shrink-0 text-blue transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" size={20} aria-hidden />
+      </motion.a>
+
+      {!isPlaceholder(meta.videoUrl) && (
+        <motion.div className="mt-6" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 1 }}>
+          <VideoButton url={meta.videoUrl} />
+        </motion.div>
+      )}
     </div>
   )
+  return <HeroShowcase intro={intro} />
 }
-
 function TitleBlock() {
   const rows: [string, React.ReactNode][] = [
     ['Report', meta.reportTitle],

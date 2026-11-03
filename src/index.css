@@ -122,6 +122,18 @@
   }
 }
 
+/* Hero wall: columns of real screens drifting in opposite directions */
+@keyframes hero-up {
+  from { transform: translateY(0); }
+  to { transform: translateY(-50%); }
+}
+@keyframes hero-down {
+  from { transform: translateY(-50%); }
+  to { transform: translateY(0); }
+}
+.hero-drift-up { animation: hero-up 80s linear infinite; }
+.hero-drift-down { animation: hero-down 80s linear infinite; }
+
 /* Gentle CSS-only scroll cue */
 @keyframes cue {
   0% { transform: translateY(-100%); }

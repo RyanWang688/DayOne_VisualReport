@@ -83,15 +83,15 @@ export const hifiGroups: ScreenGroup[] = [
     note: 'the hub before Home',
     intro: 'In the initial version a separate Tools page held AR Lens and Ask This Place; after evaluation these moved onto Home.',
     screens: [s('hifi', 'tools', 'Initial hi-fi: Tools page')],
-    addresses: [{ theme: 3, finding: 'Support fills the experience gap', problem: 'Help is needed in the moment, not afterwards.', detail: 'Participants felt someone guiding them on arrival would have made transport and shopping easier, and often asked people nearby.', how: 'Keeps the on-the-spot helpers together for moments when students need help right away.' }],
+    addresses: [{ theme: 3, finding: 'Support fills the experience gap', problem: 'Help is needed in the moment', detail: 'Participants felt someone guiding them on arrival would have made transport and shopping easier, and often asked people nearby.', how: 'AR Lens provides practical guidance for unfamiliar signs and facilities, while Ask This Place addresses location-specific concerns, helping students navigate unfamiliar situations when immediate assistance is needed.' }],
   },
   {
     key: 'explore',
     name: 'Explore · Short Trip',
     intro: 'Plan a short walking trip through recommended checkpoints near you.',
     addresses: [
-      { theme: 3, finding: 'Confidence grows with experience', problem: 'Confidence only comes from real attempts.', detail: 'Participants grew more comfortable with experience, yet still felt unsure in situations they had not met before.', how: 'Short, curated walks make the first real-world attempts small and safe.' },
-      { theme: 1, finding: 'Lived experience is valued over online guides', problem: 'Advice from people who live here counts more than guides.', detail: 'Participants valued tips from people living in Melbourne more than online guides.', how: 'Nearby places come with tips in context, instead of scattered unofficial sources.' },
+      { theme: 3, finding: 'Confidence grows with experience', problem: 'Confidence comes from real attempts', detail: 'Participants grew more comfortable with experience, yet still felt unsure in situations they had not met before.', how: 'Short Trip guides students through nearby destinations with suggested routes and practical information, encouraging them to explore unfamiliar surroundings and gradually build confidence through direct experience.' },
+      { theme: 1, finding: 'Lived experience is valued over online guides', problem: 'Local advice matters more than guides', detail: 'Participants valued tips from people living in Melbourne more than online guides.', how: 'Explore introduces nearby places with relevant local information, while Short Trip connects these destinations through guided journeys, allowing students to discover and apply practical knowledge in real-world contexts.' },
     ],
     screens: [1, 2, 3, 4, 5].map((n) => s('hifi', `explore-${n}`, `Initial hi-fi: Explore / Short Trip ${n}`)).concat(s('hifi', 'explore-7', 'Initial hi-fi: Explore / Short Trip 6', true)),
   },
@@ -99,7 +99,7 @@ export const hifiGroups: ScreenGroup[] = [
     key: 'journey',
     name: 'Journey Tree',
     intro: 'Step-by-step guides for everyday procedures — visiting a GP, getting a driver licence.',
-    addresses: [{ theme: 2, finding: 'Healthcare needs practical knowledge', problem: 'Knowing about GPs doesn’t mean knowing how to visit one.', detail: 'A participant felt unwell but did not know how to book a GP, which app to use or how student health cover worked.', how: 'Breaks a procedure such as a first GP visit into clear, local steps.' }],
+    addresses: [{ theme: 2, finding: 'Healthcare needs practical knowledge', problem: 'Knowing about GPs is not knowing how to visit one', detail: 'A participant felt unwell but did not know how to book a GP, which app to use or how student health cover worked.', how: 'Journey Tree breaks unfamiliar everyday procedures, such as visiting a GP, into clear, actionable steps, helping students understand what to prepare, what to do, and what to expect throughout the process.' }],
     screens: [
       s('hifi', 'journey-tree-gp', 'Initial hi-fi: Journey Tree, visit a GP'),
       s('hifi', 'journey-tree-2', 'Initial hi-fi: Journey Tree, a text-heavy step', true),
@@ -117,14 +117,14 @@ export const hifiGroups: ScreenGroup[] = [
     name: 'Simulate Scenario',
     note: 'now part of Journey Tree',
     intro: 'Practice at the end of a journey: choose what to do and see the consequence.',
-    addresses: [{ theme: 2, finding: 'Unwritten rules only appear in the moment', problem: 'Unwritten rules only show up when it is too late.', detail: 'Participants did not know to wait to be seated, or to press the bell to get off a tram, until the moment came.', how: 'Lets students rehearse a situation, such as turning at an intersection, before facing it.' }],
+    addresses: [{ theme: 2, finding: 'Unwritten rules only appear in the moment', problem: 'Unwritten rules become visible too late', detail: 'Participants did not know to wait to be seated, or to press the bell to get off a tram, until the moment came.', how: 'Simulate Scenario allows students to practise unfamiliar situations through interactive decision-making, helping them understand local practices and prepare for real-life situations before encountering them.' }],
     screens: [s('hifi', 'scenario-1', 'Initial hi-fi: scenario simulation 1'), s('hifi', 'scenario-2', 'Initial hi-fi: scenario simulation 2')],
   },
   {
     key: 'ar',
     name: 'AR Lens',
     intro: 'Scan a device such as a myki reader to identify it, then tap Details for instructions.',
-    addresses: [{ theme: 3, finding: 'Learning through trial and error', problem: 'New systems are learned by getting them wrong first.', detail: 'A participant knew about public transport but did not realise a myki card was required until using the system.', how: 'Explains an unfamiliar sign or machine at the moment it is needed.' }],
+    addresses: [{ theme: 3, finding: 'Learning through trial and error', problem: 'Learning new systems through mistakes', detail: 'A participant knew about public transport but did not realise a myki card was required until using the system.', how: 'AR Lens connects unfamiliar signs, machines, and facilities with practical guidance through camera scanning, helping students understand what they are seeing and what actions to take without relying on trial and error.' }],
     screens: [s('hifi', 'ar-scan-1', 'Initial hi-fi: AR Lens scanning'), s('hifi', 'ar-scan-2', 'Initial hi-fi: AR Lens result')],
   },
   {
@@ -132,7 +132,7 @@ export const hifiGroups: ScreenGroup[] = [
     name: 'Ask This Place',
     note: 'part of Tools',
     intro: 'Location-based recommendations and quick questions for the place you are in.',
-    addresses: [{ theme: 1, finding: 'Reliability and timeliness are hard to judge', problem: 'Advice found online is hard to trust.', detail: 'Participants bought items on social-media advice that their accommodation already provided, and found older advice no longer matched reality.', how: 'Answers questions about the place the student is actually in, rather than general advice found online.' }],
+    addresses: [{ theme: 1, finding: 'Reliability and timeliness are hard to judge', problem: 'Online advice is difficult to trust', detail: 'Participants bought items on social-media advice that their accommodation already provided, and found older advice no longer matched reality.', how: 'Ask This Place addresses students\' concerns about unfamiliar local practices through location-based guidance, helping them access information relevant to their immediate surroundings instead of relying on general online advice.' }],
     screens: [s('hifi', 'ask-this-place-1', 'Initial hi-fi: Ask This Place 1'), s('hifi', 'ask-this-place-2', 'Initial hi-fi: Ask This Place 2')],
   },
 ]

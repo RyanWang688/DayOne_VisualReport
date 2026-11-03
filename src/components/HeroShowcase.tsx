@@ -134,10 +134,13 @@ export function HeroShowcase({ lead, more }: { lead: ReactNode; more: ReactNode 
 
 function ScrollCue({ p }: { p: MotionValue<number> }) {
   const o = useTransform(p, [0, 0.07], [1, 0])
+  // Once faded, it must not sit invisibly on top of the buttons that appear in the intro.
+  const visibility = useTransform(o, (v) => (v < 0.05 ? 'hidden' : 'visible'))
+  const pointerEvents = useTransform(o, (v) => (v < 0.05 ? 'none' : 'auto'))
   return (
     <motion.a
       href="#title-block"
-      style={{ opacity: o }}
+      style={{ opacity: o, visibility, pointerEvents }}
       className="absolute bottom-7 left-[max(1rem,calc((100vw-1240px)/2+3rem))] flex items-center gap-3 font-mono text-[12px] uppercase tracking-[0.16em] text-muted hover:text-blue"
     >
       <span className="relative block h-9 w-[22px] rounded-full border-2 border-current">

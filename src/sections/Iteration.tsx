@@ -263,35 +263,39 @@ function Groups({ groups, stage, onOpen }: { groups: ScreenGroup[]; stage: Fidel
 
       <AnimatePresence mode="wait" initial={false}>
         {g.addresses && (
-          <motion.ul key={g.key} className={`mx-auto mt-8 grid max-w-[1000px] gap-4 ${g.addresses.length > 1 ? 'lg:grid-cols-2' : ''}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }}>
-            {g.addresses.map((a, i) => (
-              <motion.li
-                key={a.finding}
-                className="rounded-[14px] border border-line bg-paper p-5 shadow-[0_18px_36px_-30px_rgba(14,20,34,0.4)] sm:p-6"
-                initial={{ opacity: 0, y: 14 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, ease, delay: 0.08 + i * 0.1 }}
-              >
-                <p className="flex items-center gap-3">
-                  <a
-                    href={`#challenge-${a.theme - 1}`}
-                    className="grid h-7 min-w-9 place-items-center rounded-[6px] bg-blue px-2 font-mono text-[13px] text-white transition-colors hover:bg-blue-deep"
-                    aria-label={`Theme ${a.theme}: ${challenges[a.theme - 1].short}`}
-                  >
-                    T{a.theme}
-                  </a>
-                  <span className="font-mono text-[12px] uppercase tracking-[0.1em] text-muted">Research finding · {challenges[a.theme - 1].short}</span>
-                </p>
-                <p className="mt-4 font-mono text-[12px] uppercase tracking-[0.1em] text-faint">User problem</p>
-                <p className="mt-1 font-display text-[clamp(1.25rem,2vw,1.6rem)] font-semibold leading-[1.2] tracking-tight text-ink">{a.problem}</p>
-                <p className="mt-2 text-[15px] leading-relaxed text-muted">{a.detail}</p>
-                <div className="mt-5 border-t border-line pt-4">
-                  <p className="font-mono text-[12px] uppercase tracking-[0.1em] text-blue">Design response · {g.name}</p>
-                  <p className="mt-1 text-[15px] text-ink">{a.how}</p>
-                </div>
-              </motion.li>
-            ))}
-          </motion.ul>
+          <motion.div
+            key={g.key}
+            className="mx-auto mt-8 max-w-[1000px] rounded-[14px] border border-line bg-paper p-5 shadow-[0_18px_36px_-30px_rgba(14,20,34,0.4)] sm:p-7"
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.4, ease }}
+          >
+            <div className={`grid gap-6 ${g.addresses.problems.length > 1 ? 'md:grid-cols-2 md:gap-8' : ''}`}>
+              {g.addresses.problems.map((a, i) => (
+                <motion.div key={a.problem} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, ease, delay: 0.08 + i * 0.1 }} className={i ? 'md:border-l md:border-line md:pl-8' : ''}>
+                  <p className="flex items-center gap-3">
+                    <a
+                      href={`#challenge-${a.theme - 1}`}
+                      className="grid h-7 min-w-9 place-items-center rounded-[6px] bg-blue px-2 font-mono text-[13px] text-white transition-colors hover:bg-blue-deep"
+                      aria-label={`Theme ${a.theme}: ${challenges[a.theme - 1].short}`}
+                    >
+                      T{a.theme}
+                    </a>
+                    <span className="font-mono text-[12px] uppercase tracking-[0.1em] text-muted">Research finding · {challenges[a.theme - 1].short}</span>
+                  </p>
+                  <p className="mt-4 font-mono text-[12px] uppercase tracking-[0.1em] text-faint">
+                    User problem{g.addresses!.problems.length > 1 ? ` 0${i + 1}` : ''}
+                  </p>
+                  <p className="mt-1 font-display text-[clamp(1.2rem,1.8vw,1.5rem)] font-semibold leading-[1.25] tracking-tight text-ink">{a.problem}</p>
+                </motion.div>
+              ))}
+            </div>
+            <motion.div className="mt-6 border-t border-line pt-5" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4, delay: 0.25 }}>
+              <p className="font-mono text-[12px] uppercase tracking-[0.1em] text-blue">Design response · {g.name}</p>
+              <p className="mt-1.5 max-w-[78ch] text-[16px] leading-relaxed text-ink">{g.addresses.response}</p>
+            </motion.div>
+          </motion.div>
         )}
       </AnimatePresence>
     </div>

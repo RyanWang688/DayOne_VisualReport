@@ -5,19 +5,22 @@ import { Lightbox } from './Lightbox'
 import { asset } from './ui'
 
 const shot = (n: string) => `assets/hero/${n}.jpg`
-const RATIO = 909 / 420 // screenshot height / width
+const RATIO = 874 / 402 // iPhone 17 Pro screen, height / width
 const TILT = -14
 
-/** Real screens captured from the final Day One prototype, laid out as a tilted wall (7 columns × 4 rows). */
-const pool = ['journey', 'place', 'summary', 'plan', 'route-studio', 'scenario', 'navigation', 'ask', 'home', 'ar']
+/**
+ * Real screens captured from the final Day One prototype (402×874), laid out as a tilted wall (7 columns × 4 rows).
+ * The featured screens are not in the pool, and walking the pool column by column keeps repeats at least three columns apart.
+ */
+const pool = ['journey', 'place', 'scenario', 'plan', 'ask', 'summary', 'journey-transport', 'compare', 'account', 'route-studio', 'scenario-intro', 'ar-parking', 'navigation', 'journey-campus']
 const COLS = 7
 const ROWS = 4
 
 /** Featured screens sit *inside* the wall at these slots, then lift out and line up. */
 const featured = [
   { key: 'home', name: 'Home', text: 'Your starting point: everyday tools, a suggested Short Trip and small local discoveries.', slot: [2, 1] },
-  { key: 'ar', name: 'AR Lens', text: 'Scan a myki reader to see what you can tap with, and how the two-hour fare works.', slot: [3, 1] },
-  { key: 'ask', name: 'Ask This Place', text: 'Ask about the place you are in, confirm where you are, and get help that fits it.', slot: [4, 2] },
+  { key: 'explore', name: 'Explore', text: 'Discover local places at your own pace, plan a short trip, or pick a route to try.', slot: [3, 1] },
+  { key: 'ar', name: 'AR Lens', text: 'Scan a myki reader to see what you can tap with, and how the two-hour fare works.', slot: [4, 2] },
 ] as const
 
 type Size = { w: number; h: number }
@@ -230,7 +233,7 @@ function Stage({ p, onOpen }: { p: MotionValue<number>; onOpen: (i: number) => v
                   return (
                     <motion.img
                       key={r}
-                      src={asset(shot(pool[(c * 3 + r * 5) % pool.length]))}
+                      src={asset(shot(pool[(c * 4 + r) % pool.length]))}
                       alt=""
                       decoding="async"
                       className="absolute max-w-none rounded-[18px] border border-line bg-white shadow-[0_10px_24px_-16px_rgba(14,20,34,0.45)]"
@@ -253,7 +256,7 @@ function Stage({ p, onOpen }: { p: MotionValue<number>; onOpen: (i: number) => v
             className="pointer-events-none absolute left-0 right-0 z-[4] text-center font-mono text-[12px] uppercase tracking-[0.14em] text-ink-2"
             style={{ top: L.capY, opacity: capO }}
           >
-            Final prototype · Home / AR Lens / Ask This Place
+            Final prototype · Home / Explore / AR Lens
           </motion.p>
         </>
       )}
@@ -287,25 +290,79 @@ function FeaturedCard({ f, i, p, L, onOpen }: { f: (typeof featured)[number]; i:
   const shadow = useTransform(() => {
     const l = lift.get()
     const z = bezel.get()
-    return `0 0 0 ${z * 6}px #0e1422, 0 ${10 + 26 * l}px ${24 + 34 * l}px -16px rgba(14,20,34,${0.45 + 0.15 * l})`
+    return `0 0 0 ${z * 5}px #0a0c12, 0 0 0 ${z * 7.5}px #2b3a55, 0 0 0 ${z * 8}px #4a5c80, 0 ${10 + 26 * l}px ${24 + 34 * l}px -16px rgba(14,20,34,${0.45 + 0.15 * l})`
   })
-  const radius = useTransform(bezel, [0, 1], [18, 24])
+  const radius = useTransform(bezel, [0, 1], [18, L.ew * 0.135])
   return (
     <motion.button
       type="button"
       onClick={onOpen}
       aria-label={`Open ${f.name} screen`}
-      className="group absolute z-[5] block overflow-hidden bg-white"
-      style={{ left, top, width, rotate, scale, x: '-50%', y: '-50%', boxShadow: shadow, borderRadius: radius }}
+      className="group absolute z-[5] block"
+      style={{ left, top, width, rotate, scale, x: '-50%', y: '-50%' }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.7, delay: 0.3 + i * 0.08 }}
     >
-      <img src={asset(shot(f.key))} alt={`Day One ${f.name} screen`} className="block w-full" />
-      <span className="absolute right-2 top-2 grid h-7 w-7 place-items-center rounded-full bg-ink/70 text-white opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
-        <Expand size={14} aria-hidden />
-      </span>
+      <motion.span aria-hidden className="absolute inset-0" style={{ opacity: bezel }}>
+        <SideButtons />
+      </motion.span>
+      <motion.span className="relative block overflow-hidden bg-white" style={{ boxShadow: shadow, borderRadius: radius }}>
+        <img src={asset(shot(f.key))} alt={`Day One ${f.name} screen`} className="block w-full" />
+        <motion.span aria-hidden className="absolute inset-x-0 top-0 block" style={{ opacity: bezel }}>
+          <StatusBar light={f.key === 'ar'} />
+        </motion.span>
+        <span className="absolute right-3 top-[9%] grid h-7 w-7 place-items-center rounded-full bg-ink/70 text-white opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
+          <Expand size={14} aria-hidden />
+        </span>
+      </motion.span>
     </motion.button>
+  )
+}
+
+/** iPhone 17 Pro status area: time, Dynamic Island, signal, Wi-Fi, battery (drawn at 402pt wide). */
+function StatusBar({ light }: { light: boolean }) {
+  const c = light ? '#fff' : '#0e1422'
+  return (
+    <svg viewBox="0 0 402 62" className="block w-full" fill={c}>
+      <text x="62" y="39" textAnchor="middle" fontSize="17" fontWeight="600" fontFamily="Inter, system-ui, sans-serif">
+        9:41
+      </text>
+      <rect x="138" y="11" width="126" height="37" rx="18.5" fill="#000" />
+      <circle cx="245" cy="29.5" r="6" fill="#10131c" />
+      <rect x="288" y="29" width="3.4" height="5" rx="1" />
+      <rect x="293" y="26.5" width="3.4" height="7.5" rx="1" />
+      <rect x="298" y="24" width="3.4" height="10" rx="1" />
+      <rect x="303" y="22" width="3.4" height="12" rx="1" />
+      <path d="M319 24.4a10 10 0 0 1 14 0l-1.7 1.8a7.6 7.6 0 0 0-10.6 0Zm3.3 3.5a5.4 5.4 0 0 1 7.4 0l-1.7 1.8a3 3 0 0 0-4 0Zm3.7 2.2 1.9 2-1.9 2-1.9-2Z" />
+      <rect x="341.5" y="22.5" width="24" height="12" rx="3.6" fill="none" stroke={c} strokeOpacity="0.45" />
+      <rect x="343.3" y="24.3" width="20.4" height="8.4" rx="2.2" />
+      <path d="M367 26.5v4c.9-.3 1.5-1.1 1.5-2s-.6-1.7-1.5-2Z" fillOpacity="0.5" />
+    </svg>
+  )
+}
+
+/** Action button and volume keys on the left; side button and Camera Control on the right. */
+function SideButtons() {
+  const left = [
+    ['17%', '3.6%'],
+    ['24%', '6.6%'],
+    ['32.5%', '6.6%'],
+  ]
+  const right = [
+    ['27%', '10%'],
+    ['61%', '7%'],
+  ]
+  const cls = 'absolute w-[3px] rounded-[1px] bg-[#34466a]'
+  return (
+    <>
+      {left.map(([top, height]) => (
+        <span key={top} className={`${cls} -left-[10.5px]`} style={{ top, height }} />
+      ))}
+      {right.map(([top, height]) => (
+        <span key={top} className={`${cls} -right-[10.5px]`} style={{ top, height }} />
+      ))}
+    </>
   )
 }
 
@@ -314,13 +371,16 @@ function StaticRow({ onOpen }: { onOpen: (i: number) => void }) {
   return (
     <div className="relative mt-10 overflow-hidden rounded-[12px] border border-line">
       <img aria-hidden src={asset('assets/hero/melbourne-map.jpg')} alt="" className="absolute inset-0 h-full w-full object-cover opacity-30" />
-      <div className="relative grid grid-cols-3 gap-3 p-4 sm:gap-6 sm:p-8">
+      <div className="relative grid grid-cols-3 gap-4 p-5 sm:gap-8 sm:p-10">
         {featured.map((f, i) => (
           <button key={f.key} type="button" onClick={() => onOpen(i)} aria-label={`Open ${f.name} screen`} className="group">
-            <span className="block overflow-hidden rounded-[14px] border-[4px] border-ink bg-white shadow-[0_18px_30px_-20px_rgba(14,20,34,0.6)] transition-transform group-hover:-translate-y-1 sm:rounded-[22px] sm:border-[6px]">
+            <span className="relative block overflow-hidden rounded-[16px] bg-white shadow-[0_0_0_3px_#0a0c12,0_0_0_5px_#2b3a55,0_18px_30px_-16px_rgba(14,20,34,0.6)] transition-transform group-hover:-translate-y-1 sm:rounded-[28px] sm:shadow-[0_0_0_5px_#0a0c12,0_0_0_7px_#2b3a55,0_18px_30px_-16px_rgba(14,20,34,0.6)]">
               <img src={asset(shot(f.key))} alt={`Day One ${f.name} screen`} className="block w-full" />
+              <span aria-hidden className="absolute inset-x-0 top-0 block">
+                <StatusBar light={f.key === 'ar'} />
+              </span>
             </span>
-            <span className="mt-2 block text-center font-mono text-[11px] uppercase tracking-[0.1em] text-ink-2">{f.name}</span>
+            <span className="mt-3 block text-center font-mono text-[11px] uppercase tracking-[0.1em] text-ink-2">{f.name}</span>
           </button>
         ))}
       </div>

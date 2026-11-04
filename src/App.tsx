@@ -1,4 +1,5 @@
 import { MotionConfig } from 'motion/react'
+import { useAnchorScroll } from './hooks/useAnchorScroll'
 import { Nav } from './components/Nav'
 import { Overview, ReportMap } from './sections/Overview'
 import { PartDivider } from './components/PartDivider'
@@ -17,6 +18,7 @@ import { Appendix } from './sections/Appendix'
 import { Footer } from './sections/Footer'
 
 export default function App() {
+  useAnchorScroll()
   return (
     <MotionConfig reducedMotion="user">
       <Nav />

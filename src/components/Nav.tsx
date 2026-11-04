@@ -118,10 +118,10 @@ export function Nav() {
               onClick={() => setOpen(true)}
               aria-expanded={open}
               aria-controls="section-menu"
-              className={`flex h-9 shrink-0 items-center gap-2 rounded-full border px-3 text-[13px] font-medium transition-colors ${dark ? 'border-white/20 hover:bg-white/10' : 'border-line bg-paper hover:border-ink/30'}`}
+              className={`group flex h-9 shrink-0 items-center gap-2 pl-1 font-mono before:mr-1.5 before:block before:h-4 before:w-px before:content-[''] text-[12px] uppercase tracking-[0.14em] transition-colors sm:before:mr-2.5 ${dark ? 'text-white/70 before:bg-white/25 hover:text-sun' : 'text-muted before:bg-line hover:text-blue'}`}
             >
-              <List size={16} aria-hidden />
-              <span className="hidden sm:inline">Contents</span>
+              <List size={15} aria-hidden className="transition-transform duration-200 group-hover:scale-110" />
+              <span className="link-grow hidden sm:inline">Contents</span>
               <span className="sr-only sm:hidden">Contents</span>
             </button>
           </div>

@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { animate, motion, useInView, useMotionValue, useReducedMotion, useTransform } from 'motion/react'
+import { animate, motion, useInView, useMotionValue, useReducedMotion, useTransform, type Easing } from 'motion/react'
 import { ArrowRight } from 'lucide-react'
 import { refinements } from '../content/evaluation'
 import { asset } from './ui'
@@ -14,31 +14,44 @@ const frames = [
   { stage: 'Initial hi-fi', src: it('hifi/journey-tree-driver-licence.jpg'), sketch: false },
 ]
 
-/** Prototype stage: the three fidelities arrive one after another, once, and stay. */
+const CYCLE = 7 // seconds for one full pass
+
+/** Keyframes for one element in the shared loop: rises in from `start`, holds, then fades with the others. */
+function reveal(start: number, from: Record<string, number>) {
+  const rest = Object.fromEntries(Object.entries(from).map(([k, v]) => [k, [v, v, 0, 0, 0, 0]]))
+  return {
+    animate: { opacity: [0, 0, 1, 1, 0, 0], ...rest },
+    // Easing per step: a single curve would stretch across the whole cycle and bunch everything at the start.
+    transition: { duration: CYCLE, times: [0, start, start + 0.12, 0.84, 0.94, 1], ease: ['linear', ease, 'linear', 'easeInOut', 'linear'] as Easing[], repeat: Infinity },
+  }
+}
+
+/** Prototype stage: the three fidelities surface one after another, hold, fade together, and repeat while on screen. */
 export function IterationLoop() {
-  const view = { once: true, margin: '0px 0px -15% 0px' } as const
+  const ref = useRef<HTMLDivElement>(null)
+  const inView = useInView(ref, { margin: '0px 0px -10% 0px' })
+  const reduce = useReducedMotion()
+  const motionFor = (start: number, from: Record<string, number>) => {
+    if (reduce) return { initial: false, animate: { opacity: 1 } }
+    if (!inView) return { initial: { opacity: 0, ...from }, animate: { opacity: 0, ...from }, transition: { duration: 0.2 } }
+    return { initial: { opacity: 0, ...from }, ...reveal(start, from) }
+  }
   return (
-    <div className="flex items-center justify-center gap-2 sm:gap-4" role="img" aria-label="Driver licence journey at three fidelities: low-fi sketch, wireframe, initial hi-fi">
+    <div ref={ref} className="flex items-center justify-center gap-2 sm:gap-4" role="img" aria-label="Driver licence journey at three fidelities: low-fi sketch, wireframe, initial hi-fi">
       {frames.map((f, i) => (
         <div key={f.stage} className="flex items-center gap-2 sm:gap-4">
           {i > 0 && (
             <motion.span
               aria-hidden
               className="grid h-7 w-7 shrink-0 place-items-center rounded-full border border-line bg-paper text-blue"
-              initial={{ opacity: 0, x: -8 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={view}
-              transition={{ duration: 0.5, ease, delay: 0.2 + i * 0.5 }}
+              {...motionFor(0.04 + i * 0.2 - 0.08, { x: -8 })}
             >
               <ArrowRight size={14} />
             </motion.span>
           )}
           <motion.div
             className="flex flex-col items-center will-change-transform"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={view}
-            transition={{ duration: 0.7, ease, delay: 0.1 + i * 0.5 }}
+            {...motionFor(0.04 + i * 0.2, { y: 18 })}
           >
             {f.sketch ? (
               <span className="block h-[150px] w-[104px] border border-line bg-white p-1 shadow-[0_14px_24px_-20px_rgba(14,20,34,0.6)] sm:h-[220px] sm:w-[150px]">
